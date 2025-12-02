@@ -1,4 +1,6 @@
-> ModelZoo内模型数据定期更新
+# ModelZoo
+
+> ModelZoo 内模型数据定期更新
 
 - [基础模型](#基础模型)
   - [resnet](#resnet)
@@ -14,9 +16,9 @@
   - [Qwen2.5](#qwen25)
 
 ## 基础模型
->+ 推理引擎版本: spacemit-ort-2.0.1
->+ OS：bianbu-2.2
->+ date：2025-11-18
+- 推理引擎版本: spacemit-ort-2.0.1
+- OS：bianbu-2.2
+- date：2025-11-18
 
 ### resnet
 * K1

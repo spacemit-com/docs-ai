@@ -1,4 +1,6 @@
-> **XSlim**是**SpacemiT**推出的PTQ量化工具，集成了已经调整好的适配芯片的量化策略，使用Json配置文件调用统一接口实现模型量化。同时开源于[github-xslim](https://github.com/spacemit-com/xslim)
+# XSlim
+
+**XSlim** 是 **SpacemiT** 推出的 PTQ 量化工具，集成了已经调整好的适配芯片的量化策略，使用 Json 配置文件调用统一接口实现模型量化。同时开源于[github-xslim](https://github.com/spacemit-com/xslim)
 
 
 ---
@@ -8,14 +10,14 @@
 - [量化精度调优](#量化精度调优)
 - [ChangeLog](#changelog)
 
-#### QuickStart
+## QuickStart
 - Install
-~~~
+```
 pip install xslim
-~~~
+```
 
 - Python
-~~~ python
+``` python
 import xslim
 
 demo_json = dict()
@@ -37,10 +39,10 @@ xslim.quantize_onnx_model(demo_json_path)
 # import onnx
 # onnx_model = onnx.load("/home/share/modelzoo/classification/resnet18/resnet18.onnx")
 # quantized_onnx_model = xslim.quantize_onnx_model("resnet18.json", onnx_model)
-~~~
+```
 
 - Shell
-~~~ bash
+``` bash
 python -m xslim --config ./demo_json.json
 # 指定输入以及输出模型路径
 python -m xslim -c ./demo_json.json -i demo.onnx -o demo.q.onnx
@@ -50,13 +52,13 @@ python -m xslim -i demo.onnx -o demo.q.onnx --dynq
 python -m xslim -i demo.onnx -o demo.q.onnx --fp16
 # 不量化仅模型精简，不需要json配置文件
 python -m xslim -i demo.onnx -o demo.q.onnx
-~~~
+```
 
 ---
 
-#### 量化参数配置
+## 量化参数配置
 - Json配置示例
-~~~
+```
 {
     "model_parameters" : {
         "onnx_model": "", "onnx模型的目录"
@@ -112,7 +114,7 @@ python -m xslim -i demo.onnx -o demo.q.onnx
         "truncate_var_names": ["/Concat_5_output_0", "/Transpose_6_output_0"] "截断模型"
     }
 }
-~~~
+```
 
 - 可以省略的字段
 
@@ -137,19 +139,19 @@ python -m xslim -i demo.onnx -o demo.q.onnx
 - 校准数据列表文件的规则
 
 img_list.txt每行表示一个校准数据文件路径，可以写相对于img_list.txt 所在目录的相对路径，也可以写绝对路径，如果模型是多输入的，请确保每个文件列表的顺序是对应的。
-~~~
+```
 QuantZoo/Data/Imagenet/Calib/n01440764/ILSVRC2012_val_00002138.JPEG
 QuantZoo/Data/Imagenet/Calib/n01443537/ILSVRC2012_val_00000994.JPEG
 QuantZoo/Data/Imagenet/Calib/n01484850/ILSVRC2012_val_00014467.JPEG
 QuantZoo/Data/Imagenet/Calib/n01491361/ILSVRC2012_val_00003204.JPEG
 QuantZoo/Data/Imagenet/Calib/n01494475/ILSVRC2012_val_00015545.JPEG
 QuantZoo/Data/Imagenet/Calib/n01496331/ILSVRC2012_val_00008640.JPEG
-~~~
+```
 
 - preprocess_file的规则
 
 例如这是一个custom_preprocess.py脚本文件，则在配置文件中将preprocess_file设为custom_preprocess.py:preprocess_impl 指向具体py文件的具体方法，如果是多输入的情况，code差距不大的情况下，可以直接复用自己的预处理方法。
-~~~ python
+``` python
 from typing import Sequence
 import torch
 import cv2
@@ -180,10 +182,10 @@ def preprocess_impl(path_list: Sequence[str], input_parametr: dict) -> torch.Ten
         img = torch.unsqueeze(img, 0)
         batch_list.append(img)
     return torch.cat(batch_list, dim=0)
-~~~
+```
 
-#### 量化精度调优
+## 量化精度调优
 > TBD
 
-#### ChangeLog
+## ChangeLog
 详情参考[github-xslim-releases](https://github.com/spacemit-com/xslim/releases)
