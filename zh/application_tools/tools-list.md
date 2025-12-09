@@ -1,3 +1,5 @@
+# AI 应用工具
+
 ## 1. Ollama
 Ollama 是一款开源跨平台大语言模型（LLM）本地化部署工具，专注于简化 LLM 在本地环境中的运行、管理和推理流程。它支持用户通过简单命令在个人设备（如 PC、边缘服务器）上直接部署和调用预训练模型（如 LLaMA、DeepSeek 等），无需依赖云端服务或高性能 GPU。  
 [Ollama使用详情](https://bianbu.spacemit.com/ai/ollama)
