@@ -32,7 +32,6 @@
 
 [详细介绍](https://bianbu.spacemit.com/brdk/Robot_development/6.5_Robot_Application_Cases/6.5.1_human-robot-interaction/smart-retail)
 
-
 # LeRobot机械臂 
 本案例详细介绍了在 K1 平台上部署和运行 LeRobot 框架的完整端到端流程，支持机械臂在真实场景下的智能控制与应用开发。内容涵盖数据采集、ACT模型训练和部署、SmolVLA 模型微调和分布式部署。
 ## 项目特点
