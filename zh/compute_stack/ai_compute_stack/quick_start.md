@@ -1,6 +1,7 @@
+# 快速入门指南
 > 以一个yolov8模型的推理演示
 
-### 模型转换与量化
+## 模型转换与量化
 * 从`ultralytics`导出一个yolov8n模型
   > 已有ONNX模型可跳过
 
@@ -27,7 +28,7 @@ python -m xslim -i yolov8n.onnx -o yolov8n.fp16.onnx --dynq
 python -m xslim -i yolov8n.onnx -o yolov8n.fp16.onnx --fp16
 ~~~
 
-### 模型性能测试
+## 模型性能测试
 ~~~ bash
 # 例如在spacemit-ort.riscv64.2.0.1文件夹内
 export LD_LIBRARY_PATH=./lib
@@ -63,7 +64,7 @@ P99 Latency: 0.0838817 s
 P999 Latency: 0.0838817 s
 ~~~
 
-### 推理应用集成
+## 推理应用集成
 例如[yolov8_cpp_ort推理源码](https://github.com/ultralytics/ultralytics/blob/main/examples/YOLOv8-ONNXRuntime-CPP/inference.cpp)
 
 ~~~ C++

@@ -1,3 +1,4 @@
+# XSlim
 > **XSlim**是**SpacemiT**推出的PTQ量化工具，集成了已经调整好的适配芯片的量化策略，使用Json配置文件调用统一接口实现模型量化。同时开源于[github-xslim](https://github.com/spacemit-com/xslim)
 
 
@@ -8,7 +9,7 @@
 - [量化精度调优](#量化精度调优)
 - [ChangeLog](#changelog)
 
-#### QuickStart
+## QuickStart
 - Install
 ~~~
 pip install xslim
@@ -54,7 +55,7 @@ python -m xslim -i demo.onnx -o demo.q.onnx
 
 ---
 
-#### 量化参数配置
+## 量化参数配置
 - Json配置示例
 ~~~
 {
@@ -182,8 +183,8 @@ def preprocess_impl(path_list: Sequence[str], input_parametr: dict) -> torch.Ten
     return torch.cat(batch_list, dim=0)
 ~~~
 
-#### 量化精度调优
+## 量化精度调优
 > TBD
 
-#### ChangeLog
+## ChangeLog
 详情参考[github-xslim-releases](https://github.com/spacemit-com/xslim/releases)
