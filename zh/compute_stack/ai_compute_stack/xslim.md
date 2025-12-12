@@ -1,3 +1,5 @@
+sidebar_position: 4
+
 # XSlim
 > **XSlim**是**SpacemiT**推出的PTQ量化工具，集成了已经调整好的适配芯片的量化策略，使用Json配置文件调用统一接口实现模型量化。同时开源于[github-xslim](https://github.com/spacemit-com/xslim)
 

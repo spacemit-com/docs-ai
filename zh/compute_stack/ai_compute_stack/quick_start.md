@@ -1,3 +1,5 @@
+sidebar_position: 8
+
 # 快速入门指南
 > 以一个yolov8模型的推理演示
 
