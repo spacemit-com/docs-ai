@@ -1,4 +1,6 @@
-# 解决方案
+sidebar_position: 1
+
+# 解决方案汇总
 
 ## AI聊天机器人 
 
