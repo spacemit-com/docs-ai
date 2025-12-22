@@ -1,5 +1,5 @@
 sidebar_position: 2
 
-# 应用软件栈
+# Application Software Stack
 
-- [应用软件栈](app_tool_list.md)
+- [Application Software Stack Overview](app_tool_list.md)

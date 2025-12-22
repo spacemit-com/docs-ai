@@ -19,5 +19,5 @@ Node-RED 是一个 基于流程（Flow-based）的可视化编程工具，最早
 [Node-RED使用详情](https://bianbu.spacemit.com/brdk/System_configuration/2.6_Docker_Usage/2.6.2_Node-RED_Usage)
 
 ## 5. Demo Docker 
-Demo Docker是一个集成了spacemit AI Demo 的容器，它以 WEB 的方式方便快捷的展示了AI调用结果，让你无需编程即可体检AI的魅力。  
+Demo Docker是一个集成了spacemiT AI Demo 的容器，它以 WEB 的方式方便快捷的展示了AI调用结果，让你无需编程即可体检AI的魅力。  
 [Demo Docker 使用详情](https://bianbu.spacemit.com/brdk/System_configuration/2.6_Docker_Usage/2.6.4_DemoZoo_Usage)
