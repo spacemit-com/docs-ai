@@ -1,48 +1,51 @@
 sidebar_position: 1
 
-# 解决方案汇总
+# Solution Overview
 
-## AI聊天机器人 
+## AI Chatbot
 
-本案例展示了语音模块与大模型无缝对接实现的AI聊天机器人。它能够进行逻辑清晰的多轮对话，通过深度理解自然语言，为用户提供信息、解答疑问。
-## 项目特点
+This use case showcases an AI chatbot created by seamlessly connecting a voice module with large language models. The system supports clear, coherent multi-turn conversations and provides accurate information and answers through deep natural language understanding.
 
-- **所用模型**: sensevoice、Deepseek R1、melotts
-- **语言支持**: 提供 Python 示例代码  
-- **提供功能**: 提供端到端语音输入、语音输出功能
+### Project Highlights
 
-[详细介绍](https://bianbu.spacemit.com/brdk/Robot_development/6.5_Robot_Application_Cases/6.5.3_large-language-model/ai-chat)
+- **Models Used**: SenseVoice, DeepSeek R1, MeloTTS  
+- **Language Support**: Python sample code provided  
+- **Key Features**: End-to-end voice input and voice output
 
+[Learn more](https://bianbu.spacemit.com/brdk/Robot_development/6.5_Robot_Application_Cases/6.5.3_large-language-model/ai-chat)
 
-## 智能小车跟随 
-本案例演示了 AGV 小车如何深度融合多模态交互与自主移动技术。系统支持用户通过语音指令进行控制，并借助实时视觉感知实现精准人体跟随；大型语言模型通过 Function Call 机制，结合 ROS2 框架对小车运动进行智能调度。该方案有机整合了环境感知、运动规划与语音交互等核心技术，展现了智能 AGV 在家庭服务与工业自动化领域的创新应用潜力。
+## Intelligent AGV Following Robot
 
-### 项目特点
+This use case demonstrates an AGV robot that combines multimodal interaction with autonomous mobility. Users can control the robot through voice commands, while real-time visual perception enables precise human-following behavior. A large language model uses the Function Call mechanism together with the ROS2 framework to intelligently coordinate robot motion. By integrating perception, motion planning, and voice interaction, this solution highlights the practical value of intelligent AGVs in home service and industrial automation scenarios.
 
-- **所用模型**: qwen2.5-0.5B、YOLOv8
-- **语言支持**: 提供 Python 示例代码  
-- **提供功能**: 提供语音控制、YOLOv8 目标识别、LLM 回调智能跟随功能
+### Project Highlights
 
-[详细介绍](https://bianbu.spacemit.com/brdk/Robot_development/6.5_Robot_Application_Cases/6.5.1_human-robot-interaction/agv-follow)
+- **Models Used**: Qwen2.5-0.5B, YOLOv8  
+- **Language Support**: Python sample code provided  
+- **Key Features**: Voice control, YOLOv8-based object detection, LLM callback–driven intelligent following
 
+[Learn more](https://bianbu.spacemit.com/brdk/Robot_development/6.5_Robot_Application_Cases/6.5.1_human-robot-interaction/agv-follow)
 
-## 机械臂智慧零售 
-本案例呈现了 K1 平台驱动大象机械臂在智慧零售中的综合解决方案。系统深度融合了 Function Call 大模型智能交互、YOLOv8 高精度目标检测与 OCR 文字识别技术，实现从商品识别、扫码结算到语音交互的全流程无人化操作。该方案不仅提升了零售场景的自动化水平与运营效率，也为未来智能商店的构建提供了可行的技术路径，展现了人机协同在现代商业中的广泛前景。
+## Smart Retail Robotic Arm
 
-### 项目特点
+This use case introduces a smart retail solution powered by the K1 platform and an Elephant robotic arm. The system brings together LLM-based interaction via Function Call, high-accuracy YOLOv8 object detection, and OCR text recognition to support a fully automated workflow—from product identification and barcode scanning to checkout and voice interaction. The solution improves automation and operational efficiency in retail environments, while also offering a clear technical path toward future smart stores and demonstrating the potential of human–machine collaboration in modern retail.
 
-- **所用模型**: sensevoice、qwen2.5-0.5B、YOLOv8、Paddle OCR
-- **语言支持**: 提供 Python 示例代码  
-- **提供功能**: 提供语音控制、LLM回调、YOLOv8目标识别、文字识别功能
+### Project Highlights
 
-[详细介绍](https://bianbu.spacemit.com/brdk/Robot_development/6.5_Robot_Application_Cases/6.5.1_human-robot-interaction/smart-retail)
+- **Models Used**: SenseVoice, Qwen2.5-0.5B, YOLOv8, PaddleOCR  
+- **Language Support**: Python sample code provided  
+- **Key Features**: Voice control, LLM callbacks, YOLOv8 object detection, text recognition
 
-## LeRobot机械臂 
-本案例详细介绍了在 K1 平台上部署和运行 LeRobot 框架的完整端到端流程，支持机械臂在真实场景下的智能控制与应用开发。内容涵盖数据采集、ACT模型训练和部署、SmolVLA 模型微调和分布式部署。
-## 项目特点
+[Learn more](https://bianbu.spacemit.com/brdk/Robot_development/6.5_Robot_Application_Cases/6.5.1_human-robot-interaction/smart-retail)
 
-- **所用模型**: ACT、SmolVLA
-- **语言支持**: 提供 Python 示例代码  
-- **提供功能**: 提供数据抓取、模型训练和分布式部署功能  
+## LeRobot Robotic Arm
 
-[详细介绍](https://bianbu.spacemit.com/brdk/Robot_development/6.4_Robot_Application_Module/6.4.4_AI_Robotic_Arm/lerobot)
+This use case provides a complete end-to-end guide for deploying and running the LeRobot framework on the K1 platform, enabling intelligent robotic arm control and real-world application development. It covers the full workflow, including data collection, ACT model training and deployment, as well as fine-tuning and distributed deployment of the SmolVLA model.
+
+## Project Highlights
+
+- **Models Used**: ACT, SmolVLA  
+- **Language Support**: Python sample code provided  
+- **Key Features**: Data collection, model training, and distributed deployment
+
+[Learn more](https://bianbu.spacemit.com/brdk/Robot_development/6.4_Robot_Application_Module/6.4.4_AI_Robotic_Arm/lerobot)

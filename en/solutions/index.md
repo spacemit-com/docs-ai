@@ -1,5 +1,5 @@
 sidebar_position: 2
 
-# 解决方案
+# Solutions
 
-[解决方案汇总](solution_list.md)
+[Solution Overview](solution_list.md)
