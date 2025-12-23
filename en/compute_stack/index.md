@@ -1,7 +1,7 @@
 sidebar_position: 3
 
-# 计算软件栈
+# Compute Software Stack
 
-- [AI 计算软件栈](ai_compute_stack.md)
-- [计算机视觉库](cv_library.md)
-- [其他数学库](math_library.md)
+- [AI Compute Software Stack](ai_compute_stack.md)
+- [Computer Vision Libraries](cv_library.md)
+- [Other Mathematical Libraries](math_library.md)

@@ -1,39 +1,40 @@
 sidebar_position: 1
 
-# AI 计算软件栈
+# AI Compute Software Stack
 
-## 软件栈框架
+## Software Stack Architecture
 
-![AI软件栈图](./images/ai_compute_stack.png)
+![AI Software Stack](./images/ai_compute_stack.png)
 
-## 多层级交付
+## Multi-Level Delivery
 
-进迭时空AI计算软件栈提供多层级交付产物，以满足AI生态上的多类用户多样化的需求
+The SpacemiT AI compute software stack provides **multi-level deliverables** to address the diverse needs of different users across the AI ecosystem.
 
-### 端到端模型推理
+### End-to-End Model Inference
 
-* [OnnxRuntime](./ai_compute_stack/onnxruntime.md)
-  > 基于ONNXRuntime的SpacemiT推理引擎，通过使用`SpaceMITExecutionProvider`获得极致推理性能
+- [OnnxRuntime](./ai_compute_stack/onnxruntime.md)  
+  > A SpacemiT inference engine based on ONNX Runtime. By leveraging the `SpaceMITExecutionProvider`, it delivers optimized inference performance.
 
-* [XSlim](./ai_compute_stack/xslim.md)
-  > 模型量化精简工具链，支持多种量化格式与量化调优策略
+- [XSlim](./ai_compute_stack/xslim.md)  
+  > A model quantization and compression toolchain that supports multiple quantization formats and tuning strategies.
 
-* [Llama.cpp](./ai_compute_stack/llama.cpp.md)
-  > 轻量大模型推理引擎，完全开源并同步社区
+- [Llama.cpp](./ai_compute_stack/llama.cpp.md)  
+  > A lightweight large-model inference engine that is fully open-source and kept in sync with the upstream community.
 
-* [vLLM](./ai_compute_stack/vllm.md)
-  > 热门的高性能大语言模型推理与服务框架，支持原生部署大模型
+- [vLLM](./ai_compute_stack/vllm.md)  
+  > A popular high-performance framework for large language model inference and serving, supporting native deployment of LLMs.
 
-### AI算子加速库
+### AI Operator Acceleration Libraries
 
-* TBD
+> TBD
 
-### AI编程语言
+### AI Programming Languages
 
-* [Triton](./ai_compute_stack/triton.md)
-  > 提供Python交互的高性能AI算子编程体验
+- [Triton](./ai_compute_stack/triton.md)  
+  > Provides a high-performance AI operator programming experience with a Python-based interface.
 
-### 示例
+### Examples
 
-* [QuickStart](./ai_compute_stack/quick_start.md)
-* [ModelZoo](./ai_compute_stack/modelzoo.md)
+- [QuickStart](./ai_compute_stack/quick_start.md)
+- [ModelZoo](./ai_compute_stack/modelzoo.md)
+
