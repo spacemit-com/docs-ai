@@ -1,5 +1,5 @@
 sidebar_position: 2
 
-# 计算机视觉库
+# Computer Vision Libraries
 
 > TBD

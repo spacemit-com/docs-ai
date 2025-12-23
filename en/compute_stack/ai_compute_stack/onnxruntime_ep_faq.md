@@ -2,17 +2,14 @@ sidebar_position: 3
 
 # ONNXRuntime EP FAQ
 
-[性能问题](#性能问题)
-[精度问题](#精度问题)
+## Performance Issues
 
-## 性能问题
+**Q: How can multiple models share and reuse compute resources?**  
+**A:** If you confirm that multiple models are executed sequentially and do not interfere with each other, you can enable `SPACEMIT_EP_USE_GLOBAL_INTRA_THREAD`. This allows all models to share the same compute resources, improving overall performance through resource reuse.
 
-Q: 多个模型如何复用计算资源？
-> 如果确认你的多个模型是互不影响的串行执行，那么可以开启SPACEMIT_EP_USE_GLOBAL_INTRA_THREAD，使用同一份计算资源并复用，可以提升整体性能
----
+**Q: What should I do if too many compute threads are launched and performance degrades?**  
+**A:** If most operators in your model can be executed by the Execution Provider (EP), you can set the ONNX Runtime (ORT) thread count to `1` and use `SPACEMIT_EP_INTRA_THREAD_NUM` to control the number of threads. This helps avoid thread oversubscription and improves performance.
 
-Q: 启动的计算线程数太多影响性能怎么办？
-> 如果确认你的模型大多数算子可以由EP进行推理，那么可以开启选择将ORT的线程数设为1，仅使用SPACEMIT_EP_INTRA_THREAD_NUM控制线程数
+## Accuracy Issues
 
-## 精度问题
 > TBD
