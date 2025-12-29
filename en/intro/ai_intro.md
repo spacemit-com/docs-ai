@@ -1,6 +1,6 @@
-sidebar_position: 2
+sidebar_position: 1
 
-# Introduction
+# SpacemiT RISC-V AI Computing Platform
 
 This document presents SpacemiT’s proprietary AI computing architecture, built upon the **RISC-V** instruction set architecture (ISA). It further outlines the foundational compute software stack and application development tools constructed on this hardware-software co-designed platform. Additionally, it showcase end-to-end demonstration applications and real-world industry deployments developed by SpacemiT and its strategic customers.
 

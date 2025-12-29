@@ -1,6 +1,6 @@
 sidebar_position: 1
 
-# Application Software Stack Overview
+# Application Software Stack & Development Tools
 
 ## 1. Ollama
 
