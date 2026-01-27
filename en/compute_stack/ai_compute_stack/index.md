@@ -1,3 +1,5 @@
+sidebar_position: 2
+
 # AI Compute Stack List
 
 - [SpacemiT-ONNXRuntime](onnxruntime.md)
