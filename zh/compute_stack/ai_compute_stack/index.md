@@ -1,4 +1,6 @@
-# AI 计算软件栈
+sidebar_position: 2
+
+# AI 计算软件栈列表
 
 - [SpacemiT-ONNXRuntime](onnxruntime.md)
    - [ONNXRuntime EP 加速算子](onnxruntime_ep_ops.md)
