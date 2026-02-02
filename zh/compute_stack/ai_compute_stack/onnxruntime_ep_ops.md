@@ -6,83 +6,89 @@ sidebar_position: 2
 >+ [ONNX-OP描述参考](https://onnx.ai/onnx/operators/index.html)
 >+ [ONNX-Contrib-OP描述参考](https://github.com/microsoft/onnxruntime/blob/main/docs/ContribOperators.md)
 
-- [Dense](#dense)
-  - [**Conv**](#conv)
-  - [**ConvTranspose**](#convtranspose)
-  - [**Gemm**](#gemm)
-  - [**MatMul**](#matmul)
-- [QDQ](#qdq)
-  - [**DynamicQuantizeLinear**](#dynamicquantizelinear)
-  - [**QuantizeLinear**](#quantizelinear)
-  - [**DequantizeLinear**](#dequantizelinear)
-- [Pool](#pool)
-  - [**AveragePool**](#averagepool)
-  - [**GlobalAveragePool**](#globalaveragepool)
-  - [**MaxPool**](#maxpool)
-  - [**GlobalMaxPool**](#globalmaxpool)
-- [Reduce](#reduce)
-  - [**ReduceMean**](#reducemean)
-  - [**ReduceMax**](#reducemax)
-- [Math](#math)
-  - [**Add**](#add)
-  - [**Sub**](#sub)
-  - [**Mul**](#mul)
-  - [**Div**](#div)
-  - [**Pow**](#pow)
-  - [**Sqrt**](#sqrt)
-  - [**Abs**](#abs)
-  - [**Reciprocal**](#reciprocal)
-- [Activation](#activation)
-  - [**Sigmoid**](#sigmoid)
-  - [**Swish**](#swish)
-  - [**HardSigmoid**](#hardsigmoid)
-  - [**HardSwish**](#hardswish)
-  - [**Tanh**](#tanh)
-  - [**LeakyRelu**](#leakyrelu)
-  - [**Clip**](#clip)
-  - [**Relu**](#relu)
-  - [**Elu**](#elu)
-  - [**Gelu**](#gelu)
-  - [**Erf**](#erf)
-  - [**Softmax**](#softmax)
-- [Tensor](#tensor)
-  - [**Cast**](#cast)
-  - [**Concat**](#concat)
-  - [**Split**](#split)
-  - [**Transpose**](#transpose)
-  - [**Unsqueeze**](#unsqueeze)
-  - [**Squeeze**](#squeeze)
-  - [**Reshape**](#reshape)
-  - [**Flatten**](#flatten)
-  - [**Gather**](#gather)
-  - [**Resize**](#resize)
-- [Norm](#norm)
-  - [**LayerNormalization**](#layernormalization)
-  - [**BatchNormalization**](#batchnormalization)
+- [ONNXRuntime EP 加速算子](#onnxruntime-ep-加速算子)
+  - [Dense](#dense)
+    - [Conv](#conv)
+    - [ConvTranspose](#convtranspose)
+    - [Gemm](#gemm)
+    - [MatMul](#matmul)
+  - [QDQ](#qdq)
+    - [DynamicQuantizeLinear](#dynamicquantizelinear)
+    - [QuantizeLinear](#quantizelinear)
+    - [DequantizeLinear](#dequantizelinear)
+  - [Pool](#pool)
+    - [AveragePool](#averagepool)
+    - [GlobalAveragePool](#globalaveragepool)
+    - [MaxPool](#maxpool)
+    - [GlobalMaxPool](#globalmaxpool)
+  - [Reduce](#reduce)
+    - [ReduceMean](#reducemean)
+    - [ReduceMax](#reducemax)
+  - [Math](#math)
+    - [Add](#add)
+    - [Sub](#sub)
+    - [Mul](#mul)
+    - [Div](#div)
+    - [Pow](#pow)
+    - [Sqrt](#sqrt)
+    - [Abs](#abs)
+    - [Reciprocal](#reciprocal)
+  - [Activation](#activation)
+    - [Sigmoid](#sigmoid)
+    - [Swish](#swish)
+    - [HardSigmoid](#hardsigmoid)
+    - [HardSwish](#hardswish)
+    - [Tanh](#tanh)
+    - [LeakyRelu](#leakyrelu)
+    - [Clip](#clip)
+    - [Relu](#relu)
+    - [Elu](#elu)
+    - [Gelu](#gelu)
+    - [Erf](#erf)
+    - [Softmax](#softmax)
+  - [Tensor](#tensor)
+    - [Cast](#cast)
+    - [Concat](#concat)
+    - [Split](#split)
+    - [Transpose](#transpose)
+    - [Unsqueeze](#unsqueeze)
+    - [Squeeze](#squeeze)
+    - [Reshape](#reshape)
+    - [Flatten](#flatten)
+    - [Gather](#gather)
+    - [Resize](#resize)
+  - [Norm](#norm)
+    - [LayerNormalization](#layernormalization)
+    - [BatchNormalization](#batchnormalization)
 
 ## Dense
-### **Conv**
+
+### Conv
+>
 >+ Domain: ai.onnx
 >+ Opset: 11
 >+ Attributes: W需为常量
 >+ Type: T：tensor(float) | tensor(float16)
 >+ Notes: 支持QDQ量化格式，W对称perchannel，X非对称pertensor；
 
-### **ConvTranspose**
+### ConvTranspose
+>
 >+ Domain: ai.onnx
 >+ Opset: 11
 >+ Attributes: W需为常量
 >+ Type: T：tensor(float) | tensor(float16)
 >+ Notes: 支持QDQ量化格式，W对称perchannel，X非对称pertensor
 
-### **Gemm**
+### Gemm
+>
 >+ Domain: ai.onnx
 >+ Opset: 13
 >+ Attributes: transA==0
 >+ Type: T：tensor(float) | tensor(float16)
 >+ Notes: 支持QDQ量化格式，A非对称pertensor，B对称perchannel，当B为非常量时，B需为非对称pertensor
 
-### **MatMul**
+### MatMul
+>
 >+ Domain: ai.onnx
 >+ Opset: 13
 >+ Attributes:
@@ -90,21 +96,25 @@ sidebar_position: 2
 >+ Notes: 支持QDQ量化格式，A非对称pertensor，B对称perchannel，当B为非常量时，B需为非对称pertensor
 
 ## QDQ
-### **DynamicQuantizeLinear**
+
+### DynamicQuantizeLinear
+>
 >+ Domain: ai.onnx
 >+ Opset: 11
 >+ Attributes: 仅支持pertensor
 >+ Type: T1：tensor(float)
 >+ Type: T2：tensor(int8)
 
-### **QuantizeLinear**
+### QuantizeLinear
+>
 >+ Domain: ai.onnx
 >+ Opset: 19
 >+ Attributes: 仅支持pertensor、perchannel
 >+ Type: T1：tensor(float)
 >+ Type: T2：tensor(int8) | tensor(int16)
 
-### **DequantizeLinear**
+### DequantizeLinear
+>
 >+ Domain: ai.onnx
 >+ Opset: 19
 >+ Attributes: 仅支持pertensor、perchannel
@@ -112,234 +122,278 @@ sidebar_position: 2
 >+ Type: T2：tensor(float)
 
 ## Pool
-### **AveragePool**
+
+### AveragePool
+>
 >+ Domain: ai.onnx
 >+ Opset: 22
 >+ Attributes:
 >+ Type: T：tensor(float) | tensor(float16)
 
-### **GlobalAveragePool**
+### GlobalAveragePool
+>
 >+ Domain: ai.onnx
 >+ Opset: 1
 >+ Attributes:
 >+ Type: T：tensor(float) | tensor(float16)
 
-### **MaxPool**
+### MaxPool
+>
 >+ Domain: ai.onnx
 >+ Opset: 12
 >+ Attributes:
 >+ Type: T：tensor(float) | tensor(int8) | tensor(float16)
 
-### **GlobalMaxPool**
+### GlobalMaxPool
+>
 >+ Domain: ai.onnx
 >+ Opset: 1
 >+ Attributes:
 >+ Type: T：tensor(float) | tensor(int8) | tensor(float16)
 
 ## Reduce
-### **ReduceMean**
+
+### ReduceMean
+>
 >+ Domain: ai.onnx
 >+ Opset: 18
 >+ Attributes: axes需为连续常量，如[1,2]
 >+ Type: T：tensor(float) | tensor(float16)
 
-### **ReduceMax**
+### ReduceMax
+>
 >+ Domain: ai.onnx
 >+ Opset: 20
 >+ Attributes: axes需为连续常量，如[1,2]
 >+ Type: T：tensor(float) | tensor(int8) | tensor(float16)
 
 ## Math
-### **Add**
+
+### Add
+>
 >+ Domain: ai.onnx
 >+ Opset: 14
 >+ Attributes:
 >+ Type: T：tensor(float) | tensor(float16)
 
-### **Sub**
+### Sub
+>
 >+ Domain: ai.onnx
 >+ Opset: 14
 >+ Attributes:
 >+ Type: T：tensor(float) | tensor(float16)
 
-### **Mul**
+### Mul
+>
 >+ Domain: ai.onnx
 >+ Opset: 14
 >+ Attributes:
 >+ Type: T：tensor(float) | tensor(float16)
 
-### **Div**
+### Div
+>
 >+ Domain: ai.onnx
 >+ Opset: 14
 >+ Attributes:
 >+ Type: T：tensor(float) | tensor(float16)
 
-### **Pow**
+### Pow
+>
 >+ Domain: ai.onnx
 >+ Opset: 14
 >+ Attributes:
 >+ Type: T：tensor(float) | tensor(float16)
 
-### **Sqrt**
+### Sqrt
+>
 >+ Domain: ai.onnx
 >+ Opset: 14
 >+ Attributes:
 >+ Type: T：tensor(float) | tensor(float16)
 
-### **Abs**
+### Abs
+>
 >+ Domain: ai.onnx
 >+ Opset: 14
 >+ Attributes:
 >+ Type: T：tensor(float) | tensor(float16)
 
-### **Reciprocal**
+### Reciprocal
+>
 >+ Domain: ai.onnx
 >+ Opset: 14
 >+ Attributes:
 >+ Type: T：tensor(float) | tensor(float16)
 
 ## Activation
-### **Sigmoid**
+
+### Sigmoid
+>
 >+ Domain: ai.onnx
 >+ Opset: 13
 >+ Attributes:
 >+ Type: T：tensor(float) | tensor(float16)
 
-### **Swish**
+### Swish
+>
 >+ Domain: ai.onnx
 >+ Opset: 24
 >+ Attributes:
 >+ Type: T：tensor(float) | tensor(float16)
 
-### **HardSigmoid**
+### HardSigmoid
+>
 >+ Domain: ai.onnx
 >+ Opset: 22
 >+ Attributes:
 >+ Type: T：tensor(float) | tensor(float16)
 
-### **HardSwish**
+### HardSwish
+>
 >+ Domain: ai.onnx
 >+ Opset: 22
 >+ Attributes:
 >+ Type: T：tensor(float) | tensor(float16)
 
-### **Tanh**
+### Tanh
+>
 >+ Domain: ai.onnx
 >+ Opset: 13
 >+ Attributes:
 >+ Type: T：tensor(float) | tensor(float16)
 
-### **LeakyRelu**
+### LeakyRelu
+>
 >+ Domain: ai.onnx
 >+ Opset: 16
 >+ Attributes:
 >+ Type: T：tensor（float) | tensor(float16)
 
-### **Clip**
+### Clip
+>
 >+ Domain: ai.onnx
 >+ Opset: 13
 >+ Attributes:
 >+ Type: T：tensor(float) | tensor(float16)
 
-### **Relu**
+### Relu
+>
 >+ Domain: ai.onnx
 >+ Opset: 14
 >+ Attributes:
 >+ Type: T：tensor(float) | tensor(float16)
 
-### **Elu**
+### Elu
+>
 >+ Domain: ai.onnx
 >+ Opset: 22
 >+ Attributes:
 >+ Type: T：tensor(float) | tensor(float16)
 
-### **Gelu**
+### Gelu
+>
 >+ Domain: ai.onnx
 >+ Opset: 20
 >+ Attributes:
 >+ Type: T：tensor(float) | tensor(float16)
 
-### **Erf**
+### Erf
+>
 >+ Domain: ai.onnx
 >+ Opset: 13
 >+ Attributes:
 >+ Type: T：tensor(float) | tensor(float16)
 
-### **Softmax**
+### Softmax
+>
 >+ Domain: ai.onnx
 >+ Opset: 13
 >+ Attributes:
 >+ Type: T：tensor(float) | tensor(float16)
 
 ## Tensor
-### **Cast**
+
+### Cast
+>
 >+ Domain: ai.onnx
 >+ Opset: 24
 >+ Attributes:
 >+ Type: All
 
-### **Concat**
+### Concat
+>
 >+ Domain: ai.onnx
 >+ Opset: 13
 >+ Attributes:
 >+ Type: All
 
-### **Split**
+### Split
+>
 >+ Domain: ai.onnx
 >+ Opset: 18
 >+ Attributes:
 >+ Type: All
 
-### **Transpose**
+### Transpose
+>
 >+ Domain: ai.onnx
 >+ Opset: 24
 >+ Attributes:
 >+ Type: All
 
-### **Unsqueeze**
+### Unsqueeze
+>
 >+ Domain: ai.onnx
 >+ Opset: 24
 >+ Attributes:
 >+ Type: All
 
-### **Squeeze**
+### Squeeze
+>
 >+ Domain: ai.onnx
 >+ Opset: 24
 >+ Attributes:
 >+ Type: All
 
-### **Reshape**
+### Reshape
+>
 >+ Domain: ai.onnx
 >+ Opset: 24
 >+ Attributes:
 >+ Type: All
 
-### **Flatten**
+### Flatten
+>
 >+ Domain: ai.onnx
 >+ Opset: 24
 >+ Attributes:
 >+ Type: All
 
-### **Gather**
+### Gather
+>
 >+ Domain: ai.onnx
 >+ Opset: 13
 >+ Attributes:
 >+ Type: All
 
-### **Resize**
+### Resize
+>
 >+ Domain: ai.onnx
 >+ Opset: 19
 >+ Attributes:
 >+ Type: All
 
 ## Norm
-### **LayerNormalization**
+
+### LayerNormalization
+>
 >+ Domain: ai.onnx
 >+ Opset: 17
 >+ Attributes: Scale、B需为常量
 >+ Type: T：tensor(float) | tensor(float16)
 
-### **BatchNormalization**
+### BatchNormalization
+>
 >+ Domain: ai.onnx
 >+ Opset: 15
 >+ Attributes: Scale、B、input_mean、input_var需为常量

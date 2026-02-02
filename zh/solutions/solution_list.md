@@ -12,8 +12,7 @@ sidebar_position: 1
 - **语言支持**: 提供 Python 示例代码  
 - **提供功能**: 提供端到端语音输入、语音输出功能
 
-[详细介绍](https://bianbu.spacemit.com/brdk/Robot_development/6.5_Robot_Application_Cases/6.5.3_large-language-model/ai-chat)
-
+[详细介绍](https://www.spacemit.com/community/document/info?lang=zh&nodepath=software/SDK/ros/06_Robot_development/6.5_Robot_Application_Cases/6.5.3_large-language-model/1_ai-chat.md)
 
 ## 智能小车跟随 
 本案例演示了 AGV 小车如何深度融合多模态交互与自主移动技术。系统支持用户通过语音指令进行控制，并借助实时视觉感知实现精准人体跟随；大型语言模型通过 Function Call 机制，结合 ROS2 框架对小车运动进行智能调度。该方案有机整合了环境感知、运动规划与语音交互等核心技术，展现了智能 AGV 在家庭服务与工业自动化领域的创新应用潜力。
@@ -24,7 +23,7 @@ sidebar_position: 1
 - **语言支持**: 提供 Python 示例代码  
 - **提供功能**: 提供语音控制、YOLOv8 目标识别、LLM 回调智能跟随功能
 
-[详细介绍](https://bianbu.spacemit.com/brdk/Robot_development/6.5_Robot_Application_Cases/6.5.1_human-robot-interaction/agv-follow)
+[详细介绍](https://www.spacemit.com/community/document/info?lang=zh&nodepath=software/SDK/ros/06_Robot_development/6.5_Robot_Application_Cases/6.5.1_human-robot-interaction/1_agv-follow.md)
 
 
 ## 机械臂智慧零售 
@@ -36,7 +35,7 @@ sidebar_position: 1
 - **语言支持**: 提供 Python 示例代码  
 - **提供功能**: 提供语音控制、LLM回调、YOLOv8目标识别、文字识别功能
 
-[详细介绍](https://bianbu.spacemit.com/brdk/Robot_development/6.5_Robot_Application_Cases/6.5.1_human-robot-interaction/smart-retail)
+[详细介绍](https://www.spacemit.com/community/document/info?lang=zh&nodepath=software/SDK/ros/06_Robot_development/6.5_Robot_Application_Cases/6.5.1_human-robot-interaction/2_smart-retail.md)
 
 ## LeRobot机械臂 
 本案例详细介绍了在 K1 平台上部署和运行 LeRobot 框架的完整端到端流程，支持机械臂在真实场景下的智能控制与应用开发。内容涵盖数据采集、ACT模型训练和部署、SmolVLA 模型微调和分布式部署。
@@ -46,4 +45,4 @@ sidebar_position: 1
 - **语言支持**: 提供 Python 示例代码  
 - **提供功能**: 提供数据抓取、模型训练和分布式部署功能  
 
-[详细介绍](https://bianbu.spacemit.com/brdk/Robot_development/6.4_Robot_Application_Module/6.4.4_AI_Robotic_Arm/lerobot)
+[详细介绍](https://www.spacemit.com/community/document/info?lang=zh&nodepath=software/SDK/ros/06_Robot_development/6.4_Robot_Application_Module/6.4.4_AI_Robotic_Arm/1_lerobot.md)
