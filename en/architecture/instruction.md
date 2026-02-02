@@ -38,4 +38,3 @@ SpacemiT's extended instruction set, based on the IME standard, largely follows 
 For reference on standard vector instruction usage, see [the relevant documentation]().  
 
 For examples of IME instruction usage, refer to the [sample code repository](https://github.com/spacemit-com/riscv-ime-extension-spec/tree/master/example).
-

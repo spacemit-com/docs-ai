@@ -28,11 +28,11 @@ sidebar_position: 1
 
 本章旨在系统介绍AI应用软件栈，通过展示其集成流程，帮助开发者快速掌握应用部署落地的完整路径，显著降低开发门槛，提升创新效率，最终赋能多样化的端侧AI应用创新。
 
-- [Ollama](https://bianbu.spacemit.com/ai/ollama)
+- [Ollama](https://www.spacemit.com/community/document/info?lang=zh&nodepath=software/SDK/bianbu/ai/ollama.md)
 - [LocalAI](https://bianbu.spacemit.com/ai/localai)
-- [OpenwebUI](https://bianbu.spacemit.com/ai/openwebui)
-- [Node-RED](https://bianbu.spacemit.com/brdk/System_configuration/2.6_Docker_Usage/2.6.2_Node-RED_Usage)
-- [Demo Docker](https://bianbu.spacemit.com/brdk/System_configuration/2.6_Docker_Usage/2.6.4_DemoZoo_Usage)
+- [OpenwebUI](https://www.spacemit.com/community/document/info?lang=zh&nodepath=software/SDK/bianbu/ai/openwebui.md)
+- [Node-RED](https://www.spacemit.com/community/document/info?lang=zh&nodepath=software/SDK/ros/02_System_configuration/2.6_Docker_Usage/2.6.2_Node-RED_Usage.md)
+- [Demo Docker](https://www.spacemit.com/community/document/info?lang=zh&nodepath=software/SDK/ros/02_System_configuration/2.6_Docker_Usage/2.6.4_DemoZoo_Usage.md)
 
 ## 第三章 计算软件栈
 

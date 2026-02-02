@@ -12,7 +12,7 @@ This use case showcases an AI chatbot created by seamlessly connecting a voice m
 - **Language Support**: Python sample code provided  
 - **Key Features**: End-to-end voice input and voice output
 
-[Learn more](https://bianbu.spacemit.com/brdk/Robot_development/6.5_Robot_Application_Cases/6.5.3_large-language-model/ai-chat)
+[Learn more](https://www.spacemit.com/community/document/info?lang=en&nodepath=software/SDK/ros/06_Robot_development/6.5_Robot_Application_Cases/6.5.3_large-language-model/1_ai-chat.md)
 
 ## Intelligent AGV Following Robot
 
@@ -24,7 +24,7 @@ This use case demonstrates an AGV robot that combines multimodal interaction wit
 - **Language Support**: Python sample code provided  
 - **Key Features**: Voice control, YOLOv8-based object detection, LLM callback–driven intelligent following
 
-[Learn more](https://bianbu.spacemit.com/brdk/Robot_development/6.5_Robot_Application_Cases/6.5.1_human-robot-interaction/agv-follow)
+[Learn more](https://www.spacemit.com/community/document/info?lang=en&nodepath=software/SDK/ros/06_Robot_development/6.5_Robot_Application_Cases/6.5.1_human-robot-interaction/1_agv-follow.md)
 
 ## Smart Retail Robotic Arm
 
@@ -36,7 +36,7 @@ This use case introduces a smart retail solution powered by the K1 platform and 
 - **Language Support**: Python sample code provided  
 - **Key Features**: Voice control, LLM callbacks, YOLOv8 object detection, text recognition
 
-[Learn more](https://bianbu.spacemit.com/brdk/Robot_development/6.5_Robot_Application_Cases/6.5.1_human-robot-interaction/smart-retail)
+[Learn more](https://www.spacemit.com/community/document/info?lang=en&nodepath=software/SDK/ros/06_Robot_development/6.5_Robot_Application_Cases/6.5.1_human-robot-interaction/2_smart-retail.md)
 
 ## LeRobot Robotic Arm
 
@@ -48,4 +48,4 @@ This use case provides a complete end-to-end guide for deploying and running the
 - **Language Support**: Python sample code provided  
 - **Key Features**: Data collection, model training, and distributed deployment
 
-[Learn more](https://bianbu.spacemit.com/brdk/Robot_development/6.4_Robot_Application_Module/6.4.4_AI_Robotic_Arm/lerobot)
+[Learn more](https://www.spacemit.com/community/document/info?lang=en&nodepath=software/SDK/ros/06_Robot_development/6.4_Robot_Application_Module/6.4.4_AI_Robotic_Arm/1_lerobot.md)

@@ -28,11 +28,11 @@ This section provides a comprehensive overview of SpacemiT’s full-stack AI sol
 
 This section introduces SpacemiT’s AI application software stack, designed to streamline deployment and simplify development. By illustrating the integration workflow, we aim to lower the barrier to entry for developers and accelerate innovation across a wide range of edge AI applications.
 
-- [Ollama](https://bianbu.spacemit.com/ai/ollama)
-- [LocalAI](https://bianbu.spacemit.com/ai/localai)
-- [OpenwebUI](https://bianbu.spacemit.com/ai/openwebui)
-- [Node-RED](https://bianbu.spacemit.com/brdk/System_configuration/2.6_Docker_Usage/2.6.2_Node-RED_Usage)
-- [Demo Docker](https://bianbu.spacemit.com/brdk/System_configuration/2.6_Docker_Usage/2.6.4_DemoZoo_Usage)
+- [Ollama](https://www.spacemit.com/community/document/info?lang=en&nodepath=software/SDK/bianbu/ai/ollama.md)
+- [LocalAI](https://www.spacemit.com/community/document/info?lang=en&nodepath=software/SDK/bianbu/ai/localai.md)
+- [OpenwebUI](https://www.spacemit.com/community/document/info?lang=en&nodepath=software/SDK/bianbu/ai/openwebui.md)
+- [Node-RED](https://www.spacemit.com/community/document/info?lang=en&nodepath=software/SDK/ros/02_System_configuration/2.6_Docker_Usage/2.6.2_Node-RED_Usage.md)
+- [Demo Docker](https://www.spacemit.com/community/document/info?lang=en&nodepath=software/SDK/ros/02_System_configuration/2.6_Docker_Usage/2.6.4_DemoZoo_Usage.md)
 
 ## 3. Compute Software Stack
 
