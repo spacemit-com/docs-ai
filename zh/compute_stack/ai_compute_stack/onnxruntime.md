@@ -6,26 +6,28 @@ sidebar_position: 1
 
  ---
 
-- [QuickStart](#quickstart)
-    - [资源获取](#资源获取)
-    - [ONNXRuntime模型推理](#onnxruntime模型推理)
-    - [SpacemiT-ExecutionProvider后端](#spacemit-executionprovider后端)
-    - [快速验证模型性能](#快速验证模型性能)
-- [ProviderOption说明](#provideroption说明)
-    - [`SPACEMIT_EP_INTRA_THREAD_NUM`](#spacemit_ep_intra_thread_num)
-    - [`SPACEMIT_EP_USE_GLOBAL_INTRA_THREAD`](#spacemit_ep_use_global_intra_thread)
-    - [`SPACEMIT_EP_DUMP_SUBGRAPHS`](#spacemit_ep_dump_subgraphs)
-    - [`SPACEMIT_EP_DEBUG_PROFILE`](#spacemit_ep_debug_profile)
-    - [`SPACEMIT_EP_DUMP_TENSORS`](#spacemit_ep_dump_tensors)
-    - [`SPACEMIT_EP_DISABLE_OP_TYPE_FILTER`](#spacemit_ep_disable_op_type_filter)
-    - [`SPACEMIT_EP_DISABLE_OP_NAME_FILTER`](#spacemit_ep_disable_op_name_filter)
-    - [`SPACEMIT_EP_DISABLE_FLOAT16_EPILOGUE`](#spacemit_ep_disable_float16_epilogue)
-- [Demo说明](#demo说明)
-  - [onnxruntime\_perf\_test](#onnxruntime_perf_test)
-  - [onnx\_test\_runner](#onnx_test_runner)
-- [EP算子说明](#ep算子说明)
-- [模型性能数据](#模型性能数据)
-- [FAQ](#faq)
+- [SpacemiT-ONNXRuntime](#spacemit-onnxruntime)
+  - [QuickStart](#quickstart)
+      - [资源获取](#资源获取)
+      - [ONNXRuntime模型推理](#onnxruntime模型推理)
+      - [SpacemiT-ExecutionProvider后端](#spacemit-executionprovider后端)
+      - [快速验证模型性能](#快速验证模型性能)
+  - [ProviderOption说明](#provideroption说明)
+      - [`SPACEMIT_EP_INTRA_THREAD_NUM`](#spacemit_ep_intra_thread_num)
+      - [`SPACEMIT_EP_USE_GLOBAL_INTRA_THREAD`](#spacemit_ep_use_global_intra_thread)
+      - [`SPACEMIT_EP_DUMP_SUBGRAPHS`](#spacemit_ep_dump_subgraphs)
+      - [`SPACEMIT_EP_DEBUG_PROFILE`](#spacemit_ep_debug_profile)
+      - [`SPACEMIT_EP_DUMP_TENSORS`](#spacemit_ep_dump_tensors)
+      - [`SPACEMIT_EP_DISABLE_OP_TYPE_FILTER`](#spacemit_ep_disable_op_type_filter)
+      - [`SPACEMIT_EP_DISABLE_OP_NAME_FILTER`](#spacemit_ep_disable_op_name_filter)
+      - [`SPACEMIT_EP_DISABLE_FLOAT16_EPILOGUE`](#spacemit_ep_disable_float16_epilogue)
+      - [`SPACEMIT_EP_DENSE_ACCURACY_LEVEL`](#spacemit_ep_dense_accuracy_level)
+  - [Demo说明](#demo说明)
+    - [onnxruntime\_perf\_test](#onnxruntime_perf_test)
+    - [onnx\_test\_runner](#onnx_test_runner)
+  - [EP算子说明](#ep算子说明)
+  - [模型性能数据](#模型性能数据)
+  - [FAQ](#faq)
 
 ## QuickStart
 
@@ -172,6 +174,17 @@ std::unordered_map<std::string, std::string> provider_options;
 provider_options["SPACEMIT_EP_DISABLE_FLOAT16_EPILOGUE"] = "1";
 ~~~
 
+#### `SPACEMIT_EP_DENSE_ACCURACY_LEVEL`
+>+ 指定动态量化模型中Online MatMul的精度等级
+>+ 0：动态量化
+>+ 1：FP16
+>+ 2+：FP32
+>+ &#x2139;&#xfe0f;支持通过环境变量设置
+~~~ C++
+std::unordered_map<std::string, std::string> provider_options;
+provider_options["SPACEMIT_EP_DENSE_ACCURACY_LEVEL"] = "1";
+~~~
+
 ## Demo说明
 
 ### onnxruntime_perf_test
@@ -238,3 +251,4 @@ mobilenetv2
 
 ## [FAQ](./onnxruntime_ep_faq.md)
 > 可在[进迭时空开发者社区](https://forum.spacemit.com/)提出问题，我们将尽快给出答复
+> 可在[SpacemiT-ONNXRuntime开源页面](https://github.com/spacemit-com/onnxruntime)提出Issues
