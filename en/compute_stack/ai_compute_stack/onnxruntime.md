@@ -1,8 +1,33 @@
 sidebar_position: 1
 
 # SpacemiT-ONNXRuntime
-
+  
 **SpacemiT-ONNXRuntime** integrates the base inference library of [ONNXRuntime](https://github.com/microsoft/onnxruntime) with the SpacemiT ExecutionProvider acceleration backend. The overall architecture remains decoupled, so its usage is almost identical to the community version of ONNXRuntime.
+
+---
+
+- [SpacemiT-ONNXRuntime](#spacemit-onnxruntime)
+  - [QuickStart](#quickstart)
+    - [Getting Resources](#getting-resources)
+    - [ONNXRuntime Model Inference](#onnxruntime-model-inference)
+      - [SpacemiT-ExecutionProvider Backend](#spacemit-executionprovider-backend)
+      - [Quick Performance Validation](#quick-performance-validation)
+  - [Provider Option Reference](#provider-option-reference)
+    - [`SPACEMIT_EP_INTRA_THREAD_NUM`](#spacemit_ep_intra_thread_num)
+    - [`SPACEMIT_EP_USE_GLOBAL_INTRA_THREAD`](#spacemit_ep_use_global_intra_thread)
+    - [`SPACEMIT_EP_DUMP_SUBGRAPHS`](#spacemit_ep_dump_subgraphs)
+    - [`SPACEMIT_EP_DEBUG_PROFILE`](#spacemit_ep_debug_profile)
+    - [`SPACEMIT_EP_DUMP_TENSORS`](#spacemit_ep_dump_tensors)
+    - [`SPACEMIT_EP_DISABLE_OP_TYPE_FILTER`](#spacemit_ep_disable_op_type_filter)
+    - [`SPACEMIT_EP_DISABLE_OP_NAME_FILTER`](#spacemit_ep_disable_op_name_filter)
+      - [`SPACEMIT_EP_DISABLE_FLOAT16_EPILOGUE`](#spacemit_ep_disable_float16_epilogue)
+      - [`SPACEMIT_EP_DENSE_ACCURACY_LEVEL`](#spacemit_ep_dense_accuracy_level)
+  - [Demo Guide](#demo-guide)
+    - [`onnxruntime_perf_test`](#onnxruntime_perf_test)
+    - [`onnx_test_runner`](#onnx_test_runner)
+  - [EP Operator Support](#ep-operator-support)
+  - [Model Performance Data](#model-performance-data)
+  - [FAQ](#faq)
 
 ## QuickStart
 
@@ -78,7 +103,7 @@ outputs = session.run(None, {"data": input_tensor})
 
 Refer to [spacemit-demo](https://github.com/spacemit-com/spacemit-demo)
 
-## ProviderOption Reference
+## Provider Option Reference
 
 ### `SPACEMIT_EP_INTRA_THREAD_NUM`
 
@@ -177,6 +202,19 @@ std::unordered_map<std::string, std::string> provider_options;
 provider_options["SPACEMIT_EP_DISABLE_FLOAT16_EPILOGUE"] = "1";
 ```
 
+#### `SPACEMIT_EP_DENSE_ACCURACY_LEVEL`
+
+- Specifies the precision level of **Online MatMul** in dynamic quantization models
+- 0: Dynamic Quantization
+- 1: FP16
+- 2+: FP32
+- ℹ️ Can be configured via environment variable
+
+```c++
+std::unordered_map<std::string, std::string> provider_options;
+provider_options["SPACEMIT_EP_DENSE_ACCURACY_LEVEL"] = "1";
+```
+
 ## Demo Guide
 
 ### `onnxruntime_perf_test`
@@ -253,6 +291,6 @@ mobilenetv2
 - Performance results obtained using ONNXRuntime + SpaceMITExecutionProvider with `onnxruntime_perf_test`.
 
 ## [FAQ](./onnxruntime_ep_faq.md)
- 
-Questions can be raised in the [SpacemiT Developer Community](https://forum.spacemit.com/), and we will respond as soon as possible.
 
+Questions can be raised in the [SpacemiT Developer Community](https://forum.spacemit.com/), and we will respond as soon as possible.
+Issues can be submitted on the [SpacemiT ONNX Runtime repository on GitHub](https://github.com/spacemit-com/onnxruntime)提出Issues
