@@ -10,7 +10,7 @@ sidebar_position: 2
 - **语言支持**:
 - **提供功能**:
 
-[详细介绍](zenow.md)
+了解更多：[知了（zenow）](zenow.md)
 
 ## 与会（yumeet）
 项目介绍
@@ -20,7 +20,7 @@ sidebar_position: 2
 - **语言支持**:
 - **提供功能**:
 
-[详细介绍](yumeet.md)
+了解更多：[与会（yumeet）](yumeet.md)
 
 ## 多模态视觉分析（灵狐）
 项目介绍
@@ -30,4 +30,4 @@ sidebar_position: 2
 - **语言支持**:
 - **提供功能**:
 
-[详细介绍](vlm.md)
+了解更多：[多模态视觉分析（灵狐）](vlm.md)
