@@ -2,4 +2,5 @@ sidebar_position: 2
 
 # 解决方案
 
-[解决方案汇总](solution_list.md)
+[AI Robot解决方案汇总](airobot_solution_list.md)
+[AI Computer解决方案汇总](aicomputer_solution_list.md)
