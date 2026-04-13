@@ -20,7 +20,7 @@ C+ = A x B
 
 ## 4.2.2 进迭时空指令集
 
-进迭时空自定义的matirx扩展指令集，是IME的，[详情可见](https://github.com/spacemit-com/riscv-ime-extension-spec)。可以看到，K1（vlen=256）中的matrix计算单元形状是：
+进迭时空自定义的matirx扩展指令集，是IME的，[详情可见](./ime_extension.md)。可以看到，K1（vlen=256）中的matrix计算单元形状是：
 
 4 x 8 x 4
 
