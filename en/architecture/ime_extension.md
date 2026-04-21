@@ -1,3 +1,5 @@
+sidebar_position: 3
+
 # SpacemiT AI Matrix Extension Instruction Set (`Zvvm_spacemit` Profile)
 
 Version: 0.6
