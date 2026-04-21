@@ -4,3 +4,4 @@ sidebar_position: 5
 
 - [Design Philosophy](concept.md)
 - [Matrix Extension Instruction Set](instruction.md)
+- [SpacemiT AI Matrix Extension Instruction Set (`Zvvm_spacemit` Profile)](ime_extension.md)

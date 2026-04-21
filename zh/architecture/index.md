@@ -4,3 +4,4 @@ sidebar_position: 5
 
 - [设计理念](concept.md)
 - [Matrix 扩展指令集](instruction.md)
+- [SpacemiT AI 矩阵扩展指令集（`Zvvm_spacemit` Profile）](ime_extension.md)
