@@ -222,7 +222,7 @@ $$
 - `Vs1`：源矩阵 `A`；
 - `Vs2`：源矩阵 `B` 的硬件友好布局；
 - `V0` / `V1`：仅在部分专有路径中作为稀疏指令的恢复掩码或 scale 参数寄存器使用；
-- `UCPM`：控制 16 位浮点数具体格式为 FP16 / BF16 的实现专有控制位。
+- `MCPM`：控制 16 位浮点数具体格式为 FP16 / BF16 的实现专有控制位。
 
 ## 2.3 共同寄存器约束
 
@@ -245,7 +245,7 @@ $$
 
 - 滑窗类指令要求 `Vs1` 为偶数编号寄存器；
 - 稀疏类与含 scale 类指令额外使用 `V0` / `V1`；
-- 浮点类与含 scale 类指令的浮点格式受 `UCPM.BF16` 控制。
+- 浮点类与含 scale 类指令的浮点格式受 `MCPM.BF16` 控制。
 
 ## 2.4 `MUL_C` 与目标寄存器组
 
@@ -288,14 +288,14 @@ $$
 
 ## 2.6 全局控制与专用辅助操作数
 
-### 2.6.1 `UCPM.BF16`
+### 2.6.1 `MCPM.BF16`
 
-`UCPM.BF16` 为实现专有控制位，用于决定相关路径的浮点格式解释：
+`MCPM.BF16` 为实现专有控制位，用于决定相关路径的浮点格式解释：
 
 |控制位|含义|
 |---|---|
-|`UCPM.BF16 = 0`|按 FP16 解释相关浮点输入 / scale / 累加结果|
-|`UCPM.BF16 = 1`|按 BF16 解释相关浮点输入 / scale / 累加结果|
+|`MCPM.BF16 = 0`|按 FP16 解释相关浮点输入 / scale / 累加结果|
+|`MCPM.BF16 = 1`|按 BF16 解释相关浮点输入 / scale / 累加结果|
 
 作用范围：
 
@@ -373,7 +373,7 @@ $$
 |---|---|---|---|
 |Zvvm|CSR|vtype.lambda|未在vtype中实现，概念上兼容|
 |Zvvm|CSR|vtype.altfmt_A<br>vtype.altfmt_B|未在vtype中实现，相应功能被放在指令编码中|
-|Zvvm|CSR|vtype.altfmt|未在vtype中实现，A100使用UCPM|
+|Zvvm|CSR|vtype.altfmt|未在vtype中实现，A100使用MCPM|
 |Zvvm|data layout|A 和 C 行主序，B 列主序|A 和 C 行主序，B 列主序|
 |Zvvm|指令|vmmacc|未支持|
 |Zvvm|指令|vwmmacc|未支持|
@@ -405,9 +405,9 @@ $$
 |`Xsmti*i32mm`：整数矩阵乘法指令|8|`vmadot*`|Int4 / Int8|Int32|无|
 |`Xsmti*i32mm_slide`：面向卷积场景的整数滑窗矩阵乘法|12|`vmadot1*`, `vmadot2*`, `vmadot3*`|Int8|Int32|`Vs1` 偶数|
 |`Xsmti*i32mm_42sp`：4:2 结构化稀疏整数矩阵乘法|8|`vmadot.sp*`|Int4 / Int8|Int32|`V0` / `V1`, `imm2`|
-|`Xsmti**16mm_scl16f`：面向分块量化的整数矩阵乘法指令|8|`vmadot.hp*`|Int4 / Int8 + scale|FP16 / BF16|`V0` / `V1`, `imm3`, `UCPM.BF16`|
-|`Xsmt*16fp32mm`：浮点矩阵乘法指令|1|`vfwmadot`|FP16 / BF16|FP32|`UCPM.BF16`|
-|`Xsmt*16fp32mm_slide`：面向卷积场景的浮点滑窗矩阵乘法|3|`vfwmadot1/2/3`|FP16 / BF16|FP32|`UCPM.BF16`|
+|`Xsmti**16mm_scl16f`：面向分块量化的整数矩阵乘法指令|8|`vmadot.hp*`|Int4 / Int8 + scale|FP16 / BF16|`V0` / `V1`, `imm3`, `MCPM.BF16`|
+|`Xsmt*16fp32mm`：浮点矩阵乘法指令|1|`vfwmadot`|FP16 / BF16|FP32|`MCPM.BF16`|
+|`Xsmt*16fp32mm_slide`：面向卷积场景的浮点滑窗矩阵乘法|3|`vfwmadot1/2/3`|FP16 / BF16|FP32|`MCPM.BF16`|
 |数据布局变换指令|6|`vpack.vv`, `vupack.vv`, `vnpack.vv`, `vnpack4.vv`|多种|多种|`imm2`, `SEW`, `LMUL`|
 
 ## 4.2 符号解释（`signedness`）变体约定
@@ -1106,10 +1106,10 @@ for (p = 0; p < (VLEN / 16); p++) {
 
 - scale 参数来自 `V0` 或 `V1`；
 - `imm3` 选择 8 组 scale 参数之一；
-- 当 `UCPM.BF16 = 0` 时，scale 与目标按 FP16 解释；
-- 当 `UCPM.BF16 = 1` 时，scale 与目标按 BF16 解释。
+- 当 `MCPM.BF16 = 0` 时，scale 与目标按 FP16 解释；
+- 当 `MCPM.BF16 = 1` 时，scale 与目标按 BF16 解释。
 
-其中，上述伪代码中的 `fp16_or_bf16` 表示“由 `UCPM.BF16` 决定的 16 位浮点格式”。
+其中，上述伪代码中的 `fp16_or_bf16` 表示“由 `MCPM.BF16` 决定的 16 位浮点格式”。
 
 ### 5.4.5 非法条件
 
@@ -1254,11 +1254,11 @@ $$
 
 |指令|汇编格式|数据类型路径|tile|控制|
 |---|---|---|---|---|
-|`vfwmadot`|`vfwmadot vd, vs1, vs2`|`FP16 × FP16 → FP32`<br>`BF16 × BF16 → FP32`|`8 × 8 × 8`|`UCPM.BF16`|
+|`vfwmadot`|`vfwmadot vd, vs1, vs2`|`FP16 × FP16 → FP32`<br>`BF16 × BF16 → FP32`|`8 × 8 × 8`|`MCPM.BF16`|
 
 ### 6.1.3 输入格式解释
 
-|`UCPM.BF16`|输入 `A`|输入 `B`|目标 / 累加|
+|`MCPM.BF16`|输入 `A`|输入 `B`|目标 / 累加|
 |---|---|---|---|
 |0|FP16|FP16|FP32|
 |1|BF16|BF16|FP32|
@@ -1288,7 +1288,7 @@ for (p = 0; p < (2 * VLEN / 32); p++) {
 - `LMUL != 1`；
 - `Vd` 非偶数；
 - `Vd/Vd+1` 与 `Vs1` / `Vs2` 重叠；
-- 浮点输入格式与 `UCPM.BF16` 控制不一致。
+- 浮点输入格式与 `MCPM.BF16` 控制不一致。
 
 ### 6.1.6 算术说明
 
@@ -1406,9 +1406,9 @@ int main()
 
 |指令|汇编格式|slide|数据类型路径|tile|控制|
 |---|---|---|---|---|---|
-|`vfwmadot1`|`vfwmadot1 vd, vs1, vs2`|1|`FP16 × FP16 → FP32`<br>`BF16 × BF16 → FP32`|`8 × 8 × 8`|`UCPM.BF16`|
-|`vfwmadot2`|`vfwmadot2 vd, vs1, vs2`|2|`FP16 × FP16 → FP32`<br>`BF16 × BF16 → FP32`|`8 × 8 × 8`|`UCPM.BF16`|
-|`vfwmadot3`|`vfwmadot3 vd, vs1, vs2`|3|`FP16 × FP16 → FP32`<br>`BF16 × BF16 → FP32`|`8 × 8 × 8`|`UCPM.BF16`|
+|`vfwmadot1`|`vfwmadot1 vd, vs1, vs2`|1|`FP16 × FP16 → FP32`<br>`BF16 × BF16 → FP32`|`8 × 8 × 8`|`MCPM.BF16`|
+|`vfwmadot2`|`vfwmadot2 vd, vs1, vs2`|2|`FP16 × FP16 → FP32`<br>`BF16 × BF16 → FP32`|`8 × 8 × 8`|`MCPM.BF16`|
+|`vfwmadot3`|`vfwmadot3 vd, vs1, vs2`|3|`FP16 × FP16 → FP32`<br>`BF16 × BF16 → FP32`|`8 × 8 × 8`|`MCPM.BF16`|
 
 ### 6.2.3 程序可见语义
 
@@ -1434,7 +1434,7 @@ for (p = 0; p < (2 * VLEN * LMUL / 32); p++) {
 - `LMUL != 1`；
 - `Vd` 非偶数；
 - `Vd/Vd+1` 与 `Vs1` / `Vs2` 重叠；
-- 输入格式与 `UCPM.BF16` 控制不一致。
+- 输入格式与 `MCPM.BF16` 控制不一致。
 
 ### 6.2.5 算术说明
 
@@ -1998,8 +1998,8 @@ for (p = 0; p < (VLEN * LMUL / pack_len); p++) {
 `imm2` 对应的有效掩码分段如下：
 
 - Int4：
-    - `00` / `01`：`[511:0]`
-    - `10` / `11`：`[1023:512]`
+    - `00` ：`[511:0]`
+    - `01` ：`[1023:512]`
 - Int8：
     - `00`：`[255:0]`
     - `01`：`[511:256]`
@@ -2074,7 +2074,7 @@ for (p = 0; p < (VLEN * LMUL / pack_len); p++) {
 - `vfwmadot`：`Vs1`、`Vs2` 可为任意编号 `0`～`31` 的向量寄存器，`Vd` 为任意编号 `0`～`30` 且为偶数编号的向量寄存器；
 - `vfwmadot1/2/3`：`Vs1`、`Vs2` 可为任意编号 `0`～`31` 的向量寄存器，`Vd` 为任意编号 `0`～`30` 且为偶数编号的向量寄存器；
 - `vfwmadot1/2/3` 通过 `funct3[14:12]` 直接区分：`101`→`vfwmadot1`，`110`→`vfwmadot2`，`111`→`vfwmadot3`；
-- `vfwmadot` 与 `vfwmadot1/2/3` 的 FP16 / BF16 格式由 `UCPM.BF16` 控制；
+- `vfwmadot` 与 `vfwmadot1/2/3` 的 FP16 / BF16 格式由 `MCPM.BF16` 控制；
 - 本指令集不定义同一条浮点矩阵指令中的混合 FP16 / BF16 输入编码。
 
 ### 8.5.1 `vfwmadot`

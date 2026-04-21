@@ -322,7 +322,7 @@ Unless otherwise specified, instructions in this extension use the following ope
 - `vs1`: source matrix `A`
 - `vs2`: source matrix `B`, arranged in a hardware-friendly layout
 - `v0` / `v1`: used only in certain implementation-specific paths, serving as recovery masks for sparse instructions or as scale parameter registers
-- `UCPM`: an implementation-specific control field that selects the 16-bit floating-point format (FP16 or BF16)
+- `MCPM`: an implementation-specific control field that selects the 16-bit floating-point format (FP16 or BF16)
 
 ## 2.3 Common Register Constraints
 
@@ -347,7 +347,7 @@ Except for the data layout transformation instructions described in Chapter 7, m
 
 - Sliding-window instructions require `vs1` to be an even-numbered register
 - Sparse and scale-enabled instructions additionally use `v0` / `v1`
-- For floating-point and scale-enabled instructions, the floating-point format is controlled by `UCPM.BF16`
+- For floating-point and scale-enabled instructions, the floating-point format is controlled by `MCPM.BF16`
 
 ## 2.4 `MUL_C` and the Destination Register Group
 
@@ -395,14 +395,14 @@ The tile shapes for the primary sub-extensions are as follows:
 
 ## 2.6 Global Controls and Auxiliary Operands
 
-### 2.6.1 `UCPM.BF16`
+### 2.6.1 `MCPM.BF16`
 
-`UCPM.BF16` is an implementation-specific control bit that determines the floating-point format used along relevant execution paths:
+`MCPM.BF16` is an implementation-specific control bit that determines the floating-point format used along relevant execution paths:
 
 | Control         | Description                                                                    |
 | --------------- | ------------------------------------------------------------------------------ |
-| `UCPM.BF16 = 0` | Interpret floating-point inputs, scale values, and accumulator results as FP16 |
-| `UCPM.BF16 = 1` | Interpret floating-point inputs, scale values, and accumulator results as BF16 |
+| `MCPM.BF16 = 0` | Interpret floating-point inputs, scale values, and accumulator results as FP16 |
+| `MCPM.BF16 = 1` | Interpret floating-point inputs, scale values, and accumulator results as BF16 |
 
 **Scope of application:**
 
@@ -488,7 +488,7 @@ The table below summarizes the key differences between the community extensions 
 | ------------------- | ---------- | -------------- | ------- |
 | `Zvvm`              | CSR                               | `vtype.lambda`                     | Not implemented in `vtype`; conceptually compatible                 |
 | `Zvvm`              | CSR                               | `vtype.altfmt_A`, `vtype.altfmt_B` | Not implemented in `vtype`; functionality encoded in instructions   |
-| `Zvvm`              | CSR                               | `vtype.altfmt`                     | Not implemented in `vtype`; A100 uses `UCPM`                        |
+| `Zvvm`              | CSR                               | `vtype.altfmt`                     | Not implemented in `vtype`; A100 uses `MCPM`                        |
 | `Zvvm`              | Data layout                       | A and C row-major, B column-major  | Same                                                                |
 | `Zvvm`              | Instruction                       | `vmmacc`                           | Not supported                                                       |
 | `Zvvm`              | Instruction                       | `vwmmacc`                          | Not supported                                                       |
@@ -519,9 +519,9 @@ The table below summarizes the key differences between the community extensions 
 | `Xsmti*i32mm` <br>(integer matrix multiplication)                                               | 8                 | `vmadot*`                                          | Int4 / Int8         | Int32                | None                             |
 | `Xsmti*i32mm_slide` <br>(integer sliding-window matrix multiplication for convolution)          | 12                | `vmadot1*`, `vmadot2*`, `vmadot3*`                 | Int8                | Int32                | `vs1` must be even-numbered      |
 | `Xsmti*i32mm_42sp` <br>(4:2 structured sparse integer matrix multiplication)                    | 8                 | `vmadot.sp*`                                       | Int4 / Int8         | Int32                | `v0` / `v1`, `imm2`              |
-| `Xsmti**16mm_scl16f` <br>(integer matrix multiplication with block scaling)                     | 8                 | `vmadot.hp*`                                       | Int4 / Int8 + scale | FP16 / BF16          | `v0` / `v1`, `imm3`, `UCPM.BF16` |
-| `Xsmt*16fp32mm` <br>(floating-point matrix multiplication)                                      | 1                 | `vfwmadot`                                         | FP16 / BF16         | FP32                 | `UCPM.BF16`                      |
-| `Xsmt*16fp32mm_slide` <br>(floating-point sliding-window matrix multiplication for convolution) | 3                 | `vfwmadot1/2/3`                                    | FP16 / BF16         | FP32                 | `UCPM.BF16`                      |
+| `Xsmti**16mm_scl16f` <br>(integer matrix multiplication with block scaling)                     | 8                 | `vmadot.hp*`                                       | Int4 / Int8 + scale | FP16 / BF16          | `v0` / `v1`, `imm3`, `MCPM.BF16` |
+| `Xsmt*16fp32mm` <br>(floating-point matrix multiplication)                                      | 1                 | `vfwmadot`                                         | FP16 / BF16         | FP32                 | `MCPM.BF16`                      |
+| `Xsmt*16fp32mm_slide` <br>(floating-point sliding-window matrix multiplication for convolution) | 3                 | `vfwmadot1/2/3`                                    | FP16 / BF16         | FP32                 | `MCPM.BF16`                      |
 | Data layout transformation instructions                                                     | 6                 | `vpack.vv`, `vupack.vv`, `vnpack.vv`, `vnpack4.vv` | Various             | Various              | `imm2`, `SEW`, `LMUL`            |
 
 ## 4.2 `signedness` Variant Conventions
@@ -1241,10 +1241,10 @@ for (p = 0; p < (VLEN / 16); p++) {
 
 - The scale parameters are sourced from `V0` or `V1`;
 - `imm3` selects one of eight scale groups;
-- When `UCPM.BF16 = 0`, both the scale and destination are interpreted as FP16;
-- When `UCPM.BF16 = 1`, both the scale and destination are interpreted as BF16.
+- When `MCPM.BF16 = 0`, both the scale and destination are interpreted as FP16;
+- When `MCPM.BF16 = 1`, both the scale and destination are interpreted as BF16.
 
-In the pseudocode above, `fp16_or_bf16` denotes a 16-bit floating-point format determined by `UCPM.BF16`.
+In the pseudocode above, `fp16_or_bf16` denotes a 16-bit floating-point format determined by `MCPM.BF16`.
 
 ### 5.4.5 Illegal Conditions
 
@@ -1390,11 +1390,11 @@ $$
 
 | Instruction | Assembly Format | Data Type Path | Tile | Control|
 |---|---|---|---|---|
-|`vfwmadot`|`vfwmadot vd, vs1, vs2`|`FP16 × FP16 → FP32`<br>`BF16 × BF16 → FP32`|`8 × 8 × 8`|`UCPM.BF16`|
+|`vfwmadot`|`vfwmadot vd, vs1, vs2`|`FP16 × FP16 → FP32`<br>`BF16 × BF16 → FP32`|`8 × 8 × 8`|`MCPM.BF16`|
 
 ### 6.1.3 Input Format Interpretation
 
-| `UCPM.BF16` | Input `A` | Input `B` | Destination / Accumulation |
+| `MCPM.BF16` | Input `A` | Input `B` | Destination / Accumulation |
 |---|---|---|---|
 |0|FP16|FP16|FP32|
 |1|BF16|BF16|FP32|
@@ -1424,7 +1424,7 @@ for (p = 0; p < (2 * VLEN / 32); p++) {
 - `LMUL != 1`;
 - `Vd` is not an even-numbered register;
 - `Vd/Vd+1` overlaps with `Vs1` or `Vs2`;
-- The floating-point input format does not match the `UCPM.BF16` setting;
+- The floating-point input format does not match the `MCPM.BF16` setting;
 
 ### 6.1.6 Arithmetic Notes
 
@@ -1542,9 +1542,9 @@ int main()
 
 | Instruction | Assembly Format | slide | Data Path | tile  | Control |
 |---|---|---|---|---|---|
-|`vfwmadot1`|`vfwmadot1 vd, vs1, vs2`|1|`FP16 × FP16 → FP32`<br>`BF16 × BF16 → FP32`|`8 × 8 × 8`|`UCPM.BF16`|
-|`vfwmadot2`|`vfwmadot2 vd, vs1, vs2`|2|`FP16 × FP16 → FP32`<br>`BF16 × BF16 → FP32`|`8 × 8 × 8`|`UCPM.BF16`|
-|`vfwmadot3`|`vfwmadot3 vd, vs1, vs2`|3|`FP16 × FP16 → FP32`<br>`BF16 × BF16 → FP32`|`8 × 8 × 8`|`UCPM.BF16`|
+|`vfwmadot1`|`vfwmadot1 vd, vs1, vs2`|1|`FP16 × FP16 → FP32`<br>`BF16 × BF16 → FP32`|`8 × 8 × 8`|`MCPM.BF16`|
+|`vfwmadot2`|`vfwmadot2 vd, vs1, vs2`|2|`FP16 × FP16 → FP32`<br>`BF16 × BF16 → FP32`|`8 × 8 × 8`|`MCPM.BF16`|
+|`vfwmadot3`|`vfwmadot3 vd, vs1, vs2`|3|`FP16 × FP16 → FP32`<br>`BF16 × BF16 → FP32`|`8 × 8 × 8`|`MCPM.BF16`|
 
 ### 6.2.3 Program-Visible Semantics
 
@@ -1570,7 +1570,7 @@ for (p = 0; p < (2 * VLEN * LMUL / 32); p++) {
 - `LMUL != 1`;
 - `Vd` is not an even-numbered register;
 - `Vd/Vd+1` overlaps with `Vs1` or `Vs2`;
-- Input format is inconsistent with `UCPM.BF16`.
+- Input format is inconsistent with `MCPM.BF16`.
 
 ### 6.2.5 Arithmetic Notes
 
@@ -2140,8 +2140,8 @@ Register Constraints
 Mask Segment Mapping (`imm2`)
 
 - Int4:
-  - `00` / `01`: `[511:0]`
-  - `10` / `11`: `[1023:512]`
+  - `00` : `[511:0]`
+  - `10` : `[1023:512]`
 - Int8:
   - `00`: `[255:0]`
   - `01`: `[511:256]`
@@ -2219,7 +2219,7 @@ Where,
   - `101` → `vfwmadot1`
   - `110` → `vfwmadot2`
   - `111` → `vfwmadot3`
-- The FP16 / BF16 format selection for both `vfwmadot` and `vfwmadot1/2/3` is controlled by `UCPM.BF16`.
+- The FP16 / BF16 format selection for both `vfwmadot` and `vfwmadot1/2/3` is controlled by `MCPM.BF16`.
 - Mixed FP16/BF16 encoding within a single floating-point matrix instruction is not defined.
 
 ### 8.5.1 `vfwmadot`
