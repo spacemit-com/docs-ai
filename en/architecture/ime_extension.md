@@ -428,7 +428,7 @@ In this instruction set, `v0` / `v1` are not used as general-purpose matrix mask
 **Additional Notes**
 
 - For `vmadot.sp*`, the `imm2` field is split across instruction bits `[15]` and `[7]`.
-  These bits are available for encoding because `vs1` and `vd` are constrained to even-numbered registers, meaning their least significant bit (`bit 0`) is always zero. As a result, only bits `[4:1]` need to be explicitly encoded for register indices, freeing encoding space for `imm2`.
+  These bits are available for encoding because `vs1` and `vd` are constrained to even-numbered registers, meaning their least significant bit (LSB, `bit 0`) is always zero. As a result, only bits `[4:1]` need to be explicitly encoded for register indices, freeing encoding space for `imm2`.
 
 - For `vmadot.hp*`, the `imm3` field occupies a dedicated instruction field `[14:12]` and does not rely on encoding space derived from register constraints.
 
@@ -521,7 +521,7 @@ The table below summarizes the key differences between the community extensions 
 | `Xsmti*i32mm_42sp` <br>(4:2 structured sparse integer matrix multiplication)                    | 8                 | `vmadot.sp*`                                       | Int4 / Int8         | Int32                | `v0` / `v1`, `imm2`              |
 | `Xsmti**16mm_scl16f` <br>(integer matrix multiplication with block scaling)                     | 8                 | `vmadot.hp*`                                       | Int4 / Int8 + scale | FP16 / BF16          | `v0` / `v1`, `imm3`, `MCPM.BF16` |
 | `Xsmt*16fp32mm` <br>(floating-point matrix multiplication)                                      | 1                 | `vfwmadot`                                         | FP16 / BF16         | FP32                 | `MCPM.BF16`                      |
-| `Xsmt*16fp32mm_slide` <br>(floating-point sliding-window matrix multiplication for convolution) | 3                 | `vfwmadot1/2/3`                                    | FP16 / BF16         | FP32                 | `MCPM.BF16`                      |
+| `Xsmt*16fp32mm_slide` <br>(floating-point sliding-window matrix multiplication for convolution) | 3                 | `vfwmadot1/2/3`                                    | FP16 / BF16         | FP32                 | `vs1` must be even-numbered;<br>`MCPM.BF16`                      |
 | Data layout transformation instructions                                                     | 6                 | `vpack.vv`, `vupack.vv`, `vnpack.vv`, `vnpack4.vv` | Various             | Various              | `imm2`, `SEW`, `LMUL`            |
 
 ## 4.2 `signedness` Variant Conventions
@@ -1781,7 +1781,7 @@ To describe narrowing operations, the following auxiliary functions are defined.
 
 ### `CLIP(x)`
 
-`CLIP(x)` denotes **truncation** to the target element width, retaining only the least significant bits:
+`CLIP(x)` denotes **truncation** to the target element width, retaining only the LSB:
 
 ```c
 CLIP_EEW(x) = x & ((1 << EEW) - 1)
@@ -2067,15 +2067,16 @@ Formal Encoding
 
 |Mnemonic|`[31]`|`[30:29]`|`[28:26]`|`[25]`|`[24:20]`|`[19:15]`|`[14:12]`|`[11:7]`|`[6:0]`|
 |---|---|---|---|---|---|---|---|---|---|
-|`vmadotu`|`1`|`DT`|`000`|`1`|`vs2`|`vs1`|`000`|`vd`|`0101011`|
-|`vmadotus`|`1`|`DT`|`000`|`1`|`vs2`|`vs1`|`001`|`vd`|`0101011`|
-|`vmadotsu`|`1`|`DT`|`000`|`1`|`vs2`|`vs1`|`010`|`vd`|`0101011`|
-|`vmadot`|`1`|`DT`|`000`|`1`|`vs2`|`vs1`|`011`|`vd`|`0101011`|
+|`vmadotu`|`1`|`DT`|`000`|`1`|`vs2`|`vs1`|`000`|`{vd[4:1],0}`|`0101011`|
+|`vmadotus`|`1`|`DT`|`000`|`1`|`vs2`|`vs1`|`001`|`{vd[4:1],0}`|`0101011`|
+|`vmadotsu`|`1`|`DT`|`000`|`1`|`vs2`|`vs1`|`010`|`{vd[4:1],0}`|`0101011`|
+|`vmadot`|`1`|`DT`|`000`|`1`|`vs2`|`vs1`|`011`|`{vd[4:1],0}`|`0101011`|
 
 Where,
 
 - `DT[30:29] = 10/11` correspond to Int4 / Int8 respectively;
-- `Vs1` and `Vd` are both encoded using the standard register fields in this instruction class, without exploiting any implicit encoding compression from the even-register constraint.
+- Only even-numbered vector registers in the range `0–30` are valid for `Vd`. Since the LSB of `Vd` is always 0, the register index is encoded as `{vd[4:1],0}`.
+
 
 ## 8.2 Integer Sliding-Window Matrix Multiplication for Convolution: `vmadot1/2/3*`
 
@@ -2103,26 +2104,26 @@ Register Constraints
 
 Formal Encoding
 
-|Mnemonic|`[31]`|`[30:29]`|`[28:26]`|`[25]`|`[24:20]`|`[19:16]`|`[15]`|`[14:12]`|`[11:7]`|`[6:0]`|
-|---|---|---|---|---|---|---|---|---|---|---|
-|`vmadot1u`|`1`|`DT`|`001`|`1`|`vs2`|`vs1`|`0`|`000`|`{vd[4:1],0}`|`0101011`|
-|`vmadot1us`|`1`|`DT`|`001`|`1`|`vs2`|`vs1`|`0`|`001`|`{vd[4:1],0}`|`0101011`|
-|`vmadot1su`|`1`|`DT`|`001`|`1`|`vs2`|`vs1`|`0`|`010`|`{vd[4:1],0}`|`0101011`|
-|`vmadot1`|`1`|`DT`|`001`|`1`|`vs2`|`vs1`|`0`|`011`|`{vd[4:1],0}`|`0101011`|
-|`vmadot2u`|`1`|`DT`|`001`|`1`|`vs2`|`vs1`|`0`|`100`|`{vd[4:1],0}`|`0101011`|
-|`vmadot2us`|`1`|`DT`|`001`|`1`|`vs2`|`vs1`|`0`|`101`|`{vd[4:1],0}`|`0101011`|
-|`vmadot2su`|`1`|`DT`|`001`|`1`|`vs2`|`vs1`|`0`|`110`|`{vd[4:1],0}`|`0101011`|
-|`vmadot2`|`1`|`DT`|`001`|`1`|`vs2`|`vs1`|`0`|`111`|`{vd[4:1],0}`|`0101011`|
-|`vmadot3u`|`1`|`DT`|`001`|`1`|`vs2`|`vs1`|`1`|`000`|`{vd[4:1],0}`|`0101011`|
-|`vmadot3us`|`1`|`DT`|`001`|`1`|`vs2`|`vs1`|`1`|`001`|`{vd[4:1],0}`|`0101011`|
-|`vmadot3su`|`1`|`DT`|`001`|`1`|`vs2`|`vs1`|`1`|`010`|`{vd[4:1],0}`|`0101011`|
-|`vmadot3`|`1`|`DT`|`001`|`1`|`vs2`|`vs1`|`1`|`011`|`{vd[4:1],0}`|`0101011`|
+|Mnemonic|`[31]`|`[30:29]`|`[28:26]`|`[25]`|`[24:20]`|`[19:15]`|`[14:12]`|`[11:7]`|`[6:0]`|
+|---|---|---|---|---|---|---|---|---|---|
+|`vmadot1u`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`000`|`{vd[4:1],0}`|`0101011`|
+|`vmadot1us`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`001`|`{vd[4:1],0}`|`0101011`|
+|`vmadot1su`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`010`|`{vd[4:1],0}`|`0101011`|
+|`vmadot1`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`011`|`{vd[4:1],0}`|`0101011`|
+|`vmadot2u`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`100`|`{vd[4:1],0}`|`0101011`|
+|`vmadot2us`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`101`|`{vd[4:1],0}`|`0101011`|
+|`vmadot2su`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`110`|`{vd[4:1],0}`|`0101011`|
+|`vmadot2`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`111`|`{vd[4:1],0}`|`0101011`|
+|`vmadot3u`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],1}`|`000`|`{vd[4:1],0}`|`0101011`|
+|`vmadot3us`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],1}`|`001`|`{vd[4:1],0}`|`0101011`|
+|`vmadot3su`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],1}`|`010`|`{vd[4:1],0}`|`0101011`|
+|`vmadot3`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],1}`|`011`|`{vd[4:1],0}`|`0101011`|
 
 where,
 
 - `DT[30:29]` is currently defined only as `11` (Int8).
-- `slide[15:14]` is jointly encoded by bit `[15]` and the upper bit of `[14:12]`, where `[15]` reuses the least-significant bit freed by the even-register constraint on `Vs1`.
-- Since `Vs1` and `Vd` are constrained to even-numbered registers, their LSB is always `0`, and are therefore represented in the table as `{vs1[4:1],0}` and `{vd[4:1],0}` respectively.
+- `slide[15:14]` is jointly encoded by bit `[15]` and the upper bit of `[14:12]`, where `[15]` reuses the LSB freed by the even-register constraint on `Vs1`.
+- Since `Vs1` and `Vd` are constrained to even-numbered registers, their LSB is always `0`, and are therefore represented in the table as `{vs1[4:1],0}` and `{vd[4:1],0}` respectively. Specifically, the `vmadot3u` instruction is an exception where the LSB of `Vs1` is encoded as 1.
 
 ## 8.3 4:2 Structured Sparse Integer Matrix Multiplication: `vmadot.sp*`
 
@@ -2163,7 +2164,7 @@ Where,
 
 - `v` represents `vmask[25]`, selecting `V0` or `V1`.
 - `DT[30:29] = 10 / 11` correspond to Int4 / Int8.
-- `imm2` is formed from bits `[15]` and `[7]`, both of which reuse the least-significant bits freed by the even-register constraint on `Vs1` and `Vd`.
+- `imm2` is formed from bits `[15]` and `[7]`, both of which reuse the LSB freed by the even-register constraint on `Vs1` and `Vd`.
 - Since `Vs1` and `Vd` are constrained to even-numbered registers, their `bit 0` is always `0`, hence encoded as `{vs1[4:1],0}` and `{vd[4:1],0}` respectively.
 
 ## 8.4 Block-Quantization-Oriented Integer Matrix Multiplication: `vmadot.hp*`
@@ -2214,7 +2215,7 @@ Where,
 ## 8.5 Floating-Point Instructions
 
 - `vfwmadot`: `Vs1` and `Vs2` may use any vector register `0–31`, while `Vd` is restricted to even-numbered vector registers `0–30`.
-- `vfwmadot1/2/3`: `Vs1` and `Vs2` may use any vector register `0–31`, while `Vd` is restricted to even-numbered vector registers `0–30`.
+- `vfwmadot1/2/3`: `Vs2` may use any vector register `0–31`, while `Vs1` and `Vd` is restricted to even-numbered vector registers `0–30`.
 - The variants `vfwmadot1/2/3` are distinguished directly via `funct3[14:12]`:
   - `101` → `vfwmadot1`
   - `110` → `vfwmadot2`
@@ -2237,9 +2238,9 @@ Where,
 
 |Mnemonic|`[31:25]`|`[24:20]`|`[19:15]`|`[14:12]`|`[11:7]`|`[6:0]`|
 |---|---|---|---|---|---|---|
-|`vfwmadot1`|`1001111`|`vs2`|`vs1`|`101`|`{vd[4:1],0}`|`0101011`|
-|`vfwmadot2`|`1001111`|`vs2`|`vs1`|`110`|`{vd[4:1],0}`|`0101011`|
-|`vfwmadot3`|`1001111`|`vs2`|`vs1`|`111`|`{vd[4:1],0}`|`0101011`|
+|`vfwmadot1`|`1001111`|`vs2`|`{vs1[4:1],0}`|`101`|`{vd[4:1],0}`|`0101011`|
+|`vfwmadot2`|`1001111`|`vs2`|`{vs1[4:1],0}`|`110`|`{vd[4:1],0}`|`0101011`|
+|`vfwmadot3`|`1001111`|`vs2`|`{vs1[4:1],0}`|`111`|`{vd[4:1],0}`|`0101011`|
 
 where,
 
