@@ -439,7 +439,7 @@ sidebar_position: 2
 >+ Domain: ai.onnx
 >+ Opset: 19
 >+ Attributes: coordinate_transformation_mode仅支持asymmetric、half_pixel；mode仅支持nearest、linear
->+ Type: T：tensor(float) | tensor(int8)
+>+ Type: T：tensor(float) | tensor(float16) | tensor(int8)
 
 ### **Where**
 >+ Domain: ai.onnx
