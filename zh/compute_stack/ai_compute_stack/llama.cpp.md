@@ -15,6 +15,7 @@ sidebar_position: 5
     - [本地构建](#本地构建)
     - [QEMU 模拟运行](#qemu-模拟运行)
     - [SMT 多模态扩展](#smt-多模态扩展)
+    - [模型性能数据](#模型性能数据)
 
 
 ### 简介
@@ -151,3 +152,6 @@ export LD_LIBRARY_PATH=/path/to/spacemit-ort/lib:./build/installed/lib:${LD_LIBR
 ~~~
 
 > &#x2139;&#xfe0f;`--smt-config-dir` 目录下通常需要包含 `config.json` 以及对应的视觉 ONNX 模型文件。
+
+### [模型性能数据](./modelzoo.md)
+> 通过llama-bench测试获得
