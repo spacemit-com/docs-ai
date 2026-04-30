@@ -2,7 +2,7 @@ sidebar_position: 2
 
 # SpaceMITExecutionProvider加速算子
 
->+ 本章节罗列SpaceMITExecutionProvider支持的加速算子及其规格
+>+ 本章节罗列SpaceMITExecutionProvider支持的加速算子及其在capability判定阶段的限制
 >+ [ONNX-OP描述参考](https://onnx.ai/onnx/operators/index.html)
 >+ [ONNX-Contrib-OP描述参考](https://github.com/microsoft/onnxruntime/blob/main/docs/ContribOperators.md)
 
@@ -87,28 +87,28 @@ sidebar_position: 2
 ### **Conv**
 >+ Domain: ai.onnx
 >+ Opset: 11
->+ Attributes: W需为常量
+>+ Attributes: kernel_shape需存在；W需为常量，或由无上游输入边的DequantizeLinear节点提供
 >+ Type: T：tensor(float) | tensor(float16)
->+ Notes: 支持QDQ量化格式，W对称perchannel，X非对称pertensor，支持1D、2D、3D
+>+ Notes: kernel_shape维度数不超过3，支持1D、2D、3D
 
 ### **ConvTranspose**
 >+ Domain: ai.onnx
 >+ Opset: 11
->+ Attributes: W需为常量
+>+ Attributes: kernel_shape需存在；W需为常量，或由无上游输入边的DequantizeLinear节点提供
 >+ Type: T：tensor(float)
->+ Notes: 支持QDQ量化格式，W对称perchannel，X非对称pertensor，支持1D、2D
+>+ Notes: kernel_shape维度数不超过2，支持1D、2D
 
 ### **Gemm**
 >+ Domain: ai.onnx
 >+ Opset: 13
->+ Attributes: transA==0
+>+ Attributes: transA==0，alpha==1.0，beta==1.0
 >+ Type: T：tensor(float) | tensor(float16)
 >+ Notes: 支持QDQ量化格式，A非对称pertensor，B对称perchannel，当B为非常量时，B需为非对称pertensor
 
 ### **MatMul**
 >+ Domain: ai.onnx
 >+ Opset: 13
->+ Attributes:
+>+ Attributes: 无额外属性限制
 >+ Type: T：tensor(float) | tensor(float16)
 >+ Notes: 支持QDQ量化格式，A非对称pertensor，B对称perchannel，当B为非常量时，B需为非对称pertensor
 
@@ -124,27 +124,27 @@ sidebar_position: 2
 >+ Domain: ai.onnx
 >+ Opset: 10
 >+ Attributes:
->+ Type: T1：tensor(int8)
+>+ Type: T1：tensor(int8) | tensor(uint8)
 >+ Type: T2：tensor(int32)
 
 ### **DynamicQuantizeLinear**
 >+ Domain: ai.onnx
 >+ Opset: 11
->+ Attributes: 仅支持pertensor
+>+ Attributes:
 >+ Type: T1：tensor(float)
->+ Type: T2：tensor(int8)
+>+ Type: T2：tensor(int8) | tensor(uint8)
 
 ### **QuantizeLinear**
 >+ Domain: ai.onnx
 >+ Opset: 19
->+ Attributes: 仅支持pertensor、perchannel
+>+ Attributes:
 >+ Type: T1：tensor(float)
 >+ Type: T2：tensor(int8) | tensor(uint8)
 
 ### **DequantizeLinear**
 >+ Domain: ai.onnx
 >+ Opset: 19
->+ Attributes: 仅支持pertensor、perchannel
+>+ Attributes:
 >+ Type: T1：tensor(int8) | tensor(uint8) | tensor(int32)
 >+ Type: T2：tensor(float)
 
@@ -152,38 +152,38 @@ sidebar_position: 2
 ### **AveragePool**
 >+ Domain: ai.onnx
 >+ Opset: 22
->+ Attributes:
+>+ Attributes: 若count_include_pad!=1，则pads必须全为0；若存在kernel_shape，其维度数不超过2
 >+ Type: T：tensor(float) | tensor(float16)
 
 ### **GlobalAveragePool**
 >+ Domain: ai.onnx
 >+ Opset: 1
->+ Attributes:
+>+ Attributes: 若存在kernel_shape，其维度数不超过2
 >+ Type: T：tensor(float) | tensor(float16)
 
 ### **MaxPool**
 >+ Domain: ai.onnx
 >+ Opset: 12
->+ Attributes:
+>+ Attributes: 若存在kernel_shape，其维度数不超过2
 >+ Type: T：tensor(float) | tensor(float16)
 
 ### **GlobalMaxPool**
 >+ Domain: ai.onnx
 >+ Opset: 1
->+ Attributes:
+>+ Attributes: 若存在kernel_shape，其维度数不超过2
 >+ Type: T：tensor(float) | tensor(float16)
 
 ## Reduce
 ### **ReduceMean**
 >+ Domain: ai.onnx
 >+ Opset: 18
->+ Attributes: axes需为连续常量，如[1,2]
+>+ Attributes: 除第一个输入外，其余输入需为常量initializer
 >+ Type: T：tensor(float) | tensor(float16)
 
 ### **ReduceMax**
 >+ Domain: ai.onnx
 >+ Opset: 20
->+ Attributes: axes需为连续常量，如[1,2]
+>+ Attributes: 除第一个输入外，其余输入需为常量initializer
 >+ Type: T：tensor(float) | tensor(float16)
 
 ## Math
@@ -390,7 +390,7 @@ sidebar_position: 2
 ### **Split**
 >+ Domain: ai.onnx
 >+ Opset: 18
->+ Attributes:
+>+ Attributes: 除第一个输入外，其余输入需为常量initializer
 >+ Type: T：tensor(float) | tensor(float16) | tensor(int32) | tensor(uint32) | tensor(int8) | tensor(uint8) | tensor(bool)
 
 ### **Transpose**
@@ -402,19 +402,19 @@ sidebar_position: 2
 ### **Unsqueeze**
 >+ Domain: ai.onnx
 >+ Opset: 24
->+ Attributes:
+>+ Attributes: axes输入需为常量initializer
 >+ Type: T：tensor(float) | tensor(float16) | tensor(int32) | tensor(uint32) | tensor(int8) | tensor(uint8) | tensor(bool)
 
 ### **Squeeze**
 >+ Domain: ai.onnx
 >+ Opset: 24
->+ Attributes:
+>+ Attributes: axes输入需为常量initializer
 >+ Type: T：tensor(float) | tensor(float16) | tensor(int32) | tensor(uint32) | tensor(int8) | tensor(uint8) | tensor(bool)
 
 ### **Reshape**
 >+ Domain: ai.onnx
 >+ Opset: 24
->+ Attributes:
+>+ Attributes: shape输入需为常量initializer
 >+ Type: T：tensor(float) | tensor(float16) | tensor(int32) | tensor(uint32) | tensor(int8) | tensor(uint8) | tensor(bool)
 
 ### **Flatten**
@@ -432,14 +432,14 @@ sidebar_position: 2
 ### **Slice**
 >+ Domain: ai.onnx
 >+ Opset: 13
->+ Attributes:
+>+ Attributes: 除第一个输入外，其余输入需为常量initializer；仅支持opset >= 10
 >+ Type: T：tensor(float) | tensor(float16) | tensor(int32) | tensor(uint32) | tensor(int8) | tensor(uint8) | tensor(bool)
 
 ### **Resize**
 >+ Domain: ai.onnx
 >+ Opset: 19
->+ Attributes:
->+ Type: T：tensor(float) | tensor(int8)
+>+ Attributes: coordinate_transformation_mode仅支持asymmetric、half_pixel；mode仅支持nearest、linear
+>+ Type: T：tensor(float) | tensor(float16) | tensor(int8)
 
 ### **Where**
 >+ Domain: ai.onnx
@@ -451,7 +451,7 @@ sidebar_position: 2
 ### **LayerNormalization**
 >+ Domain: ai.onnx
 >+ Opset: 17
->+ Attributes: Scale、B需为常量
+>+ Attributes: capability阶段无额外常量限制
 >+ Type: T：tensor(float) | tensor(float16)
 
 ### **InstanceNormalization**
@@ -463,7 +463,7 @@ sidebar_position: 2
 ### **BatchNormalization**
 >+ Domain: ai.onnx
 >+ Opset: 15
->+ Attributes: Scale、B、input_mean、input_var需为常量
+>+ Attributes: capability阶段无额外常量限制
 >+ Type: T：tensor(float) | tensor(float16)
 
 ## Compare
