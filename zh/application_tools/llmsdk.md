@@ -45,7 +45,6 @@ sudo apt install llm-sdk
 - [Chat - 聊天](#chat---聊天)
 - [Sessions - 会话管理](#sessions---会话管理)
 - [Knowledge Bases - 知识库管理](#knowledge-bases---知识库管理)
-- [Config - 配置管理](#config---配置管理)
 - [Assets - 静态资源](#assets---静态资源)
 
 ---
@@ -54,11 +53,6 @@ sudo apt install llm-sdk
 
 ### GET `/`
 根路径，返回 API 基本信息。
-
-**请求示例 (curl)：**
-```bash
-curl -X GET http://localhost:8050/
-```
 
 **响应示例：**
 ```json
@@ -69,11 +63,6 @@ curl -X GET http://localhost:8050/
 
 ### GET `/api/health`
 健康检查。
-
-**请求示例 (curl)：**
-```bash
-curl -X GET http://localhost:8050/api/health
-```
 
 **响应示例：**
 ```json
@@ -97,11 +86,6 @@ curl -X GET http://localhost:8050/api/health
 | 参数 | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
 | model_type | string | `llm` | 模型类型 |
-
-**请求示例 (curl)：**
-```bash
-curl -X GET http://localhost:8050/api/models/list
-```
 
 **响应示例：**
 ```json
@@ -130,11 +114,6 @@ curl -X GET http://localhost:8050/api/models/list
 |------|------|--------|------|
 | model_type | string | `llm` | 模型类型 |
 
-**请求示例 (curl)：**
-```bash
-curl -X GET http://localhost:8050/api/models/current
-```
-
 **响应示例：**
 ```json
 {
@@ -153,13 +132,6 @@ curl -X GET http://localhost:8050/api/models/current
 **请求体（JSON）：**
 ```json
 {"model_id": 1}
-```
-
-**请求示例 (curl)：**
-```bash
-curl -X POST http://localhost:8050/api/models/download \
-  -H "Content-Type: application/json" \
-  -d "{\"model_id\": 1}"
 ```
 
 **响应示例：**
@@ -182,13 +154,6 @@ curl -X POST http://localhost:8050/api/models/download \
 {"model_id": 1}
 ```
 
-**请求示例 (curl)：**
-```bash
-curl -X POST http://localhost:8050/api/models/download/cancel \
-  -H "Content-Type: application/json" \
-  -d "{\"model_id\": 1}"
-```
-
 **响应示例：**
 ```json
 {"success": true, "message": "Download cancelled for Qwen2.5-7B-Q4"}
@@ -203,11 +168,6 @@ curl -X POST http://localhost:8050/api/models/download/cancel \
 | 参数 | 类型 | 必填 | 说明 |
 |------|------|------|------|
 | model_id | int | 否 | 模型 ID |
-
-**请求示例 (curl)：**
-```bash
-curl -X GET http://localhost:8050/api/models/download/status
-```
 
 **响应示例：**
 ```json
@@ -232,11 +192,6 @@ SSE 流式推送所有模型的下载状态。
 |------|------|------|------|
 | model_type | string | 否 | 筛选指定类型 |
 
-**请求示例 (curl)：**
-```bash
-curl -X GET http://localhost:8050/api/models/download/status/all
-```
-
 **SSE 事件格式：**
 ```
 data: {"tasks": {"1": {"status": "downloading", "progress": 0.5}}, "timestamp": 12345.0}
@@ -252,13 +207,6 @@ data: {"tasks": {"1": {"status": "downloading", "progress": 0.5}}, "timestamp": 
 {"model_id": 1}
 ```
 
-**请求示例 (curl)：**
-```bash
-curl -X POST http://localhost:8050/api/models/start \
-  -H "Content-Type: application/json" \
-  -d "{\"model_id\": 1}"
-```
-
 **响应示例：**
 ```json
 {"success": true, "message": "Server started"}
@@ -269,11 +217,6 @@ curl -X POST http://localhost:8050/api/models/start \
 ### POST `/api/models/start_all`
 在后台启动所有模式（llm/embed/rerank）的当前模型服务器。
 
-**请求示例 (curl)：**
-```bash
-curl -X POST http://localhost:8050/api/models/start_all
-```
-
 **响应示例：**
 ```json
 {"success": true, "message": "Starting all model servers in background"}
@@ -283,11 +226,6 @@ curl -X POST http://localhost:8050/api/models/start_all
 
 ### POST `/api/models/stop_all`
 停止所有模式（llm/embed/rerank）的模型服务器。
-
-**请求示例 (curl)：**
-```bash
-curl -X POST http://localhost:8050/api/models/stop_all
-```
 
 **响应示例：**
 ```json
@@ -302,13 +240,6 @@ curl -X POST http://localhost:8050/api/models/stop_all
 **请求体（JSON）：**
 ```json
 {"model_id": 1}
-```
-
-**请求示例 (curl)：**
-```bash
-curl -X POST http://localhost:8050/api/models/stop \
-  -H "Content-Type: application/json" \
-  -d "{\"model_id\": 1}"
 ```
 
 **响应示例：**
@@ -326,13 +257,6 @@ curl -X POST http://localhost:8050/api/models/stop \
 {"model_id": 1}
 ```
 
-**请求示例 (curl)：**
-```bash
-curl -X POST http://localhost:8050/api/models/set_current \
-  -H "Content-Type: application/json" \
-  -d "{\"model_id\": 1}"
-```
-
 **响应示例：**
 ```json
 {"success": true, "message": "Set Qwen2.5-7B-Q4 as current llm model"}
@@ -348,15 +272,11 @@ curl -X POST http://localhost:8050/api/models/set_current \
 |------|------|--------|------|
 | model_type | string | `llm` | 模型类型 |
 
-**请求示例 (curl)：**
-```bash
-curl -X GET http://localhost:8050/api/models/server_status
-```
-
 **响应示例：**
 ```json
 {
   "status": "running",
+  "model_id": 1,
   "model_name": "Qwen2.5-7B-Q4",
   "model_path": "/home/user/.cache/llm-sdk/models/llm/model.gguf",
   "error_message": null
@@ -375,14 +295,9 @@ SSE 流式推送服务器状态，频率根据状态自动调整（启动中 0.5
 |------|------|--------|------|
 | model_type | string | `llm` | 模型类型 |
 
-**请求示例 (curl)：**
-```bash
-curl -X GET http://localhost:8050/api/models/server_status/stream
-```
-
 **SSE 事件格式：**
 ```
-data: {"status": "running", "model_name": "...", "model_path": "...", "error_message": null, "timestamp": 12345.0}
+data: {"status": "running", "model_id": 1, "model_name": "...", "model_path": "...", "error_message": null, "timestamp": 12345.0}
 ```
 
 ---
@@ -390,21 +305,22 @@ data: {"status": "running", "model_name": "...", "model_path": "...", "error_mes
 ### GET `/api/models/all/stream` (SSE)
 SSE 统一流：同时推送 llm、embed、rerank 三种模式的服务器状态和下载进度。
 
-**请求示例 (curl)：**
-```bash
-curl -X GET http://localhost:8050/api/models/all/stream
-```
-
 **SSE 事件格式：**
 ```json
 {
   "modes": {
     "llm": {
-      "server_status": {"status": "running", "model_name": "...", "model_path": "...", "error_message": null},
+      "server_status": {
+        "status": "running",
+        "model_id": 1,
+        "model_name": "...",
+        "model_path": "...",
+        "error_message": null
+      },
       "download_tasks": {}
     },
-    "embed": { "..." : "..." },
-    "rerank": { "..." : "..." }
+    "embed": { "...": "..." },
+    "rerank": { "...": "..." }
   },
   "timestamp": 12345.0
 }
@@ -433,71 +349,26 @@ curl -X GET http://localhost:8050/api/models/all/stream
 }
 ```
 
-embed 额外字段：`normalize`, `truncate`；rerank 额外字段：`top_n`, `return_documents`
-
-**请求示例 (curl)：**
-```bash
-curl -X GET http://localhost:8050/api/models/get_param
-```
+embed 额外字段：`normalize`, `truncate`
 
 ---
 
-### POST `/api/models/update_param`
-更新模型参数并保存到数据库。服务器参数变化会自动重启服务器；客户端参数立即生效。
+### POST `/api/models/update_param` ⚠️ 已废弃
+**该接口已废弃，始终返回 `501 Not Implemented`。**
 
-**查询参数：**
-| 参数 | 类型 | 必填 | 说明 |
-|------|------|------|------|
-| model_type | string | 是 | 模型类型 |
-
-**请求体（JSON，所有字段可选）：**
-```json
-{
-  "context_size": 4096,
-  "threads": 8,
-  "gpu_layers": 0,
-  "batch_size": 512,
-  "temperature": 0.8,
-  "repeat_penalty": 1.1,
-  "max_tokens": 2048,
-  "normalize": true,
-  "truncate": true,
-  "top_n": 10,
-  "return_documents": true
-}
-```
-
-**请求示例 (curl)：**
-```bash
-curl -X POST http://localhost:8050/api/models/update_param
-```
-
-**响应示例：**
-```json
-{
-  "success": true,
-  "message": "Server parameters updated (server auto-restarted if running)",
-  "server_params_changed": true,
-  "client_params_changed": false
-}
-```
+参数现在通过配置文件 `~/.config/llm-sdk/config.yaml` 管理，修改后重启服务器生效。
 
 ---
 
 ### POST `/api/models/reset_param`
-重置指定类型的模型参数为默认值，若服务器正在运行则自动重启。
+重置指定类型的模型参数：若服务器正在运行则重启以应用配置文件中的默认值。
 
 **查询参数：**
 | 参数 | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
 | model_type | string | `llm` | 模型类型 |
 
-**请求示例 (curl)：**
-```bash
-curl -X POST http://localhost:8050/api/models/reset_param
-```
-
-**响应：** 返回重置后的完整参数（同 `get_param` 格式）
+**响应：** 返回当前配置参数（同 `get_param` 格式）
 
 ---
 
@@ -527,7 +398,9 @@ curl -X POST http://localhost:8050/api/models/reset_param
   "temperature": null,
   "repeat_penalty": null,
   "max_tokens": null,
-  "model_type": "llm"
+  "model_type": "llm",
+  "rag_params": null,
+  "conversation_system_prompt": null
 }
 ```
 
@@ -540,12 +413,31 @@ curl -X POST http://localhost:8050/api/models/reset_param
 | temperature | float | 否 | 覆盖默认温度参数 |
 | repeat_penalty | float | 否 | 覆盖默认重复惩罚参数 |
 | max_tokens | int | 否 | 覆盖最大生成 token 数 |
+| rag_params | object | 否 | RAG 专用参数（`retrieval` 检索配置 + `rag_system_prompt_template` 提示词） |
+| conversation_system_prompt | string | 否 | 覆盖普通对话模式的系统提示词 |
+
+`rag_params` 结构示例：
+```json
+{
+  "retrieval": {
+    "top_k": 5,
+    "embed_k": 20,
+    "bm25_k": 10
+  },
+  "rag_system_prompt_template": "根据以下资料回答：\n\n{context}\n\n{question}"
+}
+```
 
 **流式响应（SSE）格式：**
 ```
-data: {"data": "你好", "done_flag": false}
-data: {"data": "！", "done_flag": false}
-data: {"data": "", "done_flag": true}
+data: {"type": "chunk", "content": "你好"}
+data: {"type": "chunk", "content": "！"}
+data: {"type": "done"}
+```
+
+RAG 模式可能包含额外的引用事件：
+```
+data: {"type": "references", "sources": [...]}
 ```
 
 **非流式响应：**
@@ -553,12 +445,7 @@ data: {"data": "", "done_flag": true}
 {"response": "你好！我是一个AI助手..."}
 ```
 
-**请求示例 (curl)：**
-```bash
-curl -X POST http://localhost:8050/api/chat \
-  -H "Content-Type: application/json" \
-  -d "{  \"message\": {    \"role\": \"user\",    \"content\": \"你好，请介绍一下自己\"  },  \"session_id\": 1,  \"stream\": true,  \"kb_ids\": null,  \"temperature\": null,  \"repeat_penalty\": null,  \"max_tokens\": null,  \"model_type\": \"llm\"}"
-```
+**错误：** `404` 会话不存在；`503` RAG 功能不可用
 
 ---
 
@@ -576,13 +463,6 @@ curl -X POST http://localhost:8050/api/chat \
 {"first_message": "帮我写一首诗"}
 ```
 
-**请求示例 (curl)：**
-```bash
-curl -X POST http://localhost:8050/api/sessions \
-  -H "Content-Type: application/json" \
-  -d "{\"first_message\": \"帮我写一首诗\"}"
-```
-
 **响应示例：**
 ```json
 {"session_id": 1, "session_name": "帮我写一首诗"}
@@ -598,11 +478,6 @@ curl -X POST http://localhost:8050/api/sessions \
 |------|------|--------|------|
 | limit | int | 50 | 返回数量上限 |
 | offset | int | 0 | 偏移量 |
-
-**请求示例 (curl)：**
-```bash
-curl -X GET http://localhost:8050/api/sessions
-```
 
 **响应示例：**
 ```json
@@ -626,11 +501,6 @@ curl -X GET http://localhost:8050/api/sessions
 ### GET `/api/sessions/{session_id}`
 获取指定会话的详情。
 
-**请求示例 (curl)：**
-```bash
-curl -X GET http://localhost:8050/api/sessions/1
-```
-
 **响应：** 同会话列表中单条数据格式。
 
 **错误：** `404` 会话不存在
@@ -645,13 +515,6 @@ curl -X GET http://localhost:8050/api/sessions/1
 {"new_name": "新的会话名称"}
 ```
 
-**请求示例 (curl)：**
-```bash
-curl -X PUT http://localhost:8050/api/sessions/1/name \
-  -H "Content-Type: application/json" \
-  -d "{\"new_name\": \"新的会话名称\"}"
-```
-
 **响应示例：**
 ```json
 {"success": true, "message": "Session name updated successfully"}
@@ -662,11 +525,6 @@ curl -X PUT http://localhost:8050/api/sessions/1/name \
 ### DELETE `/api/sessions/{session_id}`
 删除会话（级联删除所有消息）。
 
-**请求示例 (curl)：**
-```bash
-curl -X DELETE http://localhost:8050/api/sessions/1
-```
-
 **响应示例：**
 ```json
 {"success": true, "message": "Session deleted successfully"}
@@ -676,11 +534,6 @@ curl -X DELETE http://localhost:8050/api/sessions/1
 
 ### GET `/api/sessions/{session_id}/messages`
 获取会话的所有消息。
-
-**请求示例 (curl)：**
-```bash
-curl -X GET http://localhost:8050/api/sessions/1/messages
-```
 
 **响应示例：**
 ```json
@@ -706,11 +559,6 @@ curl -X GET http://localhost:8050/api/sessions/1/messages
 ### DELETE `/api/sessions/{session_id}/messages`
 清空会话中的所有消息（保留会话本身）。
 
-**请求示例 (curl)：**
-```bash
-curl -X DELETE http://localhost:8050/api/sessions/1/messages
-```
-
 **响应示例：**
 ```json
 {"success": true, "message": "Messages cleared successfully"}
@@ -726,11 +574,6 @@ curl -X DELETE http://localhost:8050/api/sessions/1/messages
 
 ### GET `/api/knowledge-bases`
 获取所有知识库列表。
-
-**请求示例 (curl)：**
-```bash
-curl -X GET http://localhost:8050/api/knowledge-bases
-```
 
 **响应示例：**
 ```json
@@ -762,20 +605,13 @@ curl -X GET http://localhost:8050/api/knowledge-bases
 | description | string | 否 | 描述 |
 | avatar | file | 否 | 头像图片（PNG/JPEG/GIF/WEBP，最大 5MB） |
 
-**请求示例 (curl)：**
-```bash
-curl -X POST http://localhost:8050/api/knowledge-bases \
-  -F "name=技术文档库" \
-  -F "description=测试描述"
-```
-
 **响应示例：**
 ```json
 {
   "success": true,
   "message": "Knowledge base '技术文档库' created successfully",
   "kb_id": 1,
-  "knowledge_base": { "..." : "..." }
+  "knowledge_base": { "...": "..." }
 }
 ```
 
@@ -786,14 +622,9 @@ curl -X POST http://localhost:8050/api/knowledge-bases \
 ### GET `/api/knowledge-bases/{kb_id}`
 获取指定知识库的详情。
 
-**请求示例 (curl)：**
-```bash
-curl -X GET http://localhost:8050/api/knowledge-bases/1
-```
-
 **响应示例：**
 ```json
-{"success": true, "knowledge_base": { "..." : "..." }}
+{"success": true, "knowledge_base": { "...": "..." }}
 ```
 
 ---
@@ -808,26 +639,15 @@ curl -X GET http://localhost:8050/api/knowledge-bases/1
 | description | string | 否 | 新描述 |
 | avatar | file | 否 | 新头像（PNG/JPEG/GIF/WEBP，最大 5MB） |
 
-**请求示例 (curl)：**
-```bash
-curl -X PUT http://localhost:8050/api/knowledge-bases/1 \
-  -F "name=新名称"
-```
-
 **响应示例：**
 ```json
-{"success": true, "message": "Knowledge base updated successfully", "knowledge_base": { "..." : "..." }}
+{"success": true, "message": "Knowledge base updated successfully", "knowledge_base": { "...": "..." }}
 ```
 
 ---
 
 ### DELETE `/api/knowledge-bases/{kb_id}`
 删除知识库（级联删除文件、向量数据、头像）。
-
-**请求示例 (curl)：**
-```bash
-curl -X DELETE http://localhost:8050/api/knowledge-bases/1
-```
 
 **响应示例：**
 ```json
@@ -837,26 +657,21 @@ curl -X DELETE http://localhost:8050/api/knowledge-bases/1
 ---
 
 ### POST `/api/knowledge-bases/{kb_id}/files`
-上传单个文件到知识库（同步处理，完成后返回）。
+上传单个文件到知识库（同步处理解析/分块，不自动向量化）。
 
 **请求体（form-data）：**
 | 字段 | 类型 | 必填 | 说明 |
 |------|------|------|------|
 | file | file | 是 | 要上传的文档文件 |
 
-**请求示例 (curl)：**
-```bash
-curl -X POST http://localhost:8050/api/knowledge-bases/1/files \
-  -F "file=@/path/to/document.pdf"
-```
-
 **响应示例：**
 ```json
 {
   "success": true,
-  "message": "File 'document.pdf' uploaded and processed successfully",
+  "message": "File 'document.pdf' uploaded successfully",
   "file_id": 42,
-  "kb_id": 1
+  "kb_id": 1,
+  "chunk_count": 15
 }
 ```
 
@@ -869,13 +684,6 @@ curl -X POST http://localhost:8050/api/knowledge-bases/1/files \
 | 字段 | 类型 | 必填 | 说明 |
 |------|------|------|------|
 | files | file[] | 是 | 多个文件 |
-
-**请求示例 (curl)：**
-```bash
-curl -X POST http://localhost:8050/api/knowledge-bases/1/files/batch \
-  -F "files=@/path/to/doc1.pdf" \
-  -F "files=@/path/to/doc2.pdf"
-```
 
 **响应示例：**
 ```json
@@ -894,11 +702,6 @@ curl -X POST http://localhost:8050/api/knowledge-bases/1/files/batch \
 ### GET `/api/knowledge-bases/{kb_id}/files`
 获取知识库中的所有文件列表。
 
-**请求示例 (curl)：**
-```bash
-curl -X GET http://localhost:8050/api/knowledge-bases/1/files
-```
-
 **响应示例：**
 ```json
 {
@@ -908,6 +711,9 @@ curl -X GET http://localhost:8050/api/knowledge-bases/1/files
       "id": 42,
       "filename": "document.pdf",
       "status": "completed",
+      "vectorization_status": "completed",
+      "chunk_count": 15,
+      "vectorized_chunks": 15,
       "created_at": "2026-03-24T10:00:00"
     }
   ],
@@ -915,15 +721,26 @@ curl -X GET http://localhost:8050/api/knowledge-bases/1/files
 }
 ```
 
+文件 `status` 可选值：`pending` | `processing` | `completed` | `failed`
+
+文件 `vectorization_status` 可选值：`not_vectorized` | `queued` | `vectorizing` | `completed` | `failed`
+
+---
+
+### GET `/api/knowledge-bases/{kb_id}/files/{file_id}`
+获取指定文件的详细信息。
+
+**响应示例：**
+```json
+{"success": true, "file": { "id": 42, "filename": "document.pdf", "...": "..." }}
+```
+
+**错误：** `404` 文件不存在或不属于该知识库
+
 ---
 
 ### DELETE `/api/knowledge-bases/{kb_id}/files/{file_id}`
 从知识库中删除指定文件（同时删除 MinIO 存储、向量数据和数据库记录）。
-
-**请求示例 (curl)：**
-```bash
-curl -X DELETE http://localhost:8050/api/knowledge-bases/1/files/42
-```
 
 **响应示例：**
 ```json
@@ -932,13 +749,20 @@ curl -X DELETE http://localhost:8050/api/knowledge-bases/1/files/42
 
 ---
 
+### POST `/api/knowledge-bases/{kb_id}/files/{file_id}/cancel`
+取消正在处理的文件并回滚（异步删除 MinIO 文件、ChromaDB 向量、数据库记录）。
+
+**响应示例：**
+```json
+{"success": true, "message": "Cancellation requested for file 42"}
+```
+
+**错误：** `409` 文件未在处理中
+
+---
+
 ### GET `/api/knowledge-bases/{kb_id}/files/progress/stream` (SSE)
 SSE 流：实时推送知识库中所有文件的处理进度（处理中 0.5s，空闲时 2s）。
-
-**请求示例 (curl)：**
-```bash
-curl -X GET http://localhost:8050/api/knowledge-bases/1/files/progress/stream
-```
 
 **SSE 事件格式：**
 ```
@@ -948,13 +772,122 @@ data: {"files": [...], "timestamp": "2026-03-24T10:00:00"}
 
 ---
 
+### GET `/api/knowledge-bases/{kb_id}/files/{file_id}/progress`
+获取文件的向量化进度。
+
+**响应示例：**
+```json
+{
+  "success": true,
+  "file_id": 42,
+  "filename": "document.pdf",
+  "status": "vectorizing",
+  "processed_chunks": 8,
+  "total_chunks": 15,
+  "progress": 53.3,
+  "error_message": null
+}
+```
+
+---
+
+### POST `/api/knowledge-bases/{kb_id}/files/{file_id}/vectorize`
+将文件加入向量化队列（串行处理）。
+
+**响应示例：**
+```json
+{"success": true, "message": "文件已加入向量化队列", "file_id": 42}
+```
+
+---
+
+### DELETE `/api/knowledge-bases/{kb_id}/files/{file_id}/vectorize`
+将文件移出向量化队列（如正在向量化则取消并清理已生成向量）。
+
+**响应示例：**
+```json
+{"success": true, "message": "文件已移出向量化队列", "file_id": 42}
+```
+
+---
+
+### POST `/api/knowledge-bases/{kb_id}/files/vectorize_all`
+将知识库中所有 `not_vectorized` 或 `failed` 状态的文件批量加入向量化队列。
+
+**响应示例：**
+```json
+{
+  "success": true,
+  "message": "已将 3 个文件加入向量化队列",
+  "started_count": 3,
+  "files": ["doc1.pdf", "doc2.txt", "doc3.md"]
+}
+```
+
+若无需处理的文件：
+```json
+{"success": true, "message": "没有需要向量化的文件", "started_count": 0}
+```
+
+---
+
+### POST `/api/knowledge-bases/{kb_id}/files/stop_vectorize_all`
+停止指定知识库中所有正在排队或处理的向量化任务。
+
+**响应示例：**
+```json
+{"success": true, "message": "已停止 2 个文件的向量化", "stopped_count": 2}
+```
+
+---
+
+### POST `/api/knowledge-bases/{kb_id}/files/{file_id}/pause`
+暂停文件的向量化任务。
+
+**响应示例：**
+```json
+{"success": true, "message": "向量化任务已暂停: file_id=42", "file_id": 42, "status": "paused"}
+```
+
+**错误：** `404` 任务不存在或已暂停
+
+---
+
+### POST `/api/knowledge-bases/{kb_id}/files/{file_id}/resume`
+恢复已暂停的向量化任务。
+
+**响应示例：**
+```json
+{"success": true, "message": "向量化任务已恢复: file_id=42", "file_id": 42, "status": "processing"}
+```
+
+**错误：** `404` 任务不存在
+
+---
+
+### GET `/api/knowledge-bases/{kb_id}/vectorization/queue`
+获取知识库的向量化队列状态（`queued` 和 `vectorizing` 状态的文件）。
+
+**响应示例：**
+```json
+{
+  "success": true,
+  "queue": [
+    {
+      "id": 42,
+      "filename": "document.pdf",
+      "vectorization_status": "vectorizing",
+      "queue_position": 0
+    }
+  ],
+  "queue_length": 1
+}
+```
+
+---
+
 ### GET `/api/knowledge-bases/{kb_id}/files/{file_id}/chunks`
 获取文件在 ChromaDB 中的所有 chunk 信息（调试用途）。
-
-**请求示例 (curl)：**
-```bash
-curl -X GET http://localhost:8050/api/knowledge-bases/1/files/42/chunks
-```
 
 **响应示例：**
 ```json
@@ -970,94 +903,6 @@ curl -X GET http://localhost:8050/api/knowledge-bases/1/files/42/chunks
 
 ---
 
-## Config - 配置管理
-
-**前缀：** `/api/config`
-
----
-
-### GET `/api/config/rag`
-获取当前 RAG 配置（检索参数 + 提示词）。
-
-**请求示例 (curl)：**
-```bash
-curl -X GET http://localhost:8050/api/config/rag
-```
-
-**响应示例：**
-```json
-{
-  "retrieval": {
-    "top_k": 3,
-    "initial_k": 50,
-    "intermediate_k": 10,
-    "embed_weight": 0.5,
-    "bm25_weight": 0.5,
-    "rerank_enable": false
-  },
-  "prompts": {
-    "conversation_system_prompt": "你是一个有用的助手...",
-    "rag_system_prompt_template": "根据以下资料回答问题：\n\n{context}\n\n问题：{question}"
-  }
-}
-```
-
----
-
-### PUT `/api/config/rag`
-更新 RAG 配置，保存到用户配置文件并立即热重载生效。
-
-**请求体（JSON）：**
-```json
-{
-  "retrieval": {
-    "top_k": 5,
-    "initial_k": 50,
-    "intermediate_k": 10,
-    "embed_weight": 0.6,
-    "bm25_weight": 0.4,
-    "rerank_enable": false
-  },
-  "prompts": {
-    "conversation_system_prompt": "你是一个有用的助手...",
-    "rag_system_prompt_template": "根据以下资料回答：\n\n{context}\n\n{question}"
-  }
-}
-```
-
-参数约束：
-- `top_k`：1–20，且须 ≤ `intermediate_k`
-- `intermediate_k`：5–50，且须 ≤ `initial_k`
-- `initial_k`：10–200
-- `embed_weight` / `bm25_weight`：0.0–1.0
-- `rag_system_prompt_template` 必须包含 `{context}` 占位符
-
-**请求示例 (curl)：**
-```bash
-curl -X PUT http://localhost:8050/api/config/rag \
-  -H "Content-Type: application/json" \
-  -d "{  \"retrieval\": {    \"top_k\": 5,    \"initial_k\": 50,    \"intermediate_k\": 10,    \"embed_weight\": 0.6,    \"bm25_weight\": 0.4,    \"rerank_enable\": false  },  \"prompts\": {    \"conversation_system_prompt\": \"你是一个有用的助手...\",    \"rag_system_prompt_template\": \"根据以下资料回答：\n\n{context}\n\n{question}\"  }}"
-```
-
-**响应示例：**
-```json
-{"message": "RAG配置已保存并立即生效"}
-```
-
----
-
-### POST `/api/config/rag/reset`
-重置 RAG 配置为系统默认值，立即热重载生效。
-
-**请求示例 (curl)：**
-```bash
-curl -X POST http://localhost:8050/api/config/rag/reset
-```
-
-**响应：** 返回重置后的完整 RAG 配置（同 `GET /api/config/rag` 格式）
-
----
-
 ## Assets - 静态资源
 
 **前缀：** `/api/assets`
@@ -1065,7 +910,7 @@ curl -X POST http://localhost:8050/api/config/rag/reset
 ---
 
 ### GET `/api/assets/minio/{file_path}`
-从 MinIO 代理提供静态文件（图片、PDF、文档等）。
+从 MinIO 代理提供静态文件（图片、文档、音频等）。
 
 **路径参数：**
 | 参数 | 说明 |
@@ -1079,13 +924,9 @@ curl -X POST http://localhost:8050/api/config/rag/reset
 - 图片：PNG、JPEG、GIF、WEBP、SVG
 - 文档：PDF、TXT、MD
 - Office：PPTX/PPT、DOCX/DOC、XLSX/XLS
+- 音频：MP3、WAV、OGG、M4A、FLAC、AAC
 
-**请求示例 (curl)：**
-```bash
-curl -X GET http://localhost:8050/api/assets/minio/kb_1/file_123.pdf
-```
-
-**响应：** 文件流（`StreamingResponse`），缓存 1 天
+**响应：** 文件流（`StreamingResponse`），缓存 1 天，支持 Range 请求（音频拖动进度条）
 
 **错误：**
 | 状态码 | 说明 |
