@@ -5,7 +5,7 @@
  *
  * @Author: David(qiang.fu@spacemit.com)
  * @Date: 2026-03-09 14:26:58
- * @LastEditTime: 2026-05-13 14:41:22
+ * @LastEditTime: 2026-05-16 15:00:37
  * @FilePath: \doc\docs-ai\zh\solutions\aicomputer_solution\claude.md
  * @Description:
 -->
@@ -37,7 +37,7 @@ sudo apt install npm
 ### 1.2. 安装 Claude Code
 
 ```bash
-sudo npm i --registry=http://nexus.bianbu.xyz/repository/npmproxy/ -g @anthropic-ai/claude-code
+sudo npm i -g @anthropic-ai/claude-code@2.1.112
 ```
 
 验证安装:
@@ -53,7 +53,7 @@ claude --version
 
 ### 2.1. 设置环境变量
 
-**注意**: 创建 API Token 时,需要在分组选择中选择 **claude** 分组。
+获取到供应商提供的URL和KEY后，导入到~/.bashrc中，如下：
 
 ```bash
 cat >> ~/.bashrc << 'EOF'
@@ -112,7 +112,7 @@ Say Hello：
 - 手动执行程序，可正常执行
 ![](../static/claude-demo5.png)
 
-## 5. 对接端侧AI(简单尝试)
+## 5. 对接端侧AI(简单尝试，无需关注)
 
 ### 5.1. 设置环境变量
 
