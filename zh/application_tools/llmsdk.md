@@ -664,38 +664,20 @@ data: {"type": "references", "sources": [...]}
 |------|------|------|------|
 | file | file | 是 | 要上传的文档文件 |
 
+支持的文件类型：PDF、DOCX、XLSX、PPTX、TXT、MD
+
 **响应示例：**
 ```json
 {
   "success": true,
-  "message": "File 'document.pdf' uploaded successfully",
   "file_id": 42,
   "kb_id": 1,
+  "file_name": "document.pdf",
   "chunk_count": 15
 }
 ```
 
----
-
-### POST `/api/knowledge-bases/{kb_id}/files/batch`
-批量上传多个文件，异步处理（并发数上限为 3）。可使用进度流端点监控处理状态。
-
-**请求体（form-data）：**
-| 字段 | 类型 | 必填 | 说明 |
-|------|------|------|------|
-| files | file[] | 是 | 多个文件 |
-
-**响应示例：**
-```json
-{
-  "success": true,
-  "files": [
-    {"file_id": 42, "filename": "doc1.pdf", "status": "processing"},
-    {"filename": "bad.xyz", "status": "error", "error": "不支持的文件类型: .xyz"}
-  ],
-  "message": "Uploaded 2 files"
-}
-```
+**错误：** `400` 不支持的文件类型
 
 ---
 
@@ -750,25 +732,40 @@ data: {"type": "references", "sources": [...]}
 ---
 
 ### POST `/api/knowledge-bases/{kb_id}/files/{file_id}/cancel`
-取消正在处理的文件并回滚（异步删除 MinIO 文件、ChromaDB 向量、数据库记录）。
+取消向量化（仅对 `queued` 或 `vectorizing` 状态的文件有效）。正在向量化的文件会删除已生成的部分向量，进度重置为 0。
 
 **响应示例：**
 ```json
-{"success": true, "message": "Cancellation requested for file 42"}
+{"success": true, "file_id": 42, "message": "向量化已取消"}
 ```
 
-**错误：** `409` 文件未在处理中
+**错误：** `409` 文件不在队列中
 
 ---
 
 ### GET `/api/knowledge-bases/{kb_id}/files/progress/stream` (SSE)
-SSE 流：实时推送知识库中所有文件的处理进度（处理中 0.5s，空闲时 2s）。
+SSE 流：实时推送知识库中所有文件的处理进度（向量化中 0.5s，空闲时 2s）。
 
 **SSE 事件格式：**
 ```
 event: progress
-data: {"files": [...], "timestamp": "2026-03-24T10:00:00"}
+data: {
+  "files": [
+    {
+      "file_id": 42,
+      "file_name": "document.pdf",
+      "upload_status": "done",
+      "vectorization_status": "vectorizing",
+      "total_chunks": 15,
+      "vectorized_chunks": 8,
+      "progress": 53.3
+    }
+  ],
+  "timestamp": "2026-03-24T10:00:00"
+}
 ```
+
+`vectorization_status` 可选值：`not_vectorized` | `queued` | `vectorizing` | `completed` | `failed`
 
 ---
 
@@ -792,76 +789,54 @@ data: {"files": [...], "timestamp": "2026-03-24T10:00:00"}
 ---
 
 ### POST `/api/knowledge-bases/{kb_id}/files/{file_id}/vectorize`
-将文件加入向量化队列（串行处理）。
+将文件加入向量化队列（幂等操作）。
 
 **响应示例：**
 ```json
 {"success": true, "message": "文件已加入向量化队列", "file_id": 42}
 ```
 
+**错误：** `409` 文件向量化已完成
+
 ---
 
-### DELETE `/api/knowledge-bases/{kb_id}/files/{file_id}/vectorize`
-将文件移出向量化队列（如正在向量化则取消并清理已生成向量）。
+### POST `/api/knowledge-bases/{kb_id}/files/vectorize_batch`
+批量将文件加入向量化队列（仅处理 `not_vectorized` 或 `failed` 状态的文件）。
 
-**响应示例：**
+**请求体（JSON）：**
 ```json
-{"success": true, "message": "文件已移出向量化队列", "file_id": 42}
+{"file_ids": [42, 43, 44]}
 ```
-
----
-
-### POST `/api/knowledge-bases/{kb_id}/files/vectorize_all`
-将知识库中所有 `not_vectorized` 或 `failed` 状态的文件批量加入向量化队列。
 
 **响应示例：**
 ```json
 {
   "success": true,
-  "message": "已将 3 个文件加入向量化队列",
-  "started_count": 3,
-  "files": ["doc1.pdf", "doc2.txt", "doc3.md"]
+  "queued_count": 3,
+  "skipped_count": 0,
+  "message": "3 个文件已加入向量化队列"
 }
 ```
 
-若无需处理的文件：
-```json
-{"success": true, "message": "没有需要向量化的文件", "started_count": 0}
-```
-
 ---
 
-### POST `/api/knowledge-bases/{kb_id}/files/stop_vectorize_all`
-停止指定知识库中所有正在排队或处理的向量化任务。
+### POST `/api/knowledge-bases/{kb_id}/files/cancel_vectorize_batch`
+批量取消向量化（仅处理 `queued` 或 `vectorizing` 状态的文件）。
+
+**请求体（JSON）：**
+```json
+{"file_ids": [42, 43]}
+```
 
 **响应示例：**
 ```json
-{"success": true, "message": "已停止 2 个文件的向量化", "stopped_count": 2}
+{
+  "success": true,
+  "cancelled_count": 2,
+  "skipped_count": 0,
+  "message": "2 个文件已取消向量化"
+}
 ```
-
----
-
-### POST `/api/knowledge-bases/{kb_id}/files/{file_id}/pause`
-暂停文件的向量化任务。
-
-**响应示例：**
-```json
-{"success": true, "message": "向量化任务已暂停: file_id=42", "file_id": 42, "status": "paused"}
-```
-
-**错误：** `404` 任务不存在或已暂停
-
----
-
-### POST `/api/knowledge-bases/{kb_id}/files/{file_id}/resume`
-恢复已暂停的向量化任务。
-
-**响应示例：**
-```json
-{"success": true, "message": "向量化任务已恢复: file_id=42", "file_id": 42, "status": "processing"}
-```
-
-**错误：** `404` 任务不存在
 
 ---
 
