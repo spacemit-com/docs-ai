@@ -166,10 +166,6 @@ wget https://archive.spacemit.com/spacemit-ai/model_zoo/assets/audio/001_zh_dail
 ```bash
 # 识别 wav 文件（示例）
 asr_file_demo ~/.cache/models/assets/audio/001_zh_daily_weather.wav
-
-# 流式识别(示例，需要外接音频输入设备)
-asr_stream_demo -l # 查看音频设备号
-asr_stream_demo -i 0 -t 5 #其中-i为输入音频设备号
 ```
 
 ### 3.3 TTS
@@ -182,10 +178,6 @@ tts_file_demo
 
 # 指定文本与后端（示例）
 tts_file_demo -p "你好世界" -l matcha:zh
-
-# 流式合成（示例，需要外接音频输出设备）
-tts_stream_demo -l # 查看音频设备号
-tts_stream_demo -o 0 --output 48000 --channels 2 -e matcha:zh-en # 默认流式tts体验，-o为音频输出设备号
 ```
 
 ### 3.4 VAD
@@ -234,17 +226,14 @@ Voiceprint 组件提供说话人识别、说话人验证和嵌入提取能力，
 **运行示例**
 
 ```bash
-# 注册说话人（音频文件）
-register_speaker -n 张三 sample.wav
+# 下载示例音频
+mkdir -p ~/.cache/models/assets/audio && wget -P ~/.cache/models/assets/audio https://archive.spacemit.com/spacemit-ai/model_zoo/assets/audio/002_en_daily_weather.wav
 
-# 注册说话人（实时录音，自动录制 3 次，每次 4 秒）
-register_speaker -n 张三
+# 注册说话人
+register_speaker -n manbo ~/.cache/models/assets/audio/002_en_daily_weather.wav
 
 # 识别说话人
-identify_speaker test.wav
-
-# 验证特定说话人
-identify_speaker -v 张三 test.wav
+identify_speaker ~/.cache/models/assets/audio/001_zh_daily_weather.wav
 ```
 
 更多参数与 C++ 集成方式请参考 [model_zoo_voiceprint README](https://github.com/spacemit-com/model_zoo_voiceprint/blob/main/README.md) 和 [Voiceprint API](https://github.com/spacemit-com/model_zoo_voiceprint/blob/main/API.md)。
