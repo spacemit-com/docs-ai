@@ -66,7 +66,6 @@ Seewise 采用客户端-服务器架构，分为三层：
 ![](../static/seewise-7.png)
 
 - 安装后会自动创建并启用 `seewise-2.service`
-- 默认运行用户：`bianbu`
 - 默认根目录：`~/.seewise-2`
 
 > 运行依赖：`llama.cpp-tools-spacemit`、`spacemit-onnxruntime`、`python3-spacemit-ort`等。
@@ -100,11 +99,6 @@ Seewise 采用客户端-服务器架构，分为三层：
 - 检索参数配置：决定检索策略，是否开启rerank等
 
 ![](../static/seewise-6.png)
-
-### llama.cpp 与硬件加速
-
-- 模型服务依赖 `llama-server`（来自 llama.cpp）
-- VLM 服务采用 `--vision-backend smt` 和 `--smt-config-dir` 指定视觉模型目录
 
 ## 视频上传与 RTSP 检索流程
 
