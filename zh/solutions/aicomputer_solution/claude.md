@@ -5,7 +5,7 @@
  *
  * @Author: David(qiang.fu@spacemit.com)
  * @Date: 2026-03-09 14:26:58
- * @LastEditTime: 2026-05-16 15:00:37
+ * @LastEditTime: 2026-05-20 09:32:12
  * @FilePath: \doc\docs-ai\zh\solutions\aicomputer_solution\claude.md
  * @Description:
 -->
@@ -38,6 +38,12 @@ sudo apt install npm
 
 ```bash
 sudo npm i -g @anthropic-ai/claude-code@2.1.112
+```
+
+如果网络受限，可以尝试加入镜像源
+
+```bash
+sudo npm i --registry=https://registry.npmmirror.com -g @anthropic-ai/claude-code@2.1.112
 ```
 
 验证安装:
