@@ -284,7 +284,7 @@ sudo apt install spacemit-tcm
 
 - spacemit-tcm-smi -h：查看使用帮助
 - spacemit-tcm-smi -i：实时查看系统的tcm状态
-- spacemit-tcm-smi -c：清除系统的tcm状态
+- spacemit-tcm-smi -c：清除系统的tcm状态，**注意：有时候前面的推理程序异常退出了，也会导致后面推理的异常，可以通过spacemit-tcm-smi -i查看tcm状态后使用这个命令进行清除**
 
 K3有8个AI核心，最大可同时支持8线程推理，但需要分配好线程资源。下面分别对几种情况进行说明：
 

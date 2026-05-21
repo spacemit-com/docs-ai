@@ -5,7 +5,7 @@
  *
  * @Author: David(qiang.fu@spacemit.com)
  * @Date: 2026-03-09 14:26:58
- * @LastEditTime: 2026-05-20 09:32:12
+ * @LastEditTime: 2026-05-21 10:23:22
  * @FilePath: \doc\docs-ai\zh\solutions\aicomputer_solution\claude.md
  * @Description:
 -->
@@ -45,6 +45,8 @@ sudo npm i -g @anthropic-ai/claude-code@2.1.112
 ```bash
 sudo npm i --registry=https://registry.npmmirror.com -g @anthropic-ai/claude-code@2.1.112
 ```
+
+**注意：目前支持最高版本是2.1.112，不要安装高于这个的版本**
 
 验证安装:
 
