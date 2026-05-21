@@ -5,7 +5,7 @@
  * 
  * @Author: David(qiang.fu@spacemit.com)
  * @Date: 2026-03-17 11:27:55
- * @LastEditTime: 2026-05-13 14:42:29
+ * @LastEditTime: 2026-05-21 10:13:52
  * @FilePath: \doc\docs-ai\zh\solutions\aicomputer_solution\index.md
  * @Description: 
 -->
@@ -24,19 +24,19 @@ sidebar_position: 2
 
 ## 与会(Yumeet)
 
-**yumeet** 是一个本地运行的 AI 会议助手桌面应用。音频处理、转写、翻译与总结均可在本地完成，用于提升会议记录效率并保护隐私数据。它基于语音流水线（VAD / ASR / Diarization / Translation / TTS）与 LLM 总结能力，支持实时录音、离线音频导入、会议归档与检索。
+**与会(Yumeet)** 是一个本地运行的 AI 会议助手桌面应用。音频处理、转写、翻译与总结均可在本地完成，用于提升会议记录效率并保护隐私数据。它基于语音流水线（VAD / ASR / Diarization / Translation / TTS）与 LLM 总结能力，支持实时录音、离线音频导入、会议归档与检索。
 
 - [与会(Yumeet)](yumeet.md)
 
 ## 见智(Seewise)
 
-**Seewise** 是一款智能视频搜索引擎，支持上传本地视频或连接 RTSP 摄像头，自动分析视频内容，让你用自然语言快速找到想要的视频片段。
+**见智(Seewise)** 是一款智能视频搜索引擎，支持上传本地视频或连接 RTSP 摄像头，自动分析视频内容，让你用自然语言快速找到想要的视频片段。
 
 - [见智(Seewise)](seewise.md)
 
 ## 点将(Agentforce)
 
-**AgentForce（点将）** 是一个基于 Hermes Agent 和 OpenClaw 的 AI 数字员工管理平台，提供可视化的 Web 界面，让用户轻松创建、管理和与多个 AI 数字员工进行对话。每个数字员工拥有独立的性格、记忆和技能，可以自主学习并执行任务。
+**点将(Agentforce)** 是一个基于 Hermes Agent 和 OpenClaw 的 AI 数字员工管理平台，提供可视化的 Web 界面，让用户轻松创建、管理和与多个 AI 数字员工进行对话。每个数字员工拥有独立的性格、记忆和技能，可以自主学习并执行任务。
 
 - [点将(Agentforce)](agentforce.md)
 
@@ -49,18 +49,18 @@ sidebar_position: 2
 
 ## Claude Code
 
-Claude Code是Anthropic公司推出的终端AI编程助手，可以运行在进迭K系列平台上辅助编程。
+**Claude Code**是Anthropic公司推出的终端AI编程助手，可以运行在进迭K系列平台上辅助编程。
 
 - [Claude Code](claude.md)
 
 ## OpenClaw
 
-OpenClaw（龙虾）是奥地利程序员彼得·斯坦伯格开发的开源AI智能体，于2025年11月推出。可运行在进迭K系列平台上。
+**OpenClaw（龙虾）**是奥地利程序员彼得·斯坦伯格开发的开源AI智能体，于2025年11月推出。可运行在进迭K系列平台上。
 
 - [OpenClaw](openclaw.md)
 
 ## Hermes
 
-Hermes（爱马仕）是由Nous Research开发的一款开源自主AI智能体，于2026年2月开源。可运行在进迭K系列平台上。
+**Hermes（爱马仕）**是由Nous Research开发的一款开源自主AI智能体，于2026年2月开源。可运行在进迭K系列平台上。
 
 - [Hermes](hermes.md)
