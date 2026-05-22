@@ -92,8 +92,7 @@ curl -s localhost:18790/healthz
 
 访问云平台，无需任何硬件准备：
 
-1. 打开 https://www.spacemit.com/，点击"体验中心"，选择"AI 体验"，进入SpacemiT AI Lab云平台首页 https://www.spacemit.com/ailab
-
+1. 打开 https://www.spacemit.com/ ，点击"体验中心"，选择"AI 体验"，进入SpacemiT AI Lab云平台首页
    ![云入口](../static/ailab-inter.png)
 
 2. 点击"立即体验"，等待系统分配云 K3 实例（< 3 秒）
@@ -103,17 +102,9 @@ curl -s localhost:18790/healthz
 
 ### 2) K3 本地应用启动
 
-**方式一：从桌面快捷方式或者应用菜单启动**
-
-从桌面SpacemiT AI Lab图标，或者左下角系统菜单，搜索 **SpacemiT AI Lab** 或 **AI Lab**，点击启动。
+在系统菜单中搜索 **ai lab** 并启动。
    ![本地入口](../static/ailab-start.png)
 > 💡 **小贴士**：右键应用图标选择”添加到桌面”并信任，方便下次快速启动。
-
-**方式二：从终端启动**
-
-```bash
-/opt/spacemit-ailab/spacemit-ailab
-```
 
 ### 3) 界面概览
 
