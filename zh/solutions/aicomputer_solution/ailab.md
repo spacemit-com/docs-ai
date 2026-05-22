@@ -74,7 +74,7 @@ sudo apt update
 sudo apt install spacemit-ailab spacemit-ai-gateway
 ```
 
-安装完成后会自动配置 systemd 服务并创建桌面快捷方式。
+安装完成后会自动配置 systemd 服务。
 
 ### 验证安装
 
@@ -265,7 +265,7 @@ curl -s localhost:18790/healthz
 
 应用启动后自动开启局域网分享：
 
-1. 查看顶部显示的访问地址（如 `http://192.168.0.0:8889`）
+1. 查看顶部显示的访问地址
 2. 同一局域网内的其他设备浏览器访问该地址，无需安装应用
 
 ![局域网分享](../static/ailab-11.png)
@@ -312,7 +312,7 @@ journalctl -u spacemit-ai-gateway -f
 ### 如何卸载应用？
 
 ```bash
-sudo apt remove spacemit-ailab
+sudo apt remove spacemit-ailab spacemit-ai-gateway
 # 同时删除下载的模型（可选）
 rm -rf ~/.cache/models/
 ```
