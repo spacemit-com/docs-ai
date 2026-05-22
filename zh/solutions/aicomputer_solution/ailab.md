@@ -27,13 +27,9 @@ K3 设备本地同样内置 AI Lab 桌面应用，支持下载模型后在本地
 
 ## 技术架构
 
-### 业务架构图
+### 系统架构图
 
-![业务架构图](../static/ailab-framework.png)
-
-### 技术架构图
-
-![技术架构图](../static/ailab-tech.png)
+![系统架构图](../static/ailab-tech.png)
 
 ### 应用技术栈
 
@@ -50,23 +46,23 @@ K3 设备本地同样内置 AI Lab 桌面应用，支持下载模型后在本地
 
 ### 工作流程
 
-```
-1. 云上体验流程：Bianbu Cloud → 官网入口 → AI Lab 主页 → 在线体验模型推理 → 查看实时性能数据
-                                            ↓
-                                        查看官方性能数据
+1. **云上体验流程**
 
-2. 本地体验流程：启动 AI Lab 本地应用 → 本地 APP 页面 → 下载模型 → 试用模型 → 体验模型推理 → 查看实时性能数据
-                                            ↓
-                                        查看官方性能数据
+   Bianbu Cloud → 官网入口 → AI Lab 主页（↓ 也可直接查看官方性能数据）→ 在线体验模型推理 → 查看实时性能数据
 
-3. 局域网分享流程：启动应用 → 复制分享链接 → 其他设备浏览器访问
-```
+2. **本地体验流程**
+
+   启动 AI Lab 本地应用 → 本地 APP 页面（↓ 也可直接查看官方性能数据）→ 下载模型 → 试用模型 → 体验模型推理 → 查看实时性能数据
+
+3. **局域网分享流程**
+
+   启动应用 → 复制分享链接 → 其他设备浏览器访问
 
 ## 🚀 安装（K3 本地应用）
 
 ### 系统要求
 
-- **操作系统**：Bianbu 4.0 rc4 之后的 LXQt 或 GNOME
+- **操作系统**：Bianbu 4.0 rc4 之后的 LXQT 或 GNOME
 - **硬件平台**：SpacemiT K3 RISC-V 设备
 - **内存要求**：建议 8 GB 及以上
 - **存储空间**：至少 10 GB 可用空间（用于模型下载）
@@ -78,7 +74,7 @@ sudo apt update
 sudo apt install spacemit-ailab spacemit-ai-gateway
 ```
 
-安装完成后会自动配置 systemd 服务并创建桌面快捷方式。
+安装完成后会自动配置 systemd 服务。
 
 ### 验证安装
 
@@ -96,7 +92,9 @@ curl -s localhost:18790/healthz
 
 访问云平台，无需任何硬件准备：
 
-1. 进入 SpacemiT 开发者平台，找到 **AI Lab** 入口
+1. 打开 https://www.spacemit.com/ ，点击"体验中心"，选择"AI 体验"，进入SpacemiT AI Lab云平台首页
+   ![云入口](../static/ailab-inter.png)
+
 2. 点击"立即体验"，等待系统分配云 K3 实例（< 3 秒）
 3. 实例就绪后自动跳转到模型中心页面，即可开始体验
 
@@ -104,15 +102,9 @@ curl -s localhost:18790/healthz
 
 ### 2) K3 本地应用启动
 
-**方式一：从应用菜单启动**
-
-点击系统菜单，搜索 **SpacemiT AI Lab** 或 **AI Lab**，点击启动。
-
-**方式二：从终端启动**
-
-```bash
-/opt/spacemit-ailab/spacemit-ailab
-```
+在系统菜单中搜索 **ai lab** 并启动。
+   ![本地入口](../static/ailab-start.png)
+> 💡 **小贴士**：右键应用图标选择”添加到桌面”并信任，方便下次快速启动。
 
 ### 3) 界面概览
 
@@ -127,12 +119,6 @@ curl -s localhost:18790/healthz
 ![应用主页](../static/ailab.png)
 
 ## 功能使用
-
-### 云入口
-进入 SpacemiT 开发者平台，找到 **AI Lab** 入口：
-打开https://www.spacemit.com/，点击"体验中心"，选择"AI 体验"，进入https://www.spacemit.com/ailab 页面
-
-![云入口](../static/ailab-inter.png)
 
 ### 云实例管理
 
@@ -248,7 +234,15 @@ curl -s localhost:18790/healthz
 在主页下方查看所有模型在 K3 上的性能指标：
 
 - 点击分类标签筛选视觉 / LLM / 语音模型
-- 指标包含PP128(token/s)、TG128(token/s)、音频时长、处理时间、RTF、输入形状、帧率(FPS)、量化类型 等
+- 指标说明：
+
+  | 指标            | 全称              | 含义                                                                 |
+  | --------------- | ----------------- | -------------------------------------------------------------------- |
+  | PP128 (token/s) | Prompt Processing | 模型处理输入提示词的速度，以首批 128 个 token 为基准，数值越高越好   |
+  | TG128 (token/s) | Token Generation  | 模型逐步生成输出文本的速度，以后续 128 个 token 为基准，数值越高越好 |
+  | RTF             | Real-Time Factor  | 实时率，处理时长与音频时长之比，RTF < 1 表示可实时处理，数值越低越好 |
+  | FPS             | Frames Per Second | 视觉模型每秒处理的图像帧数，数值越高越好                             |
+  | 量化类型        | Quantization      | 模型压缩精度，如 Q4_0、Q8_0、INT8、FP16，精度越低体积越小、速度越快  |
 
 ![模型性能看板](../static/ailab-9.png)
 
@@ -271,7 +265,7 @@ curl -s localhost:18790/healthz
 
 应用启动后自动开启局域网分享：
 
-1. 查看顶部显示的访问地址（如 `http://192.168.1.100:8889`）
+1. 查看顶部显示的访问地址
 2. 同一局域网内的其他设备浏览器访问该地址，无需安装应用
 
 ![局域网分享](../static/ailab-11.png)
@@ -318,7 +312,7 @@ journalctl -u spacemit-ai-gateway -f
 ### 如何卸载应用？
 
 ```bash
-sudo apt remove spacemit-ailab
+sudo apt remove spacemit-ailab spacemit-ai-gateway
 # 同时删除下载的模型（可选）
 rm -rf ~/.cache/models/
 ```
