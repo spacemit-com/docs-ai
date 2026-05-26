@@ -262,8 +262,8 @@ CPU_RISCV64_SPACEMIT: alloc_chunk: open(/dev/tcm_sync_mem) failed, errno=2
 CPU_RISCV64_SPACEMIT: failed to allocate init_barrier from shared mem, falling back to heap
 | model                          |       size |     params | backend    | threads | n_ubatch | fa | mmap |            test |                  t/s |
 | ------------------------------ | ---------: | ---------: | ---------- | ------: | -------: | -: | ---: | --------------: | -------------------: |
-| qwen3 0.6B Q4_0                | 358.78 MiB |   596.05 M | CPU        |       8 |      128 |  1 |    0 |           pp128 |        486.08 ± 0.43 |
-| qwen3 0.6B Q4_0                | 358.78 MiB |   596.05 M | CPU        |       8 |      128 |  1 |    0 |           tg128 |         47.72 ± 0.01 |
+| qwen3 0.6B Q4_0                | 358.78 MiB |   596.05 M | CPU        |       8 |      128 |  1 |    0 |           pp128 |        499.75 ± 0.22 |
+| qwen3 0.6B Q4_0                | 358.78 MiB |   596.05 M | CPU        |       8 |      128 |  1 |    0 |           tg128 |         53.35 ± 0.03 |
 ~~~
 
 ### Qwen
@@ -274,10 +274,10 @@ CPU_RISCV64_SPACEMIT: failed to allocate init_barrier from shared mem, falling b
 | --- | --- | --- | --- | --- | --- |
 | [qwen3-0.6B](https://www.modelscope.cn/models/unsloth/Qwen3-0.6B-GGUF/file/view/master/Qwen3-0.6B-Q4_0.gguf?status=2) | Q4_0 | 499.75 | 53.35 | - | - |
 | [qwen3-1.7B](https://www.modelscope.cn/models/unsloth/Qwen3-1.7B-GGUF/file/view/master/Qwen3-1.7B-Q4_0.gguf?status=2) | Q4_0 | 229.79 | 23.11 | - | - |
-| [qwen3-4B](https://huggingface.co/miku552/Qwen3-4B-Q4_0-GGUF/tree/main) | Q4_0 | 76.44 | 11.03 | - | - |
-| [qwen3-moe-30B-A3B](https://huggingface.co/fernandoruiz/Qwen3-30B-A3B-Q4_0-GGUF/tree/main) | Q4_0 | 55.54 | 13.33 | 43.86 | 11.93
-| [qwen3.5-0.8B](https://www.modelscope.cn/models/cola9936/Qwen3.5-0.8B-Q4_0/files) | Q4_0 | 182.69 | 29.33 | - | - |
-| [qwen3.5-2B](https://www.modelscope.cn/models/Manojb/Qwen3.5-2B-Q4_1.gguf/files) | Q4_1 | 112.22 | 16.15 | - | - |
+| [qwen3-4B](https://www.modelscope.cn/models/unsloth/Qwen3-4B-Thinking-2507-GGUF/file/view/master/Qwen3-4B-Thinking-2507-Q4_0.gguf?status=2) | Q4_0 | 76.44 | 11.03 | - | - |
+| [qwen3-moe-30B-A3B](https://www.modelscope.cn/models/unsloth/Qwen3-30B-A3B-Thinking-2507-GGUF/file/view/master/Qwen3-30B-A3B-Thinking-2507-Q4_0.gguf?status=2) | Q4_0 | 55.54 | 13.33 | 43.86 | 11.93
+| [qwen3.5-0.8B](https://www.modelscope.cn/models/unsloth/Qwen3.5-0.8B-GGUF/file/view/master/Qwen3.5-0.8B-Q4_0.gguf?status=2) | Q4_0 | 182.69 | 29.33 | - | - |
+| [qwen3.5-2B](https://www.modelscope.cn/models/unsloth/Qwen3.5-2B-GGUF/file/view/master/Qwen3.5-2B-Q4_0.gguf?status=2) | Q4_1 | 112.22 | 16.15 | - | - |
 
 ### HunYuan
 
