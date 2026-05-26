@@ -1,428 +1,283 @@
+---
 sidebar_position: 1
+---
 
-# 知了（Zenow）
+# Zenow
 
-**知了（Zenow）** 是一款本地运行的 AI 知识助手桌面应用，所有数据处理均在本地完成，充分保护您的隐私安全。支持多模型管理、智能对话、知识库问答、语音交互等功能。
+**Zenow** is a locally-run AI knowledge assistant desktop application. All data processing occurs on-device, ensuring complete privacy — no data ever leaves the machine. It supports multi-model management, intelligent conversations, knowledge base Q&A, and voice interaction.
 
-## 产品特点
+## Key Features
 
-- **隐私保护**：所有数据本地处理，不上传云端
-- **多模型支持**：可同时运行 LLM、Embed、Rerank 三类模型
-- **知识库问答**：基于本地文档进行智能问答
-- **语音交互**：支持语音输入和语音朗读
-- **多轮对话**：保持上下文记忆的连续对话
+- **Privacy-first**: All data is processed locally and never uploaded to the cloud.
+- **Multi-model support**: Run LLM, Embedding, and Reranking models simultaneously.
+- **Knowledge base Q&A**: Perform intelligent Q&A over your local documents.
+- **Multi-turn conversations**: Maintain contextual memory across continuous dialogue sessions.
 
-## 平台支持
+## Platform Support
 
-|      平台 & 系统       |       是否支持加速      |
-|-----------------------|-----------------------|
-| K1 Buildroot          | ❌ 不支持              |
-| K1 OpenHarmony     | ❌ 不支持              |
-| K1 Bianbu LXQT/GNOME    | ❌ 不支持              |
-| K3 Buildroot          | ❌ 不支持              |
-| K3 OpenHarmony     | ❌ 不支持              |
-| K3 Bianbu LXQT/GNOME  | ✅ 支持                |
+| Platform & OS              | Acceleration Supported |
+|----------------------------|------------------------|
+| K1 Buildroot               | ❌ Not supported        |
+| K1 OpenHarmony             | ❌ Not supported        |
+| K1 Bianbu LXQT/GNOME       | ❌ Not supported        |
+| K3 Buildroot               | ❌ Not supported        |
+| K3 OpenHarmony             | ❌ Not supported        |
+| K3 Bianbu LXQT/GNOME       | ✅ Supported            |
 
-## 技术架构
+## Architecture
 
-### 核心技术栈
+### Core Technology Stack
 
-知了基于以下核心技术构建：
+Zenow is built on the following technologies:
 
-- **[LLM SDK](https://www.spacemit.com/community/document/info?lang=zh&nodepath=software/SDK/bianbu/ai/llmsdk.md)** - 大语言模型推理引擎
-  - 多轮对话
-  - 知识库问答
+- **[LLM SDK](https://www.spacemit.com/community/document/info?lang=en&nodepath=ai/application_tools/llmsdk.md)** — Large language model inference engine
+  - Multi-turn dialogue
+  - Knowledge base Q&A
 
-- **[Speech SDK](https://www.spacemit.com/community/document/info?lang=zh&nodepath=software/SDK/bianbu/ai/speechsdk.md)** - 语音处理引擎
-  - 语音识别（ASR）
-  - 语音合成（TTS）
-  - 语音唤醒（"小迭小迭"）
+- **Frontend**
+  - Electron — Cross-platform desktop application framework
+  - React + TypeScript — User interface
+  - Vite — Build tooling
 
-- **前端框架**
-  - Electron - 跨平台桌面应用框架
-  - React + TypeScript - 用户界面
-  - Vite - 构建工具
+- **Backend**
+  - FastAPI — High-performance API service
+  - Python — Runtime environment
+  - SQLite — Local data storage
 
-- **后端框架**
-  - FastAPI - 高性能 API 服务
-  - Python - 运行环境
-  - SQLite - 本地数据存储
+### System Architecture Diagram
 
-### 系统架构图
+![System architecture diagram](../static/zenow_26.png)
 
-![](../static/zenow_26.png)
+### Data Flow
 
+1. **Chat flow**: User input → Frontend → Backend session manager → LLM Server → Streaming response
+2. **Knowledge base Q&A**: User query → Embed initial retrieval → Weighted fusion (Embed + BM25 + Rerank) → LLM generates answer
 
-### 工作流程
+## Installation
 
-1. **对话流程**：用户输入 → 前端 → 后端会话管理 → LLM Server → 流式返回
-2. **知识库问答**：用户提问 → RAG 检索（Embed + BM25） → Rerank 排序 → LLM 生成答案
-3. **语音交互**：语音输入 → Speech SDK ASR → 文本处理 → LLM 生成 → Speech SDK TTS → 语音输出
-
-## 安装
-
-在终端中执行以下命令安装知了及其依赖：
+Run the following commands in a terminal to install Zenow:
 
 ```bash
 sudo apt update
-sudo apt install zenow llm-sdk sm-sdk
+sudo apt install zenow
 ```
 
-## 快速开始
+## Quick Start
 
-### 1. 启动应用
+### 1. Launch the Application
 
-点击左下角菜单，搜索 **zenow** 或 **知了**，点击启动。
+Open the application menu from the bottom-left corner, search for **zenow**, and click to launch.
 
 ![](../static/zenow_1.jpg)
 
-> 💡 **小贴士**：右键应用图标选择”添加到桌面”并信任，方便下次快速启动。
+> 💡 **Tip**: Right-click the application icon and select **Add to Desktop**, then mark it as trusted for quick access in future sessions.
 
-### 2. 下载模型
+### 2. Download Models
 
-首次使用需要下载 AI 模型：
+On first launch, AI models must be downloaded before use:
 
-1. 点击左侧导航栏的**设置**图标
-2. 在模型列表中选择需要的模型
-3. 点击模型名称开始下载
+1. Click the **Settings** icon in the left sidebar.
+2. Locate the desired model in the model list.
+3. Click the model name to begin downloading.
 
 ![](../static/zenow_2.jpg)
 
-支持同时下载多个模型：
+You can download multiple models simultaneously:
 
 ![](../static/zenow_3.jpg)
 
-### 3. 启动模型
+### 3. Start a Model
 
-下载完成后，再次点击模型名称启动：
+Once a model has downloaded, click its name again to start it. Model status is indicated by a colored indicator:
 
-- **红灯**：模型未启动
-- **黄灯**：模型启动中
-- **绿灯**：模型已就绪
+| Indicator | Status      |
+|-----------|-------------|
+| 🔴 Red    | Not started |
+| 🟡 Yellow | Starting up |
+| 🟢 Green  | Ready       |
 
 ![](../static/zenow_4.jpg)
 
-> ⚠️ **重要提示**：为使用完整的知识库功能，建议至少下载并启动以下三类模型各一个：
-> - **LLM 模型**：用于对话生成
-> - **Embed 模型**：用于文本向量化
-> - **Rerank 模型**：用于结果排序
+> ⚠️ **Important**: To use the full knowledge base feature, download and start at least one model of each type:
+> - **LLM model** — Generates conversational responses
+> - **Embed model** — Encodes text into vector representations
+> - **Rerank model** — Re-scores and ranks retrieval results
 
-## 功能使用
+## Features
 
-### 智能对话
+### Intelligent Chat
 
-#### 开始新对话
+#### Start a New Conversation
 
-1. 点击左侧导航栏的**新对话**
-2. 确认 LLM 模型状态为绿灯
-3. 在输入框输入问题，按回车或点击发送按钮
+1. Click **New Chat** in the left sidebar.
+2. Confirm the LLM model status shows green.
+3. Enter a question in the input box and press Enter, or click the send button.
 
 ![](../static/zenow_13.jpg)
 
-应用会自动创建对话会话，支持多轮连续对话，保持上下文记忆。
+The application automatically creates a conversation session and supports multi-turn dialogue with persistent context memory.
 
 ![](../static/zenow_19.jpg)
 
 
-### 知识库管理
+### Knowledge Base Management
 
-#### 创建知识库
+#### Pre-loaded Knowledge Base
 
-1. 点击左侧导航栏的**知识库**
-2. 点击**新建知识库**按钮
-3. 填写知识库名称和简介
-4. 可选择自定义头像
+A SpacemiT knowledge base is included by default and can be used to query topics covered within it, such as the K3's computing performance.
 
-![](../static/zenow_20.jpg)
+![Pre-loaded knowledge base](../static/zenow_27.png)
 
-#### 导入文档
+#### Create a Knowledge Base
 
-1. 进入已创建的知识库
-2. 点击**添加文档**按钮
-3. 选择要上传的文件（支持按住 Ctrl 多选）
-4. 等待文档处理完成
+1. Click **Knowledge Base** in the left sidebar.
+2. Click the **New Knowledge Base** button.
+3. Enter a name and description for the knowledge base.
+4. Optionally, select a custom avatar.
+
+![Create knowledge base](../static/zenow_20.jpg)
+
+#### Import Documents
+
+1. Open the knowledge base created in the previous step.
+2. Click the **Add Document** button.
+3. Select the files to upload (hold **Ctrl** to select multiple files).
+4. Wait for document processing to complete.
+5. If the page is navigated away from before vectorization finishes, a prompt will appear — click **Continue Vectorizing** and wait for the process to complete.
 
 ![](../static/zenow_5.jpg)
-![](../static/zenow_6.jpg)
 ![](../static/zenow_7.jpg)
 ![](../static/zenow_8.jpg)
-![](../static/zenow_9.jpg)
-![](../static/zenow_10.png)
 ![](../static/zenow_11.jpg)
 ![](../static/zenow_12.jpg)
 
-#### 基于知识库对话
+#### Chat with a Knowledge Base
 
-1. 选择新建对话或者选择历史会话
-2. 在输入框中，输入@，接着在选择栏中选择要使用的知识库
-3. 输入问题，并按回车，AI 将基于知识库内容回答
+1. Start a new conversation or select an existing session.
+2. In the input box, type **@** and select the target knowledge base from the picker.
+3. Enter a question and press Enter. The AI will respond based on the knowledge base content.
 
 ![](../static/zenow_14.jpg)
 ![](../static/zenow_15.jpg)
 ![](../static/zenow_16.jpg)
 
-### 语音交互
+## Advanced Settings
 
-#### 语音输入
+### Chat Parameters
 
-**方式一：语音唤醒**
-- 连接麦克风后，说出”小迭小迭”唤醒
-- 语音球亮起表示开始录音
-- 停止说话 3 秒后自动发送
+![Chat parameters](../static/zenow_24.png)
 
-**方式二：手动启动**
-- 点击输入框旁的语音按钮
-- 开始说话
-- 停止说话 3 秒后自动发送
+The following LLM generation parameters can be configured on the Settings page:
 
-![](../static/zenow_17.png)
-![](../static/zenow_18.png)
+**LLM Client Parameters**
+- **temperature**: Controls output randomness. Default: `0.7`. Range: `0.0–2.0`. Higher values produce more varied responses.
+- **repeat_penalty**: Reduces repetitive output. Default: `1.1`.
+- **max_tokens**: Maximum number of tokens per response. Default: `2048`.
 
-#### 语音朗读
+**Conversation System Prompt (`conversation_system_prompt`)**
+- Defines the AI's role, behavior, and response style.
+- Applies to standard chat mode (when no knowledge base is selected).
 
-1. 进入**设置**页面
-2. 找到**语音朗读**选项
-3. 开启后，AI 回复将自动朗读
+### RAG Parameters
 
-![](../static/zenow_21.png)
+![RAG parameters](../static/zenow_25.png)
 
-## 高级设置
+Knowledge base Q&A uses a two-stage retrieval and weighted fusion strategy. The following parameters can be configured:
 
-### LLM 模型参数
+**LLM Client Parameters (RAG mode)**
+- **temperature**: Default: `0` (deterministic output).
+- **repeat_penalty**: Default: `1.1`.
+- **max_tokens**: Default: `120`.
 
-![](../static/zenow_22.png)
+**Embed Client Parameters**
+- **normalize**: Whether to normalize embedding vectors. Default: `true`.
+- **truncate**: Whether to truncate text that exceeds the maximum length. Default: `true`.
 
-**服务器参数**
-- **上下文窗口**：模型可处理的最大文本长度
-- **CPU 线程数**：用于推理的 CPU 线程数量
-- **GPU 层数**：加载到 GPU 的模型层数（K3 平台支持）
-- **批处理大小**：并行处理的请求数量
+**Retrieval Parameters**
 
-**客户端参数**
-- **采样温度**：控制输出随机性（越高越随机）
-- **重复惩罚**：减少重复内容的程度
-- **最大生成 Token 数**：单次回复的最大长度
+- **top_k** (final result count)
+  - Number of document chunks returned to the LLM after weighted fusion.
+  - Default: `5`. Range: `1–20`.
+  - Affects context length and generation quality.
 
-### Embed 模型参数
+- **initial_k** (initial retrieval count)
+  - Number of candidate documents retrieved in the first-stage Embed vector search.
+  - Default: `10`. Range: `5–100`.
+  - Higher values improve recall but increase computational cost.
 
-![](../static/zenow_23.png)
+- **min_similarity** (minimum similarity threshold)
+  - Similarity threshold below which results are filtered out.
+  - Default: `-1` (no filtering). Range: `-1.0–1.0`.
 
-**服务器参数**
-- **上下文窗口**：文本向量化的最大长度
-- **CPU 线程数**：推理线程数
-- **GPU 层数**：GPU 加速层数
-- **批处理大小**：批量处理数量
+**Fusion Weight Parameters**
 
-**客户端参数**
-- **归一化向量**：是否对向量进行归一化
-- **截断过长文本**：超长文本的处理方式
+- **embed_weight** (embedding weight)
+  - Weight of the Embed vector similarity score in the fusion formula.
+  - Default: `0.4`. Range: `0.0–1.0`.
+  - Controls the importance of semantic similarity.
 
-### Rerank 模型参数
+- **bm25_weight** (keyword weight)
+  - Weight of the BM25 keyword matching score in the fusion formula.
+  - Default: `0.2`. Range: `0.0–1.0`.
+  - Controls the importance of exact keyword matching.
 
-![](../static/zenow_24.png)
+- **rerank_weight** (reranking weight)
+  - Weight of the Rerank model score in the fusion formula.
+  - Default: `0.4`. Range: `0.0–1.0`.
+  - Controls the importance of deep semantic understanding.
 
-**服务器参数**
-- **上下文窗口**：重排序的最大文本长度
-- **CPU 线程数**：推理线程数
-- **GPU 层数**：GPU 加速层数
-- **批处理大小**：批量处理数量
+> 💡 **Weight note**: The three weights should sum to `1.0`. The system normalizes them automatically. Setting a weight to `0` disables the corresponding retriever.
 
-**客户端参数**
-- **返回前 N 个结果**：保留的最相关结果数量
-- **返回文档内容**：是否包含原文内容
+**Toggle Parameters**
 
-### RAG 检索参数
+- **bm25_enable**: Enables BM25 keyword retrieval. Default: `true`.
+- **rerank_enable**: Enables Rerank re-scoring. Default: `true`.
 
-![](../static/zenow_25.png)
+**Retrieval Pipeline**
 
-**检索流程参数**
+1. **Stage 1 — Embed initial filtering**
+   - Performs vector similarity search using the Embed model.
+   - Retrieves `initial_k` candidate document chunks.
 
-- **top_k（最终返回数量）**
-  - 最终返回给 LLM 的文档片段数量
-  - 经过所有检索和重排序后的结果数
-  - 范围：1-20
+2. **Stage 2 — Weighted fusion**
+   - **Embed score**: Semantic relevance based on cosine similarity.
+   - **BM25 score**: Keyword matching using pre-processed tokenization results (if enabled).
+   - **Rerank score**: Deep semantic understanding via the Rerank model (if enabled).
+   - **Fusion formula**: `final_score = embed_weight × embed_score + bm25_weight × bm25_score + rerank_weight × rerank_score`
 
-- **initial_k（初始检索数量）**
-  - 第一阶段检索的候选文档数量
-  - 用于向量搜索和 BM25 关键词搜索
-  - 范围：10-200
-  - 越大召回率越高，但计算成本也越高
+3. **Stage 3 — Final output**
+   - Results are sorted by fusion score.
+   - Results below `min_similarity` are filtered out.
+   - The top `top_k` results are passed to the LLM.
+   - Injected into the `{context}` placeholder in the RAG system prompt.
 
-- **intermediate_k（中间结果数量）**
-  - RRF 融合后保留的文档数
-  - 重排序前的候选集大小
-  - 范围：5-50
-  - 介于 initial_k 和 top_k 之间
+> 💡 **Performance tip**: BM25 uses pre-processed tokenization stored in the database, eliminating the need for real-time tokenization. Adjust weights and toggles to balance recall and precision.
 
-- **embed_weight（向量权重）**
-  - 向量搜索在混合检索中的权重
-  - 范围：0-1，步长 0.1
-  - 控制语义相似度的重要性
+**RAG System Prompt Template (`rag_system_prompt_template`)**
+- Used in knowledge base Q&A mode.
+- Must contain the `{context}` placeholder.
+- Takes effect when a knowledge base is selected via `@`.
+- `{context}` is replaced with the retrieved document content at query time.
 
-- **bm25_weight（关键词权重）**
-  - BM25 关键词搜索的权重
-  - 范围：0-1，步长 0.1
-  - 控制精确关键词匹配的重要性
-
-**检索流程说明**
+## Troubleshooting
 
-1. **第一阶段**：向量搜索和 BM25 各检索 initial_k 个结果
-2. **融合阶段**：使用 RRF 算法融合，保留 intermediate_k 个
-3. **重排序阶段**：使用 rerank 模型重新排序
-4. **最终输出**：返回 top_k 个结果给 LLM
-
-### 提示词配置
-
-**conversation_system_prompt（对话系统提示词）**
-- 用于普通对话模式
-- 定义 AI 的角色、行为和回答风格
-- 不使用知识库时生效
-- 示例："你是一个有帮助的 AI 助手，请用简洁专业的语言回答问题"
-
-**rag_system_prompt_template（RAG 系统提示词模板）**
-- 用于知识库问答模式
-- 必须包含 `{context}` 占位符
-- 使用 @知识库 时生效
-- `{context}` 会被替换为检索到的相关文档内容
-
-
-## 性能参考
-
-以下是在 K3 平台上的性能测试数据（测试时间：2026-04-03）
-
-### 知识库向量化性能
-
-| 项目 | 值 |
-| --- | --- |
-| 测试文件 | 4.2 KB 文本文件 |
-| 文档片段数 | 5 个 |
-| 上传耗时 | 55 ms |
-| 向量化耗时 | 2364 ms |
-| 总耗时 | 2419 ms |
-| 平均每片段 | 473 ms |
-
-### Qwen3-0.6B-Q4_0 模型性能
-
-**普通问答**（5 次测试平均）
-
-| 指标 | 值 |
-| --- | --- |
-| 首字响应时间 | 239 ms |
-| 平均总耗时 | 2355 ms |
-| 生成速度 | 35.2 tokens/s |
-| 平均生成长度 | 72 tokens |
+### Model download fails
 
-**多轮对话**（5 轮测试）
+- Check that the network connection is active.
+- Verify that sufficient disk space is available.
+- Try initiating the download again.
 
-| 轮次 | 首字响应 | 总耗时 | 生成速度 | Token 数 |
-| :--: | --: | --: | --: | --: |
-| 1 | 170 ms | 569 ms | 38.8 t/s | 14 |
-| 2 | 342 ms | 812 ms | 37.4 t/s | 16 |
-| 3 | 365 ms | 2286 ms | 33.6 t/s | 63 |
-| 4 | 565 ms | 2999 ms | 31.0 t/s | 74 |
-| 5 | 650 ms | 2354 ms | 29.0 t/s | 47 |
+### Model fails to start (red indicator)
 
-**知识库问答**（5 次测试平均）
+- Check that system memory is sufficient. The 30B model requires 32 GB of RAM or more.
 
-| 指标 | 值 |
-| --- | --- |
-| 首字响应时间（含检索） | 5118 ms |
-| 平均总耗时 | 17314 ms |
-| 生成速度 | 19.3 tokens/s |
-| 平均生成长度 | 231 tokens |
-| 平均命中片段数 | 3.0 |
+### Knowledge base Q&A quality is poor
 
-### Qwen3-1.7B-Q4_0 模型性能
+- Ensure that LLM, Embed, and Rerank models are all running.
+- Tune the RAG parameters (e.g., `top_k`, `initial_k`, `embed_weight`, `bm25_weight`).
+- Verify that the uploaded documents contain content relevant to the queries.
 
-**普通问答**（5 次测试平均）
+### How to improve response speed
 
-| 指标 | 值 |
-| --- | --- |
-| 首字响应时间 | 455 ms |
-| 平均总耗时 | 19365 ms |
-| 生成速度 | 15.6 tokens/s |
-| 平均生成长度 | 281 tokens |
-
-**多轮对话**（5 轮测试）
-
-| 轮次 | 首字响应 | 总耗时 | 生成速度 | Token 数 |
-| :--: | --: | --: | --: | --: |
-| 1 | 254 ms | 3119 ms | 16.6 t/s | 46 |
-| 2 | 1107 ms | 4037 ms | 16.2 t/s | 46 |
-| 3 | 1138 ms | 22563 ms | 14.9 t/s | 301 |
-| 4 | 2965 ms | 30945 ms | 13.1 t/s | 341 |
-| 5 | 4128 ms | 15247 ms | 12.1 t/s | 132 |
-
-**知识库问答**（5 次测试平均）
-
-| 指标 | 值 |
-| --- | --- |
-| 首字响应时间（含检索） | 8328 ms |
-| 平均总耗时 | 57517 ms |
-| 生成速度 | 11.4 tokens/s |
-| 平均生成长度 | 530 tokens |
-| 平均命中片段数 | 3.0 |
-
-### Qwen3-30B-A3B-Instruct-2507-Q4_0 模型性能
-
-**普通问答**（5 次测试平均）
-
-| 指标 | 值 |
-| --- | --- |
-| 首字响应时间 | 747 ms |
-| 平均总耗时 | 62338 ms |
-| 生成速度 | 8.8 tokens/s |
-| 平均生成长度 | 490 tokens |
-
-**多轮对话**（5 轮测试）
-
-| 轮次 | 首字响应 | 总耗时 | 生成速度 | Token 数 |
-| :--: | --: | --: | --: | --: |
-| 1 | 483 ms | 6852 ms | 9.9 t/s | 62 |
-| 2 | 714 ms | 7101 ms | 9.6 t/s | 60 |
-| 3 | 773 ms | 56768 ms | 8.2 t/s | 425 |
-| 4 | 1253 ms | 91724 ms | 6.2 t/s | 532 |
-| 5 | 2215 ms | 57670 ms | 5.2 t/s | 273 |
-
-**知识库问答**（5 次测试平均）
-
-| 指标 | 值 |
-| --- | --- |
-| 首字响应时间（含检索） | 28623 ms |
-| 平均总耗时 | 165871 ms |
-| 生成速度 | 5.4 tokens/s |
-| 平均生成长度 | 677 tokens |
-| 平均命中片段数 | 3.0 |
-
-> 💡 **性能说明**：
-> - 模型越大，生成质量越高，但速度越慢
-> - 知识库问答包含文档检索时间，以及检索块会使得输入上下文变长，响应会比普通对话慢
-
-## 常见问题
-
-### 模型下载失败怎么办？
-
-- 检查网络连接是否正常
-- 确认磁盘空间是否充足
-- 可以尝试重新下载
-
-### 模型启动失败显示红灯？
-
-- 检查系统资源是否充足（内存），30B模型最好使用32GB及以上内存
-
-### 知识库问答效果不好？
-
-- 确保已启动 LLM、Embed、Rerank 三类模型
-- 调整 RAG 检索参数（top_k、initial_k、embed_weight、bm25_weight 等）
-- 检查上传的文档内容是否相关
-
-### 如何提升响应速度？
-
-- 选择较小的模型（如 1.7B 而非 30B）
-- 减少上下文窗口大小
-
-### 语音唤醒不工作？
-
-- 确认麦克风已正确连接
-- 检查系统音频权限设置
-- 尝试手动点击语音按钮测试
+- Use a smaller model (e.g., 2B instead of 30B).
+- Reduce the context window size.
