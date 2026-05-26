@@ -1,256 +1,255 @@
+---
 sidebar_position: 2
+---
 
-# 与会（yumeet）
+# yumeet
 
-**yumeet** 是一个本地运行的 AI 会议助手桌面应用。音频处理、转写、翻译与总结均可在本地完成，用于提升会议记录效率并保护隐私数据。
+**yumeet** is a locally-run AI meeting assistant desktop application. All audio processing, transcription, translation, and summarization are performed on-device, enabling efficient meeting documentation while keeping sensitive data private.
 
-它基于语音流水线（VAD / ASR / Diarization / Translation / TTS）与 LLM 总结能力，支持实时录音、离线音频导入、会议归档与检索。
+The application is built on a full speech pipeline — VAD, ASR, speaker diarization, translation, and TTS — paired with LLM-based summarization. It supports real-time microphone recording, offline audio import, meeting archiving, and full-text search across records.
 
-## ✨ 核心能力
+## ✨ Key Features
 
-- **实时语音转录**：通过语音服务进行低延迟转写。
-- **实时机器翻译**：支持在转录过程中输出翻译文本。
-- **AI 会议总结**：基于 LLM 自动生成结构化会议总结。
-- **会议记录管理**：支持历史记录筛选、搜索、重命名、删除。
-- **本地文件管理**：支持保存音频源文件与导出文本总结。
-- **跨形态运行**：支持浏览器形态与 Tauri 桌面形态。
+- **Real-time Speech Transcription**: Low-latency, on-device transcription via the integrated speech service.
+- **Real-time Machine Translation**: Produces translated output alongside the transcription stream.
+- **AI Meeting Summarization**: Automatically generates a structured meeting summary using an LLM.
+- **Meeting Record Management**: Filter, search, rename, and delete past meeting records.
+- **Local File Management**: Save raw audio and export text summaries to local storage.
+- **Multi-form Deployment**: Runs as a browser-based web app or as a native Tauri desktop application.
 
-## 平台支持情况
+## Platform Support
 
-|      平台 & 系统       |       是否支持     |
-|-----------------------|-----------------------|
-| K1 Buildroot          | ❌ 不支持              |
-| K1 OpenHarmony        | ❌ 不支持              |
-| K1 Bianbu LXQT/GNOME    | ❌ 不支持            |
-| K3 Buildroot          | ❌ 不支持              |
-| K3 OpenHarmony       | ❌ 不支持              |
-| K3 Bianbu LXQT/GNOME  | ✅ 支持                |
+| Platform & OS              | Supported          |
+|----------------------------|--------------------| 
+| K1 Buildroot               | ❌ Not supported   |
+| K1 OpenHarmony             | ❌ Not supported   |
+| K1 Bianbu LXQT/GNOME       | ❌ Not supported   |
+| K3 Buildroot               | ❌ Not supported   |
+| K3 OpenHarmony             | ❌ Not supported   |
+| K3 Bianbu LXQT/GNOME       | ✅ Supported       |
 
-## 技术架构
+## Technical Architecture
 
-### 应用技术栈
+### Application Stack
 
-- **前端框架**：Vue 3.4+ / TypeScript 5.4 / Vite 5.4
-- **桌面壳层**：Tauri 2（Rust）
-- **音频处理**：Web Audio API、PCM 转换
-- **Markdown 渲染**：markdown-it + DOMPurify（XSS 防护）
-- **本地存储**：File System Access API
-- **视觉能力**：Motion V、OGL
+- **Frontend Framework**: Vue 3.4+ / TypeScript 5.4 / Vite 5.4
+- **Desktop Shell**: Tauri 2 (Rust)
+- **Audio Processing**: Web Audio API, PCM conversion
+- **Markdown Rendering**: markdown-it + DOMPurify (XSS protection)
+- **Local Storage**: File System Access API
+- **Visual Effects**: Motion V, OGL
 
-### 依赖服务
+### Service Dependencies
 
-- **语音服务**：
-  [Speech SDK](https://www.spacemit.com/community/document/info?lang=zh&nodepath=software/SDK/bianbu/ai/speechsdk.md)
-- **大模型服务**：
-  [LLM SDK](https://www.spacemit.com/community/document/info?lang=zh&nodepath=software/SDK/bianbu/ai/llmsdk.md)
+- **Speech Service**:
+  [Speech SDK](https://www.spacemit.com/community/document/info?lang=en&nodepath=ai/application_tools/speechsdk.md)
+- **Large Language Model Service**:
+  [LLM SDK](https://www.spacemit.com/community/document/info?lang=en&nodepath=ai/application_tools/llmsdk.md)
 
-### 系统架构图
+### System Architecture Diagram
 
-![启动应用](../static/yumeet-framework.png)
+![System Architecture](../static/yumeet-framework.png)
 
+### Workflow Overview
 
-### 工作流程
+1. **Real-time Transcription**: Start transcription → Audio capture → Speech service processing → Live text output.
+2. **Meeting Summarization**: End meeting → Read transcription → LLM generates summary → Auto-save.
+3. **History Retrieval**: Enter keyword → Match title / tag / content → Navigate to record detail.
 
-1. **实时转录流程**：开始转录 → 音频采集 → 语音服务处理 → 实时文本输出。
-2. **会议总结流程**：结束会议 → 读取转录结果 → LLM 生成总结 → 自动保存。
-3. **历史检索流程**：输入关键词 → 匹配标题/标签/内容 → 跳转记录详情。
+## 🚀 Installation
 
-## 🚀 安装
-
-首次安装 `sm-sdk` 会自动下载模型包（约 2 GB）。
+On first install, `sm-sdk` automatically downloads the required model package (~2 GB).
 
 ```bash
 sudo apt update
 sudo apt install yumeet llm-sdk sm-sdk
 ```
 
-## 快速开始
+## Quick Start
 
-### 1) 启动应用
+### 1. Launch the Application
 
-在系统菜单中搜索 **yumeet** 或 **与会** 并启动。
+Open the system application menu, search for **yumeet**, and launch it.
 
-![启动应用](../static/yumeet.png)
+![Launch Application](../static/yumeet.png)
 
-### 2) 配置 AI 服务
+### 2. Configure AI Services
 
-首次使用建议确认以下服务配置：
+On first use, confirm that the following services are configured correctly:
 
-1. **大模型服务**：默认 `Qwen3-1.7B`
-2. **语言服务**：用于语音转录
-3. **翻译服务**：默认 `HY-MT1.5-1.8B`
+- **LLM Service**: Default model `Qwen3.5-2B`
+- **Speech Service**: Default model `Qwen3-ASR-0.6B`
+- **Translation Service**: Default model `HY-MT1.5-1.8B`
 
-![AI服务配置](../static/yumeet-1.png)
+![AI Service Configuration](../static/yumeet-1.png)
 
-### 3) 配置存储路径
+### 3. Configure Storage Paths
 
-可配置两类目录：
+Two storage directories can be configured:
 
-1. **会议记录目录**：用于保存“下载总结”生成的 TXT / PDF / Markdown
-2. **会议音频目录**：用于保存实时转录结束后的会议音频备份
+- **Meeting Records Directory**: Stores TXT, PDF, or Markdown files generated through **Download Summary**.
+- **Meeting Audio Directory**: Stores backup audio files saved after a real-time transcription session ends.
 
-![会议内容存储路径](../static/yumeet-2.png)
+![Meeting Content Storage Path](../static/yumeet-2.png)
 
-## 转录功能
+## Transcription Features
 
-### 1) 实时转录（麦克风）
+### 1. Real-time Transcription (Microphone)
 
-#### 1.1 开始会议
+#### 1.1 Start a Meeting
 
-可在两个入口启动实时转录：
+Live transcription can be started from two places:
 
-1. 首页入口
-2. 会议页入口
+- Home page entry
+- Meeting page entry
 
-![实时转录入口-首页](../static/yumeet-3.png)
-![实时转录入口-会议页](../static/yumeet-4.png)
+![Real-time Transcription Entry - Home](../static/yumeet-3.png)
+![Real-time Transcription Entry - Meeting Page](../static/yumeet-4.png)
 
-#### 1.2 会议设定
+#### 1.2 Meeting Setup
 
-开始转录后会弹出“会议设定”窗口。
+After transcription begins, the **Meeting Setup** dialog is displayed.
 
-- **必填项**：会议主题、参会人员
-- **标签与人员录入**：输入后需点击左侧 `+` 才会加入
+- **Required field**: Meeting topic
+- **Tags and participant entries**: After entering a value, click the `+` icon on the left to add it
 
-字段说明：
+Field descriptions:
 
-- **会议主题**：作为会议记录标题显示
-- **会议标签**：支持主标签/副标签，主标签会在记录卡片顶部突出展示
-- **参会人员**：支持多人员维护
+- **Meeting Topic**: Displayed as the title of the meeting record
+- **Meeting Tags**: Supports both primary and secondary tags; the primary tag is highlighted at the top of the record card
+- **Participants**: Supports registration of multiple attendees
 
-![会议设定](../static/yumeet-5.png)
+![Meeting Setup](../static/yumeet-5.png)
 
-完成后点击“开始录制”。
+#### 1.3 Transcription in Progress
 
-#### 1.3 转录过程
+While recording, the interface shows:
 
-转录期间可查看：
+- Live transcription and translation output
+- A session timer with pause controls
+- A display mode toggle to switch between views
 
-- 当前转录/翻译输出
-- 计时与暂停控制
-- 显示内容切换
+![Transcription in Progress](../static/yumeet-6.png)
+![Transcription Display Toggle](../static/yumeet-7.png)
 
-![转录过程](../static/yumeet-6.png)
-![转录显示切换](../static/yumeet-7.png)
+#### 1.4 Generate a Meeting Summary
 
-#### 1.4 生成会议总结
+A summary can be triggered in two ways:
 
-支持两种总结触发方式：
+1. **During recording** — click **Generate Summary** at any time.
 
-1. **录制中手动触发**“生成总结”
+   ![Generate Summary During Recording](../static/yumeet-8.png)
 
-![录制中生成总结](../static/yumeet-8.png)
+2. **After recording ends** — the summarization workflow starts automatically when you stop the session.
 
-2. **结束录制后自动触发**总结流程
+   ![End Recording and Generate Summary](../static/yumeet-9.png)
 
-![结束录制并总结](../static/yumeet-9.png)
+The following table shows which services are loaded at each trigger point:
 
-默认服务加载行为：
+- Clicking **Start Transcription** or **Import Audio** loads the speech and translation services
+- Clicking **Generate Summary** or **Pause → End** loads the LLM service
+- Clicking **Download Summary** on the **Meeting Details** page also invokes the LLM service
 
-1. 点击“开始转录”或“导入音频”时，会加载语言服务和翻译服务
-2. 点击“生成总结”或“暂停→结束”时，会加载大模型服务
-3. 在“详细会议记录”页面点击“下载总结”时，也会调用大模型服务
+![Default Service Loading - 1](../static/yumeet-10.png)
+![Default Service Loading - 2](../static/yumeet-11.png)
+![Default Service Loading - 3](../static/yumeet-12.png)
 
-![默认服务加载-1](../static/yumeet-10.png)
-![默认服务加载-2](../static/yumeet-11.png)
-![默认服务加载-3](../static/yumeet-12.png)
+### 2. Import Audio (Offline Transcription)
 
-### 2) 导入音频（离线转录）
+#### 2.1 Start Import
 
-#### 2.1 开始导入
+Click **Import Audio** to open the file picker.
 
-点击“导入音频”进入文件选择。
+#### 2.2 Select a File
 
-#### 2.2 选择文件
+Supported audio formats include `wav`, `mp3`, and `m4a`.
 
-支持 `wav`、`mp3`、`pcm` 等常见音频格式。
+![Import Audio File](../static/yumeet-13.png)
 
-![导入音频文件](../static/yumeet-13.png)
+#### 2.3 Processing
 
-#### 2.3 处理过程
+Once the file is imported, it enters the offline transcription pipeline.
 
-导入成功后进入静态文件转录流程。
+![Import Processing](../static/yumeet-14.png)
 
-![导入处理中](../static/yumeet-14.png)
+> Offline transcription processes the entire file before displaying any output. Intermediate results are not shown during processing.
 
-> 当前离线转录在整段处理完成前，不会持续显示中间转录文本。
+#### 2.4 Transcription Result
 
-#### 2.4 转录结果
+When processing completes, a meeting summary is generated automatically.
 
-处理结束后会自动执行翻译与会议总结。
+![Offline Transcription Result](../static/yumeet-15.png)
 
-![离线转录结果](../static/yumeet-15.png)
+### 3. Search Within the Transcript
 
-### 3) 转录内容搜索
+You can search for keywords within the current meeting session. Matching segments are highlighted inline.
 
-可在当前会议内搜索关键词并高亮命中句段。
+![Transcript Search](../static/yumeet-16.png)
 
-![转录内容搜索](../static/yumeet-16.png)
+## Meeting Management
 
-## 会议管理
+### 1. Meeting Record List
 
-### 1) 会议记录列表
+The record list provides the following tools for navigating your meeting history:
 
-记录列表支持以下能力：
+- Filter by date range
+- Filter by meeting tag
+- Search by title or primary tag
+- Open a detailed record page
+- Rename or delete a record
+- Paginate through large record sets
 
-1. 按时间范围筛选
-2. 按会议标签筛选
-3. 按标题/主标签搜索
-4. 进入详细记录页
-5. 记录重命名与删除
-6. 分页浏览
+![Meeting Record Overview](../static/yumeet-17.png)
+![Meeting Tag Filter](../static/yumeet-18.png)
+![Meeting Record Search](../static/yumeet-19.png)
+![Meeting Record Actions](../static/yumeet-20.png)
 
-![会议记录概览](../static/yumeet-17.png)
-![会议标签筛选](../static/yumeet-18.png)
-![会议记录搜索](../static/yumeet-19.png)
-![会议记录操作](../static/yumeet-20.png)
+### 2. Detailed Meeting Record
 
-### 2) 详细会议记录
+The detail page shows the structured summary the LLM produced from the meeting transcript.
 
-详细页用于查看 LLM 对转录内容的总结结构。
+![Detailed Meeting Record](../static/yumeet-21.png)
 
-![详细会议记录](../static/yumeet-21.png)
+- Default collapse behavior:
+  - **Original Transcript** is collapsed by default
+  - Other summary sections are expanded by default
+- The search box at the top of the page supports full-text highlighted search
 
-- 折叠项默认行为：
-  - “转录原文”默认折叠
-  - 其他摘要模块默认展开
-- 页面顶部搜索框支持全文高亮检索
+![Collapsed Detail View](../static/yumeet-22.png)
+![Detailed Record Search](../static/yumeet-23.png)
 
-![详细记录折叠](../static/yumeet-22.png)
-![详细记录搜索](../static/yumeet-23.png)
+## System and Settings
 
-## 系统与设置
+### 1. Storage Policy
 
-### 1) 存储策略
+yumeet manages two categories of local files:
 
-涉及两类文件：
+- Original audio files from real-time transcription meetings
+- Text files exported from detailed meeting records
 
-1. 实时转录会议的原始音频
-2. 详细会议记录导出的文本文件
+![Meeting Storage Settings - 1](../static/yumeet-24.png)
+![Meeting Storage Settings - 2](../static/yumeet-25.png)
 
-![会议存储设置-1](../static/yumeet-24.png)
-![会议存储设置-2](../static/yumeet-25.png)
+Notes:
 
-说明：
+- Deleting a meeting record removes only the text record. The original audio file is unaffected.
+- If audio retention is turned off, raw audio is discarded when a live session ends.
 
-- 删除会议记录仅删除文本记录，不删除原始音频
-- 若关闭音频保留策略，实时会议结束后不保存音频源文件
+### 2. System Status
 
-### 2) 系统状态
+The System Status page shows current resource usage and lets you manually refresh the performance metrics.
 
-可查看系统状态并手动刷新性能监控数据。
+![System Status - 1](../static/yumeet-26.png)
+![System Status - 2](../static/yumeet-27.png)
 
-![系统状态-1](../static/yumeet-26.png)
-![系统状态-2](../static/yumeet-27.png)
+- **Debug Check**: Only available when developer mode is enabled. Use `Ctrl+Shift+I` to open DevTools alongside it.
+- **Performance Monitoring**: Click the refresh button in the upper-right corner to update the displayed metrics.
 
-- **Debug 检查**：仅在开发模式开启后可用（可配合 `Ctrl+Shift+I`）
-- **系统性能监控**：通过右上角刷新按钮更新显示
+### 3. Other Settings
 
-### 3) 其他设置
+![Other Settings](../static/yumeet-28.png)
 
-![其他设置](../static/yumeet-28.png)
-
-- **UI 设置**：字体缩放、动态效果开关
-- **AI 服务设置**：端口及服务地址调整（LLM-SDK / SM-SDK / 翻译服务）
-- **许可证管理**：上传、折叠、查看许可证内容
-- **设置页搜索**：按关键词过滤并显示匹配项
+- **UI Settings**: Font scaling and animation toggle
+- **AI Service Settings**: Adjust ports and service addresses for LLM-SDK, SM-SDK, and the translation service
+- **License Management**: Upload, collapse, and view license content
+- **Settings Search**: Filter and display matching settings by keyword
