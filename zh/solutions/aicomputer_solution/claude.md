@@ -5,7 +5,7 @@
  *
  * @Author: David(qiang.fu@spacemit.com)
  * @Date: 2026-03-09 14:26:58
- * @LastEditTime: 2026-05-27 10:57:17
+ * @LastEditTime: 2026-05-27 19:46:36
  * @FilePath: \doc\docs-ai\zh\solutions\aicomputer_solution\claude.md
  * @Description:
 -->
@@ -56,6 +56,13 @@ claude --version
 
 输出版本号表示安装成功：
 ![](../static/claude-version.png)
+
+**注意：对于K1需要安装nvm并切换node.js版本**
+
+```bash
+NVM_NODEJS_ORG_MIRROR=https://archive.spacemit.com/nodejs/k1 nvm install 22
+nvm use 22
+```
 
 ## 2. 配置
 
