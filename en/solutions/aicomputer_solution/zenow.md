@@ -68,7 +68,7 @@ sudo apt install zenow
 
 Open the application menu from the bottom-left corner, search for **zenow**, and click to launch.
 
-![](../static/zenow_1.jpg)
+<img src="../static/zenow_1_en.jpg" alt="" width="300">
 
 > 💡 **Tip**: Right-click the application icon and select **Add to Desktop**, then mark it as trusted for quick access in future sessions.
 
@@ -80,11 +80,11 @@ On first launch, AI models must be downloaded before use:
 2. Locate the desired model in the model list.
 3. Click the model name to begin downloading.
 
-![](../static/zenow_2.jpg)
+![](../static/zenow_2_en.jpg)
 
 You can download multiple models simultaneously:
 
-![](../static/zenow_3.jpg)
+![](../static/zenow_3_en.jpg)
 
 ### 3. Start a Model
 
@@ -92,11 +92,11 @@ Once a model has downloaded, click its name again to start it. Model status is i
 
 | Indicator | Status      |
 |-----------|-------------|
-| 🔴 Red    | Not started |
-| 🟡 Yellow | Starting up |
-| 🟢 Green  | Ready       |
+| 🔴 Red    | Stopped |
+| 🟡 Yellow | Starting |
+| 🟢 Green  | Running      |
 
-![](../static/zenow_4.jpg)
+![](../static/zenow_4_en.jpg)
 
 > ⚠️ **Important**: To use the full knowledge base feature, download and start at least one model of each type:
 > - **LLM model** — Generates conversational responses
@@ -109,16 +109,16 @@ Once a model has downloaded, click its name again to start it. Model status is i
 
 #### Start a New Conversation
 
-1. Click **New Chat** in the left sidebar.
+1. Click **Chat** in the left sidebar.
 2. Confirm the LLM model status shows green.
-3. Enter a question in the input box and press Enter, or click the send button.
+3. Enter a question in the input dialog box 
+4. Press Enter, or click the send button.
 
-![](../static/zenow_13.jpg)
+![](../static/zenow_13_en.jpg)
 
 The application automatically creates a conversation session and supports multi-turn dialogue with persistent context memory.
 
-![](../static/zenow_19.jpg)
-
+![](../static/zenow_19_en.jpg)
 
 ### Knowledge Base Management
 
@@ -126,102 +126,97 @@ The application automatically creates a conversation session and supports multi-
 
 A SpacemiT knowledge base is included by default and can be used to query topics covered within it, such as the K3's computing performance.
 
-![Pre-loaded knowledge base](../static/zenow_27.png)
+![Pre-loaded knowledge base](../static/zenow_27_en.png)
 
 #### Create a Knowledge Base
 
 1. Click **Knowledge Base** in the left sidebar.
-2. Click the **New Knowledge Base** button.
+2. Click the **Create Knowledge Base** button.
 3. Enter a name and description for the knowledge base.
 4. Optionally, select a custom avatar.
 
-![Create knowledge base](../static/zenow_20.jpg)
+![Create knowledge base](../static/zenow_20_en.jpg)
 
 #### Import Documents
 
-1. Open the knowledge base created in the previous step.
-2. Click the **Add Document** button.
-3. Select the files to upload (hold **Ctrl** to select multiple files).
+1. Open a knowledge base.
+   ![](../static/zenow_5_en.jpg)
+2. Click the **Add Material** button.
+   ![](../static/zenow_7_en.jpg)
+3. Select the files or folder to upload (hold **Ctrl** to select multiple files).
+   ![](../static/zenow_8_en.jpg)
 4. Wait for document processing to complete.
-5. If the page is navigated away from before vectorization finishes, a prompt will appear — click **Continue Vectorizing** and wait for the process to complete.
-
-![](../static/zenow_5.jpg)
-![](../static/zenow_7.jpg)
-![](../static/zenow_8.jpg)
-![](../static/zenow_11.jpg)
-![](../static/zenow_12.jpg)
+   ![](../static/zenow_11_en.jpg)
+5. If the page is navigated away from before vectorization finishes, a prompt will appear — click **Continue Vectorization** and wait for the process to complete.
+   ![](../static/zenow_12_en.jpg)
 
 #### Chat with a Knowledge Base
 
 1. Start a new conversation or select an existing session.
-2. In the input box, type **@** and select the target knowledge base from the picker.
-3. Enter a question and press Enter. The AI will respond based on the knowledge base content.
-
-![](../static/zenow_14.jpg)
-![](../static/zenow_15.jpg)
-![](../static/zenow_16.jpg)
+2. In the input dialogue box, type **@** and select the target knowledge base.
+   ![](../static/zenow_14_en.jpg)
+3. Enter a question and press Enter. 
+   ![](../static/zenow_15_en.jpg)
+   The AI will respond based on the knowledge base content.
+   ![](../static/zenow_16_en.jpg)
 
 ## Advanced Settings
 
-### Chat Parameters
+### Parameters
 
-![Chat parameters](../static/zenow_24.png)
+![Chat parameters](../static/zenow_24_en.png)
 
-The following LLM generation parameters can be configured on the Settings page:
+The following LLM parameters can be configured on the Settings page:
 
-**LLM Client Parameters**
-- **temperature**: Controls output randomness. Default: `0.7`. Range: `0.0–2.0`. Higher values produce more varied responses.
-- **repeat_penalty**: Reduces repetitive output. Default: `1.1`.
-- **max_tokens**: Maximum number of tokens per response. Default: `2048`.
+**LLM Parameters**
+- **Temperature**: Controls output randomness. Default: `0.7`. Range: `0.0–2.0`. Higher values produce more varied responses.
+- **repeat Penalty**: Reduces repetitive output. Default: `1.1`.
+- **Max Tokens**: Maximum number of tokens per response. Default: `2048`.
 
-**Conversation System Prompt (`conversation_system_prompt`)**
+**Conversation System Prompt**
 - Defines the AI's role, behavior, and response style.
 - Applies to standard chat mode (when no knowledge base is selected).
 
 ### RAG Parameters
 
-![RAG parameters](../static/zenow_25.png)
+![RAG parameters](../static/zenow_25_en.png)
 
 Knowledge base Q&A uses a two-stage retrieval and weighted fusion strategy. The following parameters can be configured:
 
 **LLM Client Parameters (RAG mode)**
-- **temperature**: Default: `0` (deterministic output).
-- **repeat_penalty**: Default: `1.1`.
-- **max_tokens**: Default: `120`.
-
-**Embed Client Parameters**
-- **normalize**: Whether to normalize embedding vectors. Default: `true`.
-- **truncate**: Whether to truncate text that exceeds the maximum length. Default: `true`.
+- **Temperature**: Default: `0` (deterministic output).
+- **Repeat Penalty**: Default: `1.1`.
+- **Max Tokens**: Default: `120`.
 
 **Retrieval Parameters**
 
-- **top_k** (final result count)
+- **Top K** (final result count)
   - Number of document chunks returned to the LLM after weighted fusion.
   - Default: `5`. Range: `1–20`.
   - Affects context length and generation quality.
 
-- **initial_k** (initial retrieval count)
+- **Initial K** (initial retrieval count)
   - Number of candidate documents retrieved in the first-stage Embed vector search.
   - Default: `10`. Range: `5–100`.
   - Higher values improve recall but increase computational cost.
 
-- **min_similarity** (minimum similarity threshold)
+- **Min Similarity** (minimum similarity threshold)
   - Similarity threshold below which results are filtered out.
   - Default: `-1` (no filtering). Range: `-1.0–1.0`.
 
 **Fusion Weight Parameters**
 
-- **embed_weight** (embedding weight)
+- **Embed Weight** (embedding weight)
   - Weight of the Embed vector similarity score in the fusion formula.
   - Default: `0.4`. Range: `0.0–1.0`.
   - Controls the importance of semantic similarity.
 
-- **bm25_weight** (keyword weight)
+- **BM25 Weight** (keyword weight)
   - Weight of the BM25 keyword matching score in the fusion formula.
   - Default: `0.2`. Range: `0.0–1.0`.
   - Controls the importance of exact keyword matching.
 
-- **rerank_weight** (reranking weight)
+- **Rerank Weight** (reranking weight)
   - Weight of the Rerank model score in the fusion formula.
   - Default: `0.4`. Range: `0.0–1.0`.
   - Controls the importance of deep semantic understanding.
@@ -230,8 +225,8 @@ Knowledge base Q&A uses a two-stage retrieval and weighted fusion strategy. The 
 
 **Toggle Parameters**
 
-- **bm25_enable**: Enables BM25 keyword retrieval. Default: `true`.
-- **rerank_enable**: Enables Rerank re-scoring. Default: `true`.
+- **Enable BM25**: Enables BM25 keyword retrieval. Default: `true`.
+- **Use Rerank**: Enables Rerank re-scoring. Default: `true`.
 
 **Retrieval Pipeline**
 

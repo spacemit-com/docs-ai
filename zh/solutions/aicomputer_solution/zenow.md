@@ -187,10 +187,6 @@ sudo apt install zenow
 - **repeat_penalty（重复惩罚）**：默认 1.1
 - **max_tokens（最大生成长度）**：默认 120
 
-**Embed 客户端参数**
-- **normalize（归一化）**：是否对向量归一化，默认 true
-- **truncate（截断）**：是否截断超长文本，默认 true
-
 **检索参数（retrieval）**
 
 - **top_k（最终返回数量）**
