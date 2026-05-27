@@ -18,6 +18,7 @@ sidebar_position: 1
  ---
 
 - [SpacemiT-ONNXRuntime](#spacemit-onnxruntime)
+  - [平台支持情况](#平台支持情况)
   - [QuickStart](#quickstart)
       - [资源获取](#资源获取)
       - [ONNXRuntime模型推理](#onnxruntime模型推理)
@@ -45,6 +46,9 @@ sidebar_position: 1
 ## QuickStart
 
 #### 资源获取
+可在[spacemit-onnxruntime](https://github.com/spacemit-com/onnxruntime/releases)路径获得当前最新的发布库，以及订阅release通知，或在bainbu系统内通过包安装获得库资源
+
+
 ```shell
 sudo apt-get update
 sudo apt-get install -y spacemit-onnxruntime libopencv-dev python3-spacemit-ort python3-pillow python3-matplotlib python3-opencv
@@ -115,12 +119,12 @@ provider_options["SPACEMIT_EP_INTRA_THREAD_NUM"] = "4";
 ~~~
 
 #### `SPACEMIT_EP_INTRA_THREAD_AFFINITY`
->+ 指定ep的线程亲和性，逗号间隔，数量与`SPACEMIT_EP_INTRA_THREAD_NUM`一致
+>+ 指定ep的线程亲和性，分号间隔，数量与`SPACEMIT_EP_INTRA_THREAD_NUM`一致
 ~~~ C++
 std::unordered_map<std::string, std::string> provider_options;
 provider_options["SPACEMIT_EP_INTRA_THREAD_NUM"] = "4";
 // 具体绑定核心，需要根据K1、K3实际情况判定
-provider_options["SPACEMIT_EP_INTRA_THREAD_AFFINITY"] = "8,10,12,14";
+provider_options["SPACEMIT_EP_INTRA_THREAD_AFFINITY"] = "8;10;12;14";
 ~~~
 
 #### `SPACEMIT_EP_INTER_THREAD_NUM`

@@ -7,6 +7,7 @@ sidebar_position: 9
 
 - [ModelZoo](#modelzoo)
   - [基础模型](#基础模型)
+    - [测试方式](#测试方式)
     - [resnet](#resnet)
     - [mobilenet](#mobilenet)
     - [efficientnet](#efficientnet)
@@ -14,8 +15,11 @@ sidebar_position: 9
     - [yolov5](#yolov5)
     - [yolov6](#yolov6)
     - [yolov8](#yolov8)
+    - [yolov8-seg](#yolov8-seg)
+    - [yolov8-pose](#yolov8-pose)
     - [yolov12](#yolov12)
   - [大模型](#大模型)
+    - [测试方式](#测试方式-1)
     - [Qwen](#qwen)
     - [HunYuan](#hunyuan)
     - [Llama](#llama)
@@ -27,10 +31,45 @@ sidebar_position: 9
 >- date：2026-2-9
 
 - K3
->- 推理引擎版本: spacemit-ort-2.0.2+rc2
->- OS：bianbu-4.0rc1
->- date：2026-4-16
->- 6400DDR，A100@1.8GHz
+>- 推理引擎版本: [v2.0.3](https://github.com/spacemit-com/onnxruntime/releases/download/2.0.3/spacemit-ort.riscv64.2.0.3.tar.gz)
+>- OS：bianbu-4.0rc3
+>- date：2026-5-26
+
+### 测试方式
+~~~
+# 进入spacemit-ort库路径
+# cd {spacemit_ort_lib}/
+export LD_LIBRARY_PATH=./lib/
+
+# 调整为自己的${model_path}(模型文件路径)，${num of cores}(选择跑几个核心)
+./bin/onnxruntime_perf_test ${model_path} -e spacemit -r 10 -x 1 -S 1 -s -c 1 -i "SPACEMIT_EP_INTRA_THREAD_NUM|${num of cores}" -I
+
+# 输出信息如下
+using SpaceMITExecutionProvider
+setting SPACEMIT_EP_INTRA_THREAD_NUM : 4
+Setting intra_op_num_threads to 1
+Session creation time cost: 0.169475 s
+First inference time cost: 109 ms
+Total inference time cost: 0.0727021 s
+Total inference requests: 10
+Average inference time cost total: 7.270205 ms
+Total inference run time: 0.0727619 s
+Number of inferences per second: 137.435
+Avg CPU usage: 62 %
+Peak working set size: 91336704 bytes
+Avg CPU usage:62
+Peak working set size:91336704
+Runs:10
+Min Latency: 0.00720383 s
+Max Latency: 0.00730163 s
+P50 Latency: 0.00727787 s
+P90 Latency: 0.00730163 s
+P95 Latency: 0.00730163 s
+P99 Latency: 0.00730163 s
+P999 Latency: 0.00730163 s
+
+# Average inference time cost total即单帧推理耗时
+~~~
 
 ### resnet
 
@@ -39,17 +78,17 @@ sidebar_position: 9
 | 模型名 | type | shape | 1 Core/ms | 2 Core/ms | 4 Core/ms |
 | --- | --- | --- | --- | --- | --- |
 | resnet18 | int8 | 224x224 | 39.71 | 22.49 | 13.71 |
-| resnet50 | int8 | 224x224 | 93.37 | 53.01 | 32.86 |
+| [resnet50](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/resnet/resnet50.q.onnx) | int8 | 224x224 | 93.37 | 53.01 | 32.86 |
 | resnet50 | fp16 | 224x224 | 667.55 | 349.34 | 217.27 |
 
 - K3
 
 | 模型名 | type | shape | 1 Core/ms | 2 Core/ms | 4 Core/ms | 8 Core/ms |
 | --- | --- | --- | --- | --- | --- | --- |
-| resnet18 | int8 | 224x224 | 7.66 | 4.60 | 2.92 | 2.07 |
-| resnet50 | int8 | 224x224 | 18.91 | 11.17 | 6.98 | 5.22 |
+| resnet18 | int8 | 224x224 | 7.88 | 4.74 | 2.94 | 2.11 |
+| [resnet50](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/resnet/resnet50.q.onnx) | int8 | 224x224 | 19.54 | 11.47 | 7.25 | 5.22 |
 | resnet50.batch4 | int8 | 224x224 | 73.37 | 40.19 | 23.19 | 15.55 |
-| resnet50 | fp16 | 224x224 | 34.22 | 23.18 | 18.37 | 16.46 |
+| resnet50 | fp16 | 224x224 | 35.38 | 24.00 | 19.27 | 16.68 |
 
 ### mobilenet
 
@@ -66,10 +105,10 @@ sidebar_position: 9
 
 | 模型名 | type | shape | 1 Core/ms | 2 Core/ms | 4 Core/ms | 8 Core/ms |
 | --- | --- | --- | --- | --- | --- |---|
-| mobilenet_v1 | int8 | 224x224 | 12.73 | 7.2 | 3.9 | 2.30 |
-| mobilenet_v2 | int8 | 224x224 | 17.48 | 9.85 | 5.19 | 3.25 |
-| mobilenet_v3_small | fp16 | 224x224 | 6.75 | 4.31 | 2.90 | 2.70 |
-| mobilenet_v3_large | fp16 | 224x224 | 13.51 | 8.14 | 5.16 | 4.07 |
+| mobilenet_v1 | int8 | 224x224 | 12.71 | 7.24 | 3.95 | 2.38 |
+| mobilenet_v2 | int8 | 224x224 | 17.35 | 9.80 | 5.14 | 3.29 |
+| mobilenet_v3_small | fp16 | 224x224 | 7.62 | 4.71 | 3.13 | 2.82 |
+| mobilenet_v3_large | fp16 | 224x224 | 13.68 | 8.32 | 5.28 | 4.14 |
 
 ### efficientnet
 
@@ -88,12 +127,12 @@ sidebar_position: 9
 
 | 模型名 | type | shape | 1 Core/ms | 2 Core/ms | 4 Core/ms | 8 Core/ms |
 | --- | --- | --- | --- | --- | --- |---|
-| efficientnet_v1_b0 | int8 | 224x224 | 28.30 | 16.33 | 10.46 | 7.94 |
-| efficientnet_v1_b1 | int8 | 224x224 | 43.66 | 25.50 | 16.57 | 12.62 |
-| efficientnet_v2_s | int8 | 224x224 | 42.52 | 24.34 | 15.20 | 11.97 |
-| efficientnet_v1_b0 | fp16 | 224x224 | 30.51 | 18.41 | 12.33 | 9.95 |
-| efficientnet_v1_b1 | fp16 | 224x224 | 44.64 | 27.09 | 18.22 | 14.45 |
-| efficientnet_v2_s | fp16 | 224x224 | 54.56 | 31.69 | 20.53 | 14.55 |
+| efficientnet_v1_b0 | int8 | 224x224 | 33.32 | 18.66 | 10.36 | 7.93 |
+| efficientnet_v1_b1 | int8 | 224x224 | 52.32 | 28.79 | 16.12 | 12.07 |
+| efficientnet_v2_s | int8 | 224x224 | 43.06 | 24.64 | 15.19 | 10.65 |
+| efficientnet_v1_b0 | fp16 | 224x224 | 34.16 | 19.70 | 12.82 | 9.86 |
+| efficientnet_v1_b1 | fp16 | 224x224 | 50.25 | 29.40 | 18.94 | 14.44 |
+| efficientnet_v2_s | fp16 | 224x224 | 55.02 | 32.48 | 20.85 | 14.25 |
 
 ### vit
 
@@ -108,8 +147,8 @@ sidebar_position: 9
 
 | 模型名 | type | shape | 1 Core/ms | 2 Core/ms | 4 Core/ms | 8 Core/ms |
 | --- | --- | --- | --- | --- | --- | --- |
-| vit_b_16 | int8 | 224x224 | 112.43 | 62.83 | 38.78 | 25.83 |
-| vit_b_16 | fp16 | 224x224 | 147.27 | 91.96 | 66.03 | 54.53 |
+| vit_b_16 | int8 | 224x224 | 104.25 | 58.93 | 37.39 | 25.01 |
+| vit_b_16 | fp16 | 224x224 | 206.15 | 122.17 | 82.56 | 62.04 |
 
 ### yolov5
 
@@ -117,17 +156,17 @@ sidebar_position: 9
 
 | 模型名 | type | shape | 1 Core/ms | 2 Core/ms | 4 Core/ms |
 | --- | --- | --- | --- | --- | --- |
-| yolov5n | int8 | 640x640 | 233.24 | 149.24 | 111.18 |
-| yolov5s | int8 | 640x640 | 450.00 | 238.84 | 140.92 |
+| [yolov5n](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov5/yolov5n.q.onnx) | int8 | 640x640 | 233.24 | 149.24 | 111.18 |
+| [yolov5s](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov5/yolov5s.q.onnx) | int8 | 640x640 | 450.00 | 238.84 | 140.92 |
 | yolov5m | int8 | 640x640 | 996.12 | 483.86 | 269.41 |
 
 - K3
 
 | 模型名 | type | shape | 1 Core/ms | 2 Core/ms | 4 Core/ms | 8 Core/ms |
 | --- | --- | --- | --- | --- | --- | --- |
-| yolov5n | int8 | 640x640 | 52.15 | 28.36 | 16.64 | 10.9 |
-| yolov5s | int8 | 640x640 | 79.81 | 43.43 | 25.77 | 16.66 |
-| yolov5m | int8 | 640x640 | 156.78 | 84.41 | 47.46 | 30.42 |
+| [yolov5n](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov5/yolov5n.q.onnx) | int8 | 640x640 | 44.72 | 24.56 | 14.51 | 9.80 |
+| [yolov5s](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov5/yolov5s.q.onnx) | int8 | 640x640 | 74.38 | 40.77 | 24.27 | 15.96 |
+| yolov5m | int8 | 640x640 | 153.58 | 82.73 | 46.53 | 29.65 |
 
 ### yolov6
 
@@ -142,26 +181,45 @@ sidebar_position: 9
 
 | 模型名 | type | shape | 1 Core/ms | 2 Core/ms | 4 Core/ms | 8 Core/ms |
 | --- | --- | --- | --- | --- | --- | --- |
-| yolov6n | int8 | 640x640 | 39.42 | 21.91 | 13.19 | 8.81 |
-| yolov6s | int8 | 640x640 | 71.0 | 38.98 | 23.05 | 14.42 |
+| yolov6n | int8 | 640x640 | 32.93 | 18.59 | 11.11 | 7.72 |
+| yolov6s | int8 | 640x640 | 66.36 | 36.61 | 21.56 | 13.60 |
 
 ### yolov8
-
 - K1
 
 | 模型名 | type | shape | 1 Core/ms | 2 Core/ms | 4 Core/ms |
 | --- | --- | --- | --- | --- | --- |
-| yolov8n | int8 | 640x640 | 211.49 | 118.88 | 76.18 |
-| yolov8s | int8 | 640x640 | 463.19 | 240.62 | 142.38 |
-| yolov8m | int8 | 640x640 | 994.91 | 510.06 | 284.39 |
+| [yolov8n](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8/yolov8n.q.onnx) | int8 | 640x640 | 211.49 | 118.88 | 76.18 |
+| [yolov8s](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8/yolov8s.q.onnx) | int8 | 640x640 | 463.19 | 240.62 | 142.38 |
+| [yolov8m](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8/yolov8m.q.onnx) | int8 | 640x640 | 994.91 | 510.06 | 284.39 |
 
 - K3
 
 | 模型名 | type | shape | 1 Core/ms | 2 Core/ms | 4 Core/ms | 8 Core/ms |
 | --- | --- | --- | --- | --- | --- | --- |
-| yolov8n | int8 | 640x640 | 50.67 | 27.81 | 16.39 | 11.04 |
-| yolov8s | int8 | 640x640 | 82.39 | 45.06 | 26.96 | 18.08 |
-| yolov8m | int8 | 640x640 | 165.84 | 89.342 | 50.522 | 33.96 |
+| [yolov8n](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8/yolov8n.q.onnx) | int8 | 640x640 | 43.05 | 23.91 | 14.23 | 9.82 |
+| [yolov8s](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8/yolov8s.q.onnx) | int8 | 640x640 | 76.96 | 42.41 | 25.52 | 17.14 |
+| [yolov8m](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8/yolov8m.q.onnx) | int8 | 640x640 | 163.62 | 88.08 | 49.67 | 32.66 |
+
+### yolov8-seg
+
+- K3
+
+| 模型名 | type | shape | 1 Core/ms | 2 Core/ms | 4 Core/ms | 8 Core/ms |
+| --- | --- | --- | --- | --- | --- | --- |
+| [yolov8n-seg](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8_seg/yolov8n-seg.q.onnx) | int8 | 640x640 | 68.70 | 37.34 | 21.44 | 13.97 |
+| [yolov8s-seg](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8_seg/yolov8s-seg.q.onnx) | int8 | 640x640 | 111.86 | 60.74 | 35.67 | 23.22 |
+| [yolov8m-seg](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8_seg/yolov8m-seg.q.onnx) | int8 | 640x640 | 216.20 | 115.77 | 64.78 | 41.56 |
+
+### yolov8-pose
+
+- K3
+
+| 模型名 | type | shape | 1 Core/ms | 2 Core/ms | 4 Core/ms | 8 Core/ms |
+| --- | --- | --- | --- | --- | --- | --- |
+| [yolov8n-pose](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8_pose/yolov8n-pose.q.onnx) | int8 | 640x640 | 47.14 | 26.73 | 16.46 | 11.44 |
+| [yolov8s-pose](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8_pose/yolov8s-pose.q.onnx) | int8 | 640x640 | 83.19 | 46.34 | 28.31 | 19.15 |
+| [yolov8m-pose](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8_pose/yolov8m-pose.q.onnx) | int8 | 640x640 | 170.45 | 92.66 | 52.62 | 34.96 |
 
 ### yolov12
 
@@ -177,18 +235,36 @@ sidebar_position: 9
 
 | 模型名 | type | shape | 1 Core/ms | 2 Core/ms | 4 Core/ms | 8 Core/ms |
 | --- | --- | --- | --- | --- | --- | --- |
-| yolo12n | int8 | 640x640 | 122.262 | 65.914 | 38.624 | 28.20 |
-| yolo12s | int8 | 640x640 | 213.505 | 113.878 | 66.6732 | 47.99 |
-| yolo12m | int8 | 640x640 | 410.327 | 217.392 | 124.668 | 87.35 |
+| yolo12n | int8 | 640x640 | 119.64 | 64.88 | 38.08 | 27.60 |
+| yolo12s | int8 | 640x640 | 218.19 | 117.37 | 68.71 | 48.16 |
+| yolo12m | int8 | 640x640 | 428.03 | 228.18 | 130.62 | 89.44 |
 
 ## 大模型
 
 - K3
->- llama.cpp版本：0.0.7+a3
->- OS：bianbu-4.0rc1
->- date：2026-4-16
->- 6400DDR，A100@1.8GHz
->- bash: llama-bench -m model.gguf -t 8 -p 128 -n 128 -mmp 0 -fa 1 -ub 128
+>- llama.cpp版本：[0.1.1](https://github.com/spacemit-com/llama.cpp/releases/download/spacemit-llama.cpp.riscv64.0.1.1/spacemit-llama.cpp.riscv64.0.1.1.tar.gz)
+>- OS：bianbu-4.0rc3
+>- date：2026-5-26
+
+### 测试方式
+~~~
+# 进入spacemit-llama.cpp库路径
+# cd {spacemit-llama.cpp}/
+export LD_LIBRARY_PATH=./lib/
+
+# 调整为自己的${model_path}(模型文件路径)，${num of cores}(选择跑几个核心)
+./bin/llama-bench -m ${model_path} -t ${num of cores} -p 128 -n 128 -mmp 0 -fa 1 -ub 128
+
+# 输出信息如下
+CPU_RISCV64_SPACEMIT: tcm is available, blk_size: 393216, blk_num: 8, is_fake_tcm: 0
+CPU_RISCV64_SPACEMIT: num_cores: 16, num_perfer_cores: 8, perfer_core_arch_id: a064, exclude_main_thread: 0, use_ime1: 0, use_ime2: 1, mem_backend: HPAGE, cpu_mask: ff00, aicpu_id_offset: 8
+CPU_RISCV64_SPACEMIT: alloc_chunk: open(/dev/tcm_sync_mem) failed, errno=2
+CPU_RISCV64_SPACEMIT: failed to allocate init_barrier from shared mem, falling back to heap
+| model                          |       size |     params | backend    | threads | n_ubatch | fa | mmap |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | ------: | -------: | -: | ---: | --------------: | -------------------: |
+| qwen3 0.6B Q4_0                | 358.78 MiB |   596.05 M | CPU        |       8 |      128 |  1 |    0 |           pp128 |        499.75 ± 0.22 |
+| qwen3 0.6B Q4_0                | 358.78 MiB |   596.05 M | CPU        |       8 |      128 |  1 |    0 |           tg128 |         53.35 ± 0.03 |
+~~~
 
 ### Qwen
 
@@ -196,14 +272,12 @@ sidebar_position: 9
 
 | 模型名 | 量化类型 | PP128 (token/s) | TG128 (token/s) | PP1280 (token/s) | TG1280 (token/s) |
 | --- | --- | --- | --- | --- | --- |
-| qwen3-0.6B | Q4_0 | 478.45 | 49.36 | - | - |
-| qwen3-1.7B | Q4_0 | 202.50 | 22.97 | - | - |
-| qwen3-4B | Q4_0 | 80.05 | 9.57 | - | - |
-| qwen3-moe-30B-A3B | Q4_0 | 57.41 | 11.89 | 44.3 | 10.7
-| qwen3.5-0.8B | Q4_0 | 59.64 | 24.30 | - | - |
-| qwen3.5-2B | Q4_1 | 46.30 | 13.75 | - | - |
-| HY-MT1.5-1.8B | Q4_K_M | 169.17 | 15.36 | - | - |
-| llama2-7B | Q4_0 | 49.45 | 6.90 | - | - |
+| [qwen3-0.6B](https://www.modelscope.cn/models/unsloth/Qwen3-0.6B-GGUF/file/view/master/Qwen3-0.6B-Q4_0.gguf?status=2) | Q4_0 | 499.75 | 53.35 | - | - |
+| [qwen3-1.7B](https://www.modelscope.cn/models/unsloth/Qwen3-1.7B-GGUF/file/view/master/Qwen3-1.7B-Q4_0.gguf?status=2) | Q4_0 | 229.79 | 23.11 | - | - |
+| [qwen3-4B](https://www.modelscope.cn/models/unsloth/Qwen3-4B-Thinking-2507-GGUF/file/view/master/Qwen3-4B-Thinking-2507-Q4_0.gguf?status=2) | Q4_0 | 76.44 | 11.03 | - | - |
+| [qwen3-moe-30B-A3B](https://www.modelscope.cn/models/unsloth/Qwen3-30B-A3B-Thinking-2507-GGUF/file/view/master/Qwen3-30B-A3B-Thinking-2507-Q4_0.gguf?status=2) | Q4_0 | 55.54 | 13.33 | 43.86 | 11.93
+| [qwen3.5-0.8B](https://www.modelscope.cn/models/unsloth/Qwen3.5-0.8B-GGUF/file/view/master/Qwen3.5-0.8B-Q4_0.gguf?status=2) | Q4_0 | 182.69 | 29.33 | - | - |
+| [qwen3.5-2B](https://www.modelscope.cn/models/unsloth/Qwen3.5-2B-GGUF/file/view/master/Qwen3.5-2B-Q4_0.gguf?status=2) | Q4_1 | 112.22 | 16.15 | - | - |
 
 ### HunYuan
 
@@ -211,7 +285,7 @@ sidebar_position: 9
 
 | 模型名 | 量化类型 | PP128 (token/s) | TG128 (token/s) | PP1280 (token/s) | TG1280 (token/s) |
 | --- | --- | --- | --- | --- | --- |
-| HY-MT1.5-1.8B | Q4_K_M | 169.17 | 15.36 | - | - |
+| [HY-MT1.5-1.8B](https://www.modelscope.cn/models/Tencent-Hunyuan/HY-MT1.5-1.8B-GGUF/files) | Q4_K_M | 157.81 | 20.15 | - | - |
 
 ### Llama
 
@@ -219,4 +293,45 @@ sidebar_position: 9
 
 | 模型名 | 量化类型 | PP128 (token/s) | TG128 (token/s) | PP1280 (token/s) | TG1280 (token/s) |
 | --- | --- | --- | --- | --- | --- |
-| llama2-7B | Q4_0 | 49.45 | 6.90 | - | - |
+| [llama2-7B](https://www.modelscope.cn/models/TheBloke/Llama-2-7B-GGUF/files) | Q4_0 | 50.40 | 7.07 | - | - |
+
+## 多模态大模型
+
+- K3
+>- llama.cpp版本：[0.1.1](https://github.com/spacemit-com/llama.cpp/releases/download/spacemit-llama.cpp.riscv64.0.1.1/spacemit-llama.cpp.riscv64.0.1.1.tar.gz)
+>- 推理引擎版本: [v2.0.3](https://github.com/spacemit-com/onnxruntime/releases/download/2.0.3/spacemit-ort.riscv64.2.0.3.tar.gz)
+>- OS：bianbu-4.0rc3
+>- date：2026-5-26
+
+### 测试方式
+
+
+> 以qwen3vlencoder为例
+
+```bash
+export LD_LIBRARY_PATH=./spacemit-llama.cpp/lib:./spacemit_ort/lib
+export SPACEMIT_EP_DENSE_ACCURACY_LEVEL=1
+
+llama-server -m qwen3vl-30b-text-q4_1.gguf --media-backend smt --smt-config-dir ./ -ctk f16 -ctv f16 -t 8 -c 1024 --host 0.0.0.0 --port 8080 --reasoning-budget 0 --reasoning off
+```
+> 详细参数含义见llama.cpp.md
+
+### VLM
+
+- K3
+
+| 模型名 | 图像规格 | vision_encoder 4 Core/ms | vision_encoder 8 Core/ms |
+| --- | --- | --- | --- |
+| fastvlm-0.5B | 512*512 | 256.47 | 164.50 |
+| Qwen3-VL-30B-A3B | 768*768 | 7928.13 | 4753.55 |
+| Qwen3.5-0.8B | 384*384 | 340.42 | 245.61 |
+| Qwen3.5-2B | 384*384 | 901.56 | 794.03 |
+| Qwen3.5-4B | 384*384 | 904.73 | 798.71 |
+
+### ASR
+
+- K3
+
+| 模型名 | 4 Core/rtf | 4 Core/rtf |
+| --- | --- | --- |
+| qwen3-ASR-0.6B | 0.089 | 0.087 |

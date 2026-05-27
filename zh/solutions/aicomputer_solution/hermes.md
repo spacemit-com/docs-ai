@@ -11,7 +11,7 @@
 -->
 sidebar_position: 8
 
-# Hermes Agent
+# Hermes Agent(云端算力)
 
 **Hermes Agent** 是一个开源的 AI 智能体框架，支持多种 LLM provider，具备工具调用、定时任务、MCP 协议、Web 访问等能力，可在终端 CLI 或即时通讯平台（Telegram、Discord 等）中使用。
 

@@ -5,7 +5,7 @@
  * 
  * @Author: David(qiang.fu@spacemit.com)
  * @Date: 2026-03-17 11:27:55
- * @LastEditTime: 2026-05-21 10:13:52
+ * @LastEditTime: 2026-05-23 15:44:24
  * @FilePath: \doc\docs-ai\zh\solutions\aicomputer_solution\index.md
  * @Description: 
 -->
@@ -47,19 +47,19 @@ sidebar_position: 2
 - [SpacemiT AI Lab](ailab.md)
 
 
-## Claude Code
+## Claude Code(云端算力)
 
 **Claude Code**是Anthropic公司推出的终端AI编程助手，可以运行在进迭K系列平台上辅助编程。
 
 - [Claude Code](claude.md)
 
-## OpenClaw
+## OpenClaw(云端算力)
 
 **OpenClaw（龙虾）**是奥地利程序员彼得·斯坦伯格开发的开源AI智能体，于2025年11月推出。可运行在进迭K系列平台上。
 
 - [OpenClaw](openclaw.md)
 
-## Hermes
+## Hermes(云端算力)
 
 **Hermes（爱马仕）**是由Nous Research开发的一款开源自主AI智能体，于2026年2月开源。可运行在进迭K系列平台上。
 
