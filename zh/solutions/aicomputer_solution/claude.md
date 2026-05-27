@@ -5,13 +5,13 @@
  *
  * @Author: David(qiang.fu@spacemit.com)
  * @Date: 2026-03-09 14:26:58
- * @LastEditTime: 2026-05-21 10:23:22
+ * @LastEditTime: 2026-05-27 10:57:17
  * @FilePath: \doc\docs-ai\zh\solutions\aicomputer_solution\claude.md
  * @Description:
 -->
 sidebar_position: 6
 
-# Claude Code
+# Claude Code(云端算力)
 
 **Claude Code** 是一个用于智能体编程的命令行工具,由**Anthropic**开发。它允许开发者通过命令行界面与 Claude AI 进行交互,实现代码生成、调试、重构等智能编程辅助功能。
 
@@ -21,7 +21,7 @@ sidebar_position: 6
 |-----------------------|-----------------------|
 | K1 Buildroot          | ❌ 不支持              |
 | K1 OpenHarmony     | ❌ 不支持              |
-| K1 Bianbu LXQT/GNOME    | ❌ 不支持             |
+| K1 Bianbu LXQT/GNOME    | ✅ 支持            |
 | K3 Buildroot          | ❌ 不支持              |
 | K3 OpenHarmony     | ❌ 不支持              |
 | K3 Bianbu LXQT/GNOME  | ✅ 支持                |
@@ -142,6 +142,8 @@ source ~/.bashrc
 ```bash
 llama-server -m Qwen2.5-0.5B-Instruct-Q4_0.gguf -t 8 --host 127.0.0.1 --port 8080 --ctx-size 153600 --n-gpu-layers 0 --batch-size 512 --metrics --no-mmap
 ```
+
+**注意：因Claude Code的输入上下文很长，--ctx-size需要配置大一些，15360无法满足需求，这里配置了153600**
 
 ### 5.4. 运行claude
 
