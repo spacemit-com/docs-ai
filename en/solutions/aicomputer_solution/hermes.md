@@ -1,19 +1,9 @@
-<!--
- * Copyright 2022-2023 SPACEMIT. All rights reserved.
- * Use of this source code is governed by a BSD-style license
- * that can be found in the LICENSE file.
- * 
- * @Author: David(qiang.fu@spacemit.com)
- * @Date: 2026-05-12 20:12:39
- * @LastEditTime: 2026-05-16 00:00:00
- * @FilePath: \doc\docs-ai\en\solutions\aicomputer_solution\hermes.md
- * @Description: 
--->
+
 sidebar_position: 8
 
-# Hermes Agent
+# Hermes Agent (Cloud Compute)
 
-**Hermes Agent** is an open-source AI agent framework that supports multiple LLM providers, with capabilities including tool calling, scheduled tasks, MCP protocol, and web access. It can be used via terminal CLI or integrated into messaging platforms (Telegram, Discord, etc.).
+**Hermes Agent** is an open-source AI agent framework that supports multiple LLM providers. It offers capabilities such as tool calling, scheduled tasks, MCP protocol support, and web access, and can be used from a terminal CLI or integrated into messaging platforms such as Telegram and Discord.
 
 ## Platform Support
 
@@ -28,21 +18,21 @@ sidebar_position: 8
 
 ## Installation
 
-### Option 1: apt Install (Recommended)
+### Option 1: `apt` Installation (Recommended)
 
-Install directly via apt on Bianbu OS:
+Install it directly through `apt` on Bianbu OS:
 
 ```bash
 sudo apt update
 sudo apt install hermes-agent
 ```
 
-Once installed, the `hermes` command is available immediately — no additional environment setup required.
-![alt text](../../../zh/solutions/static/hermes/hermes-agent.png)
+After installation, you can run the `hermes` command directly without any additional environment configuration.
+![Hermes Agent interface](../static/hermes/hermes-agent.png)
 
-### Option 2: Source Install (Developer)
+### Option 2: Source Installation (For Developers)
 
-For those who need to modify the code or contribute to development.
+This method is intended for users who need to modify the codebase or contribute to development.
 
 #### Prerequisites
 
@@ -64,9 +54,9 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 source ~/.bashrc
 ```
 
-#### 3. Extract libffi-dev Headers
+#### 3. Extract `libffi-dev` Headers
 
-Building `cffi` / `cryptography` on riscv64 requires `ffi.h`, but the system only ships the runtime library without headers. Use `apt-get download` to fetch the `.deb` package (no install, no sudo required), then extract the headers with `dpkg-deb -x`:
+Building `cffi` and `cryptography` on `riscv64` requires `ffi.h`, but the system includes only the runtime library and not the header files. Use `apt-get download` to fetch the `.deb` package without installing it or requiring `sudo`, then extract the headers with `dpkg-deb -x`:
 
 ```bash
 apt-get download libffi-dev
@@ -74,7 +64,7 @@ mkdir -p /tmp/libffi-dev
 dpkg-deb -x libffi-dev_*.deb /tmp/libffi-dev
 ```
 
-> `/tmp/libffi-dev` is lost on reboot. Re-run this step if you need to reinstall dependencies. An already-installed venv is not affected.
+> `/tmp/libffi-dev` is removed after a reboot. If you need to reinstall dependencies, run this step again. Existing virtual environments are not affected.
 
 #### 4. Create a Virtual Environment and Install Dependencies
 
@@ -92,20 +82,20 @@ source venv/bin/activate
 uv pip install -e ".[cron,cli,dev,mcp,web]"
 ```
 
-> The `voice` and `messaging` extras have limitations on riscv64. See [Unavailable Features](#unavailable-features).
+> The `voice` and `messaging` extras have limitations on `riscv64`. See [Unavailable Features](#unavailable-features) for details.
 
 ## Configuration
 
-### 1. Set API Key
+### 1. Configure the API Key
 
-Edit `~/.hermes/.env` (auto-generated on first run, or create it manually). Example using the MiniMax domestic endpoint:
+Edit `~/.hermes/.env` (generated automatically on first run, or create it manually). The following example uses the MiniMax China endpoint.
 
 ```env
 MINIMAX_CN_API_KEY=your_key_here
 MINIMAX_CN_BASE_URL=https://api.minimaxi.com/v1
 ```
 
-For the source install, you can also edit `.env` in the project directory directly:
+For a source installation, you can also edit the `.env` file directly under the project directory:
 
 ```bash
 cp .env.example .env
@@ -113,7 +103,7 @@ cp .env.example .env
 
 ### 2. Configure the Model
 
-Edit `~/.hermes/config.yaml` (auto-generated on first run, or create it manually):
+Edit `~/.hermes/config.yaml` (generated automatically on first run, or create it manually):
 
 ```yaml
 model:
@@ -130,17 +120,17 @@ custom_providers:
   model: MiniMax-M2.7-highspeed
 ```
 
-> The MiniMax API only accepts plain model names (e.g. `MiniMax-M2.7-highspeed`). Provider-prefixed names (e.g. `minimax-cn/MiniMax-M2.7-highspeed`) are not accepted.
+> The MiniMax API accepts only the plain model name, for example `MiniMax-M2.7-highspeed`. Provider-prefixed formats such as `minimax-cn/MiniMax-M2.7-highspeed` are not supported.
 
-## Starting the Agent
+## Start the Agent
 
-**apt install** — run directly:
+For an **`apt` installation**, run:
 
 ```bash
 hermes
 ```
 
-**Source install** — activate the virtual environment each time you open a new terminal:
+For a **source installation**, activate the virtual environment each time you open a new terminal:
 
 ```bash
 cd hermes-agent
@@ -150,7 +140,7 @@ source venv/bin/activate
 
 ## Supported LLM Providers
 
-Set the corresponding key in `.env` to switch providers:
+Set the corresponding key in `.env` to switch providers.
 
 | Provider          | Environment Variable   |
 | ----------------- | ---------------------- |
@@ -164,19 +154,19 @@ Set the corresponding key in `.env` to switch providers:
 
 ## Unavailable Features
 
-The following features are not available due to riscv64 platform limitations:
+The following features are currently unavailable because of `riscv64` platform limitations:
 
-| Feature                        | Reason                                                                   |
-| ------------------------------ | ------------------------------------------------------------------------ |
-| `voice` (speech recognition)   | `ctranslate2` has no riscv64 wheel; `faster-whisper` depends on it      |
-| Local STT (speech-to-text)     | Same as above                                                            |
-| `messaging` Discord encryption | `pynacl` requires `cffi` to build; skipped due to missing libffi headers |
+| Feature                        | Reason                                                                               |
+| ------------------------------ | ------------------------------------------------------------------------------------ |
+| `voice` (speech recognition)   | `ctranslate2` has no `riscv64` wheel; `faster-whisper` depends on it                |
+| Local STT (speech-to-text)     | Same as above                                                                        |
+| `messaging` Discord encryption | `pynacl` depends on `cffi` and is skipped because `libffi` headers are unavailable   |
 
-### Messaging (Optional)
+### Messaging Feature (Optional)
 
-The `messaging` feature connects Hermes Agent to messaging platforms (Telegram, Discord, Slack, WhatsApp, Signal, Matrix). Once a bot token is configured for the target platform, you can chat with the agent directly from those apps.
+The `messaging` feature allows Hermes Agent to connect to messaging platforms such as Telegram, Discord, Slack, WhatsApp, Signal, and Matrix. After configuring the bot token for the target platform, you can interact with the agent directly from those applications.
 
-To enable it in a source install, set the libffi environment variables and install separately:
+To enable it in a source installation, first set the `libffi` environment variables, and then install it separately:
 
 ```bash
 export PKG_CONFIG_PATH="/tmp/libffi-dev/usr/lib/riscv64-linux-gnu/pkgconfig:$PKG_CONFIG_PATH"
@@ -191,6 +181,3 @@ Start the messaging gateway:
 ```bash
 ./hermes gateway
 ```
-
-
-[def]: ../static/hermes/hermes-agent.png
