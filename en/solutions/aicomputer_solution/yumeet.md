@@ -100,11 +100,11 @@ Two storage directories can be configured:
 
 Live transcription can be started from two places:
 
-- Home page entry
-- Meeting page entry
+- Home page
+  ![Real-time Transcription Entry - Home](../static/yumeet-3.png)
 
-![Real-time Transcription Entry - Home](../static/yumeet-3.png)
-![Real-time Transcription Entry - Meeting Page](../static/yumeet-4.png)
+- Meeting page entry
+  ![Real-time Transcription Entry - Meeting Page](../static/yumeet-4.png)
 
 #### 1.2 Meeting Setup
 
