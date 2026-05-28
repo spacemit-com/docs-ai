@@ -25,7 +25,7 @@ sidebar_position: 9
     - [HunYuan](#hunyuan)
     - [Llama](#llama)
   - [多模态大模型](#多模态大模型)
-    - [vlm测试方式](#vlm测试方式)
+    - [测试方式](#测试方式-2)
     - [VLM](#vlm)
     - [ASR](#asr)
 
@@ -324,7 +324,7 @@ CPU_RISCV64_SPACEMIT: failed to allocate init_barrier from shared mem, falling b
 >- OS：bianbu-4.0rc3
 >- date：2026-5-26
 
-### vlm测试方式
+### 测试方式
 
 
 > 以qwen3vlencoder为例
