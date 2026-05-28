@@ -250,15 +250,15 @@ P999 Latency: 0.00730163 s
 
 | 模型名 | type | 4 Core/rtf |
 | --- | --- | --- |
-| melotts | dynamicquant  | 1.497 |
-| sensevoice | dynamicquant | 0.683 |
+| melotts | dynamicquant  | 0.984 |
+| sensevoice | dynamicquant | 5.53 |
 
 -K3
 
 | 模型名 | type | 4 Core/rtf | 8 Core/rtf |
 | --- | --- | --- | --- |
-| melotts | dynamicquant  | 2.880 | 2.835 |
-| sensevoice | dynamicquant | 0.337 | 0.252 |
+| melotts | dynamicquant  | 0.530 | --- |
+| sensevoice | dynamicquant | 0.1124 | 0.1380 |
 
 ## 大模型
 
