@@ -1,6 +1,8 @@
 sidebar_position: 3
 
-# SpacemiT AI 矩阵扩展指令集（`Zvvm_spacemit` Profile）
+# SpacemiT AI 矩阵扩展指令集
+
+**`Zvvm_spacemit` Profile**
 
 版本：0.6
 状态：对外发布版  

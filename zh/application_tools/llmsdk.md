@@ -13,7 +13,9 @@
 sidebar_position: 2
 ---
 
-# LLM SDK (临时版本，后续统一到AI SDK)
+# LLM SDK
+
+> **注：** 临时版本，后续统一到AI SDK)
 
 ## 平台支持情况
 
