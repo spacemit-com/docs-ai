@@ -93,14 +93,14 @@ gateway is the unified service access layer. It includes the Python service, HTT
 
 ### 3.1 Computer Vision
 
-**步骤1：下载模型**
+**Step 1: Download models**
 
 ```bash
 # Download all models used by the vision examples (under `~/.cache/models/vision/`)
 bash vision/scripts/download_all_models.sh
 ```
 
-**步骤2：下载资源文件（图片/视频）**
+**Step 2：Download source files (image and video)**
 
 ```bash
 # Download image and video assets used by the examples (under `~/.cache/models/vision/`)
@@ -112,7 +112,7 @@ Default directories:
 - Models: `~/.cache/models/vision/`
 - Assets: `~/.cache/assets/`
 
-#### Step 3: Run the examples
+**Run the examples**
 
 The following commands cover all examples under `vision/examples/` (C++). After `m` completes, they can be run directly from the SDK root directory:
 
@@ -176,7 +176,7 @@ asr_file_demo ~/.cache/models/assets/audio/001_zh_daily_weather.wav
 tts_file_demo
 
 # Specify the input text and backend (example)
-tts_file_demo -p "你好世界" -l matcha:zh
+tts_file_demo -p "Hello, World" -l matcha:zh
 ```
 
 ### 3.4 VAD
