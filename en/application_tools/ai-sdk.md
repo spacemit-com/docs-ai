@@ -93,14 +93,14 @@ gateway is the unified service access layer. It includes the Python service, HTT
 
 ### 3.1 Computer Vision
 
-#### Step 1: Download models
+**Step 1: Download models**
 
 ```bash
 # Download all models used by the vision examples (under `~/.cache/models/vision/`)
 bash vision/scripts/download_all_models.sh
 ```
 
-#### Step 2: Download assets (images and videos)
+**Step 2: Download assets (images and videos)**
 
 ```bash
 # Download image and video assets used by the examples (under `~/.cache/models/vision/`)
