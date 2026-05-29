@@ -18,11 +18,16 @@ sidebar_position: 9
     - [yolov8-seg](#yolov8-seg)
     - [yolov8-pose](#yolov8-pose)
     - [yolov12](#yolov12)
+    - [音频模型](#音频模型)
   - [大模型](#大模型)
     - [测试方式](#测试方式-1)
     - [Qwen](#qwen)
     - [HunYuan](#hunyuan)
     - [Llama](#llama)
+  - [多模态大模型](#多模态大模型)
+    - [测试方式](#测试方式-2)
+    - [VLM](#vlm)
+    - [ASR](#asr)
 
 ## 基础模型
 - K1
@@ -238,6 +243,22 @@ P999 Latency: 0.00730163 s
 | yolo12n | int8 | 640x640 | 119.64 | 64.88 | 38.08 | 27.60 |
 | yolo12s | int8 | 640x640 | 218.19 | 117.37 | 68.71 | 48.16 |
 | yolo12m | int8 | 640x640 | 428.03 | 228.18 | 130.62 | 89.44 |
+
+### 音频模型
+
+-K1
+
+| 模型名 | type | 4 Core/rtf |
+| --- | --- | --- |
+| melotts | dynamicquant  | 0.984 |
+| sensevoice | dynamicquant | 5.53 |
+
+-K3
+
+| 模型名 | type | 4 Core/rtf | 8 Core/rtf |
+| --- | --- | --- | --- |
+| melotts | dynamicquant  | 0.530 | --- |
+| sensevoice | dynamicquant | 0.1124 | 0.1380 |
 
 ## 大模型
 
