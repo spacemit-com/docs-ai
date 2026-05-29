@@ -2,7 +2,7 @@ sidebar_position: 9
 
 # ModelZoo
 
-> Model data in ModelZoo is updated regularly. For benchmark methods, refer to [modelzoo-demo](https://github.com/spacemit-com/model-zoo).
+> Model data in ModelZoo is updated regularly. For model application examples, refer to [ai-sdk](https://github.com/spacemit-com/ai-sdk).
 
 - [ModelZoo](#modelzoo)
   - [Base Models](#base-models)
@@ -17,6 +17,7 @@ sidebar_position: 9
     - [YOLOv8-Seg](#yolov8-seg)
     - [YOLOv8-Pose](#yolov8-pose)
     - [YOLOv12](#yolov12)
+    - [Audio Models](#audio-models)
   - [Large Language Models](#large-language-models)
     - [LLM Benchmark Method](#llm-benchmark-method)
     - [Qwen](#qwen)
@@ -41,7 +42,7 @@ sidebar_position: 9
  > - OS: bianbu-4.0rc3
  > - Date: 2026-5-26
 
-### LLM Benchmark Method
+### Benchmark Method
 
 ~~~bash
 # Enter the spacemit-ort library path
@@ -247,6 +248,22 @@ P999 Latency: 0.00730163 s
 | yolo12s | int8 | 640x640 | 218.19 | 117.37 | 68.71 | 48.16 |
 | yolo12m | int8 | 640x640 | 428.03 | 228.18 | 130.62 | 89.44 |
 
+### Audio Models
+
+- K1
+
+| Model | Type | 4 Core/rtf |
+| --- | --- | --- |
+| melotts | dynamicquant | 0.984 |
+| sensevoice | dynamicquant | 5.53 |
+
+- K3
+
+| Model | Type | 4 Core/rtf | 8 Core/rtf |
+| --- | --- | --- | --- |
+| melotts | dynamicquant | 0.530 | --- |
+| sensevoice | dynamicquant | 0.1124 | 0.1380 |
+
 ## Large Language Models
 
 - K3
@@ -255,7 +272,7 @@ P999 Latency: 0.00730163 s
   > - OS: bianbu-4.0rc3
   > - Date: 2026-5-26
 
-### Multimodal Benchmark Method
+### LLM Benchmark Method
 
 ~~~bash
 # Enter the spacemit-llama.cpp library path
@@ -314,7 +331,7 @@ CPU_RISCV64_SPACEMIT: failed to allocate init_barrier from shared mem, falling b
   > - OS: bianbu-4.0rc3
   > - Date: 2026-5-26
 
-### Benchmark Method
+### Multimodal Benchmark Method
 
 > Using `qwen3vlencoder` as an example:
 
