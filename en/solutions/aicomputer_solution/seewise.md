@@ -18,12 +18,12 @@ sidebar_position: 3
 
 | Platform & OS              | Supported          |
 |----------------------------|--------------------|
-| K1 Buildroot               | ❌ Not supported   |
-| K1 OpenHarmony             | ❌ Not supported   |
-| K1 Bianbu LXQT/GNOME       | ❌ Not supported   |
-| K3 Buildroot               | ❌ Not supported   |
-| K3 OpenHarmony             | ❌ Not supported   |
-| K3 Bianbu LXQT/GNOME       | ✅ Supported       |
+| K1 Buildroot               | ❌ No   |
+| K1 OpenHarmony             | ❌ No   |
+| K1 Bianbu LXQT/GNOME       | ❌ No   |
+| K3 Buildroot               | ❌ No   |
+| K3 OpenHarmony             | ❌ No   |
+| K3 Bianbu LXQT/GNOME       | ✅ Yes       |
 
 ## Technical Architecture
 
