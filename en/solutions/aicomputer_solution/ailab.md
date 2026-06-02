@@ -22,12 +22,12 @@ K3 devices also include a built-in AI Lab desktop application for downloading mo
 
 | Platform & OS         | Supported |
 | --------------------- | --------- |
-| K1 Buildroot          | No        |
-| K1 OpenHarmony        | No        |
-| K1 Bianbu LXQT/GNOME  | No        |
-| K3 Buildroot          | No        |
-| K3 OpenHarmony        | No        |
-| K3 Bianbu LXQT/GNOME  | Yes       |
+| K1 Buildroot          | ❌ No        |
+| K1 OpenHarmony        | ❌ No        |
+| K1 Bianbu LXQT/GNOME  | ❌ No        |
+| K3 Buildroot          | ❌ No        |
+| K3 OpenHarmony        | ❌ No        |
+| K3 Bianbu LXQT/GNOME  | ✅ Yes       |
 
 ## Architecture
 
@@ -56,7 +56,7 @@ K3 devices also include a built-in AI Lab desktop application for downloading mo
 
 2. **Local experience**
 
-   Launch the AI Lab desktop app → Local app page → Download model → Try model → Run inference → View live performance data
+   Launch the AI Lab desktop app → Local app page → Download model → Try Now → Run inference → View live performance data
 
 3. **LAN sharing**
 
@@ -168,7 +168,7 @@ Each model card shows:
 - Model name and task type
 - Input specification (dimensions / format)
 - Deployment precision (INT8, FP16, etc.)
-- Download state: **Not downloaded** (shows the **Download Model** button) / **Downloading** (shows progress) / **Downloaded** (shows the **Try Model** button)
+- Download state: **Not downloaded** (shows the **Download Model** button) / **Downloading** (shows progress) / **Downloaded** (shows the **Try Now** button)
 
 ### Downloading Models
 
@@ -209,7 +209,7 @@ Each model card shows:
 
 ### Speech Recognition (ASR)
 
-1. Find an ASR model (e.g., SenseVoice) and click **Try Model**.
+1. Find an ASR model (e.g., SenseVoice) and click **Try Now**.
 2. Choose an input method:
    - **Sample audio**: Click a sample in the left panel to transcribe it immediately.
    - **Upload audio**: WAV format supported.
