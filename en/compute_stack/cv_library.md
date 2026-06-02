@@ -61,7 +61,7 @@ On the SpacemiT RISC-V platform, OpenCV is integrated and validated primarily th
 
 #### 1. Deployment-Optimized Build
 
-When using OpenCV as a general-purpose vision component in a real project, the recommended approach is a Release static build with RVV enabled by default, using the RISC-V GCC toolchain, the matching sysroot, and OpenCV's bundled `riscv64-gcc.toolchain.cmake`.
+For general-purpose vision use cases, the recommended approach is a Release static build with RVV enabled by default, using the RISC-V GCC toolchain, the matching sysroot, and OpenCV's bundled `riscv64-gcc.toolchain.cmake`.
 
 A typical build flow:
 
@@ -131,7 +131,7 @@ COMMON_CMAKE_ARGS=(
   -DCMAKE_INSTALL_PREFIX=./install
 )
 
-# 1) 构建 RVV 关闭的基线版本
+# 1) Build the baseline variant with RVV disabled
 rm -rf build_rvv_baseline
 mkdir -p build_rvv_baseline
 cd build_rvv_baseline
@@ -147,7 +147,7 @@ make clean
 make -j4
 cd ..
 
-# 2) 构建 RVV 打开的优化版本
+# 2) Build the optimized variant with RVV enabled
 rm -rf build_rvv_optimized
 mkdir -p build_rvv_optimized
 cd build_rvv_optimized
@@ -186,11 +186,11 @@ Geometric mean speedup for representative operators:
 | `core::norm` | 4.73x |
 | `core::split` | 1.82x |
 
-RVV delivers measurable gains across threshold, reduction, and channel-processing operators. `threshold` and `norm` show the most significant improvements.
+RVV delivers measurable gains across threshold, reduction, and channel-processing operators, with `threshold` and `norm` showing the most significant improvements.
 
-### 图像处理 Demo
+### Image Processing Demo
 
-在完成 OpenCV 交叉编译并准备好对应头文件与库文件后，可以通过一个极简示例快速验证基础图像处理链路是否工作正常。下面的示例包含图像读取、缩放与灰度转换三个典型步骤，可直接对应推理前的数据整理流程。
+After cross-compiling OpenCV and preparing the corresponding headers and libraries, the following minimal example can be used to verify that the basic image processing pipeline works correctly. It covers image loading, resizing, and grayscale conversion — three steps that map directly to typical inference preprocessing.
 
 ```cpp
 #include <iostream>
@@ -214,7 +214,7 @@ int main() {
 }
 ```
 
-编译与运行方式如下：
+Compile and run instructions are as follows:
 
 ```bash
 export OPENCV_DIR=/path/to/opencv
@@ -228,7 +228,7 @@ g++ demo_opencv.cpp -o demo_opencv \
 ./demo_opencv
 ```
 
-在实际项目中，这类处理流程通常位于模型推理之前，用于完成输入图像的尺寸调整、颜色空间转换和数据整理；也可以位于推理之后，用于结果绘制、阈值过滤和可视化输出。
+In real-world projects, this processing stage is usually performed before model inference to resize input images, convert color spaces, and organize data. It can also occur after inference to draw results, apply thresholding, and generate visualization output.
 
 ### Current Support Status
 
