@@ -2,8 +2,8 @@ sidebar_position: 9
 
 # ModelZoo
 >
-> ModelZoo内模型数据定期更新，测试方法可参考[modelzoo-demo
-> ](https://github.com/spacemit-com/model-zoo)
+> ModelZoo内模型数据定期更新，模型应用示例请参考[ai-sdk
+> ](https://github.com/spacemit-com/ai-sdk)
 
 - [ModelZoo](#modelzoo)
   - [基础模型](#基础模型)

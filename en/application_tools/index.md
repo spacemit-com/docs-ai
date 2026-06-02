@@ -18,8 +18,10 @@ sidebar_position: 3
 SpacemiT AI SDK is an AI application development kit built for SpacemiT K-series chips. While preserving its original multimodal capability components, it further extends upward to support application forms such as Agents, AI Robots, and AI Computers, providing unified capability encapsulation and interface integration.
 
 - [AI SDK](ai-sdk.md)
-- [LLM SDK (temp version, to be merged into AI SDK later)](llmsdk.md)
-- [Speech SDK (temp version, to be merged into AI SDK later)](speechsdk.md)
+- [LLM SDK](llmsdk.md)
+  > Note: Temp version, to be merged into AI SDK later
+- [Speech SDK](speechsdk.md)
+  > Note: Temp version, to be merged into AI SDK later
 
 ## LangChain
 

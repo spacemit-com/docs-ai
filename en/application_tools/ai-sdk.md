@@ -4,145 +4,153 @@ sidebar_position: 1
 
 # SpacemiT AI SDK
 
-## 1. 项目简介
+## 1. Overview
 
-SpacemiT AI SDK是面向进迭时空 K 系列芯片打造的 AI 应用开发套件。它在保留原有多模态能力组件的基础上，进一步向上承接 Agent、AI Robot、AI Computer 等应用形态，提供统一的能力封装与接口接入方式，包括：
+SpacemiT AI SDK is an AI application development kit designed for SpacemiT K-series chips. Building on its existing multimodal capability components, it further extends upward to support application forms such as Agents, AI Robots, and AI Computers. The SDK provides unified capability encapsulation and interface access methods, including:
 
-- **计算机视觉（vision）**：检测/分类/分割/跟踪/人脸/姿态等，覆盖示例包括 `resnet`、`yolov8`、`yolov11`、`yolov8_seg`、`yolov8_pose`、`bytetrack`、`ocsort`、`yolov5-face`、`arcface`、`emotion` 等
-- **语音**：`VAD`（语音活动检测）、`ASR`（语音识别）、`TTS`（语音合成），提供可直接运行的 demo，便于单模块验证与联调
-- **自然语言（LLM）**：OpenAI 兼容接口对接（如 `llama-server`），提供 `llm_chat` 等示例便于快速体验与集成
+- **Computer Vision (`vision`)**: detection, classification, segmentation, tracking, face recognition, pose estimation, and related capabilities. Included examples cover `resnet`, `yolov8`, `yolov11`, `yolov8_seg`, `yolov8_pose`, `bytetrack`, `ocsort`, `yolov5-face`, `arcface`, and `emotion`.
+- **Speech**: `VAD` (voice activity detection), `ASR` (automatic speech recognition), `TTS` (text-to-speech), and `Voiceprint` (speaker recognition), with runnable demos for single-module validation and integration testing.
+- **Natural Language (`LLM`)**: OpenAI-compatible interface integration such as `llama-server`, with examples including `llm_chat` for rapid evaluation and integration.
+- **Reinforcement Learning (`RL`)**: robotic policy inference capabilities including YAML configuration parsing, observation assembly, ONNX inference, and action mapping.
+- **Unified Service Access (`gateway`)**: a unified HTTP/WS API layer built on capabilities such as ASR, TTS, VAD, Vision, and LLM, with model management and a web console.
 
-![](../static/ai-sdk-arch.png)
+![SpacemiT AI SDK architecture](../static/ai-sdk-arch.png)
 
+Each AI SDK component provides a common API layer that abstracts low-level implementation complexity and keeps development focused on higher-level application integration. The SDK currently provides two primary integration models:
 
-AI SDK 的各独立组件都封装了一层通用 API 接口，用于屏蔽底层复杂业务细节，让用户专注于上层应用开发。当前 AI SDK 对外主要提供两套接入方式：
+- **C++/Python interfaces**: intended for local integration, custom development, and embedded deployment, suitable for directly calling component SDKs to build tailored applications.
+- **HTTP/WS interfaces**: exposed uniformly through the gateway layer on top of the foundational capability components, suitable for cross-language, cross-process, and distributed integration scenarios, and designed to bring underlying AI capabilities quickly into upper-layer systems.
 
-- **C++/Python 接口**：面向本地集成、二次开发与嵌入式部署，适合直接调用各能力组件 SDK，构建定制化应用。
-- **HTTP/WS 接口**：由 gateway 层统一对外暴露，适合跨语言、跨进程或分布式场景接入，便于将底层 AI 能力快速接入上层业务系统。
+> **Note**: This document provides navigation and quick-start guidance for SpacemiT AI SDK from a top-level application perspective. Components continue to evolve, and the documentation will be updated accordingly.
 
-> **说明**：本文档从「顶层应用」视角提供 SpacemiT AI SDK 的导航与快速上手。各组件仍在持续迭代，文档会随之更新，敬请关注。
+## Platform Support
 
-## 平台支持情况
+| Platform & OS | Supported |
+| --- | --- |
+| K1 Buildroot | ✅ Yes |
+| K1 OpenHarmony | ❌ No |
+| K1 Bianbu LXQT/GNOME | ✅ Yes |
+| K3 Buildroot | ✅ Yes |
+| K3 OpenHarmony | ❌ No |
+| K3 Bianbu LXQT/GNOME | ✅ Yes |
 
-|      平台 & 系统       |       是否支持     |
-|-----------------------|-----------------------|
-| K1 Buildroot          | ✅ 支持               |
-| K1 OpenHarmony     | ❌ 不支持              |
-| K1 Bianbu LXQT/GNOME    | ✅ 支持              |
-| K3 Buildroot          | ✅ 支持               |
-| K3 OpenHarmony     | ❌ 不支持              |
-| K3 Bianbu LXQT/GNOME  | ✅ 支持                |
+## 2. Build and Compilation
 
-## 2. 构建编译
+### 2.1 Get the Source Code
 
-### 2.1 获取代码
-
-本仓库使用 Git Submodule 管理各组件源码，推荐递归拉取：
+This repository uses Git submodules to manage component source trees. A recursive clone is recommended:
 
 ```bash
-git clone --recurse-submodules https://github.com/spacemit-com/model-zoo.git
-# 或ssh
-# git clone --recurse-submodules git@github.com:spacemit-com/model-zoo.git
+git clone --recurse-submodules https://github.com/spacemit-com/ai-sdk.git
+# or SSH
+# git clone --recurse-submodules git@github.com:spacemit-com/ai-sdk.git
 ```
 
-如果你已经 clone 了主仓库但没拉子仓库：
+If the main repository has already been cloned without submodules:
 
 ```bash
-cd model-zoo
+cd ai-sdk
 git submodule update --init --recursive
 ```
 
-### 2.2 一键编译
+### 2.2 One-Click Build
 
-本仓库以 submodule 方式聚合各组件源码；
+This repository aggregates all component source code using submodules.
 
 ```bash
-# source环境变量
+# load environment variables
 source build/envsetup.sh
 
-# 一键编译应用
-# 第一次编译时间会长一点，编译会自动安装各组件依赖，请耐心等待
+# build all applications
+# the first build may take longer because dependencies are installed automatically
 m
 ```
 
-如果你只想在 SDK 中**单独编译某个组件**，可以进入对应目录执行 `mm`（同样需要先 `source build/envsetup.sh`）：
+Build artifacts are typically installed to `output/staging` within the SDK workspace.
+
+### 2.3 Build Individual Core Components
+
+If only a specific core capability component needs to be built within the SDK, run `mm` in the corresponding directory after `source build/envsetup.sh`:
 
 ```bash
 source build/envsetup.sh
 
 cd asr && mm
-# 或
+# or
 cd vision && mm
 cd tts && mm
 cd vad && mm
 cd llm && mm
+cd voiceprint && mm
+cd rl && mm
 ```
-构建产物通常会安装到 `output/staging`（以 SDK 工程为准）。
 
-## 3. 示例运行
+gateway is the unified service access layer. It includes the Python service, HTTP/WS APIs, web console, and Debian packaging flow, so it should not be treated as a standalone algorithm component that can be built with a simple `mm`. For installation and startup details, see [Section 4](#4-gateway-unified-httpws-access-layer).
 
-> 说明：以下示例默认你已经按上文完成一键编译（示例可执行文件会统一安装到 `output/staging`）。
+## 3. Core Capability Component Examples
 
-### 3.1 计算机视觉
+> Note: The following examples assume the One-Click Build described above has already been completed. Example executables are installed to `output/staging`.
 
-**步骤1：下载模型**
+### 3.1 Computer Vision
+
+**Step 1: Download models**
 
 ```bash
-# 下载所有 vision 示例模型（会放到 ~/.cache/models/vision/ 下面）
+# Download all models used by the vision examples (under `~/.cache/models/vision/`)
 bash vision/scripts/download_all_models.sh
 ```
 
-**步骤2：下载资源文件（图片/视频）**
+**Step 2：Download source files (image and video)**
 
 ```bash
-# 下载示例用图片/视频资源（会放到 ~/.cache/assets/ 下面）
+# Download image and video assets used by the examples (under `~/.cache/models/vision/`)
 bash vision/scripts/download_assets.sh
 ```
 
-默认目录：
+Default directories:
 
-- 模型：`~/.cache/models/vision/`
-- 资源：`~/.cache/assets/`
+- Models: `~/.cache/models/vision/`
+- Assets: `~/.cache/assets/`
 
-**步骤3：运行示例**
+**Run the examples**
 
-以下为 `vision/examples/` 下**全部示例**的运行命令（C++，执行过 `m` 后在SDK根目录可直接运行）：
+The following commands cover all examples under `vision/examples/` (C++). After `m` completes, they can be run directly from the SDK root directory:
 
 ```bash
-# 人脸识别（相似度）
+# Face recognition (similarity)
 arcface vision/examples/arcface/config/arcface.yaml
 
-# 人脸检测
+# Face detection
 yolov5-face vision/examples/yolov5-face/config/yolov5-face.yaml
 
-# 手势检测
+# Gesture detection
 yolov5_gesture vision/examples/yolov5_gesture/config/yolov5_gesture.yaml
 
-# 目标检测
+# Object detection
 yolov8 vision/examples/yolov8/config/yolov8.yaml
 yolov11 vision/examples/yolov11/config/yolov11.yaml
 
-# 姿态估计
+# Pose estimation
 yolov8_pose vision/examples/yolov8_pose/config/yolov8_pose.yaml
 
-# 实例分割
+# Instance segmentation
 yolov8_seg vision/examples/yolov8_seg/config/yolov8_seg.yaml
 
-# 图像分类 / 情绪识别
+# Image classification / emotion recognition
 resnet vision/examples/resnet/config/resnet50.yaml
 emotion vision/examples/emotion/config/emotion.yaml
 
-# 多目标跟踪（视频/摄像头）
-# 以下两个示例是实时画面显示目标跟踪，需要接上屏幕，否则会报错
+# Multi-object tracking (video/camera)
+# The following two examples render real-time tracking output and require a connected display
 bytetrack vision/examples/bytetrack/config/bytetrack.yaml
 ocsort vision/examples/ocsort/config/ocsort.yaml
 ```
 
-每个示例的可选参数（如 `--image`、`--video`、`--use-camera`、`--output`、阈值等）请参考对应目录的 README（`vision/examples/*/README.md`），或参阅 [model-zoo-vision README](https://github.com/spacemit-com/model-zoo-vision/blob/main/README.md)。
+For optional parameters such as `--image`, `--video`, `--use-camera`, `--output`, and threshold settings, refer to the README in each example directory (`vision/examples/*/README.md`) or to the [model-zoo-vision README](https://github.com/spacemit-com/model-zoo-vision/blob/main/README.md).
 
 ### 3.2 ASR
 
-**步骤1：下载音频资源（示例音频）**
+**Step 1: Download audio assets (sample audio)**
 
 ```bash
 mkdir -p ~/.cache/models/assets/audio
@@ -150,48 +158,39 @@ cd ~/.cache/models/assets/audio
 wget https://archive.spacemit.com/spacemit-ai/model_zoo/assets/audio/001_zh_daily_weather.wav
 ```
 
-更多音频资源可在 [音频资源目录](https://archive.spacemit.com/spacemit-ai/model_zoo/assets/audio) 按需下载。
+Additional audio assets are available in the [audio asset directory](https://archive.spacemit.com/spacemit-ai/model_zoo/assets/audio).
 
-**步骤2：运行示例**
+**Step 2: Run the example**
 
 ```bash
-# 识别 wav 文件（示例）
+# Recognize a WAV file (example)
 asr_file_demo ~/.cache/models/assets/audio/001_zh_daily_weather.wav
-
-# 流式识别(示例，需要外接音频输入设备)
-asr_stream_demo -l # 查看音频设备号
-asr_stream_demo -i 0 -t 5 #其中-i为输入音频设备号
 ```
 
 ### 3.3 TTS
 
-**运行示例**
+**Run the examples**
 
 ```bash
-# 简单合成（默认参数）
+# Basic synthesis (default parameters)
 tts_file_demo
 
-# 指定文本与后端（示例）
-tts_file_demo -p "你好世界" -l matcha:zh
-
-# 流式合成（示例，需要外接音频输出设备）
-tts_stream_demo -l # 查看音频设备号
-tts_stream_demo -o 0 --output 48000 --channels 2 -e matcha:zh-en # 默认流式tts体验，-o为音频输出设备号
+# Specify the input text and backend (example)
+tts_file_demo -p "Hello, World" -l matcha:zh
 ```
 
 ### 3.4 VAD
 
-**运行示例**
+**Run the example**
 
 ```bash
-# 内置模拟音频测试
+# Run the built-in simulated audio test
 vad_simple_demo
 ```
 
-
 ### 3.5 LLM
 
-**步骤1：下载模型（GGUF 示例）**
+**Step 1: Download a model (GGUF example)**
 
 ```bash
 mkdir -p ~/.cache/models/llm
@@ -199,51 +198,177 @@ cd ~/.cache/models/llm
 wget https://archive.spacemit.com/spacemit-ai/model_zoo/llm/qwen2.5-0.5b-instruct-q4_0.gguf
 ```
 
-如需体验更多模型，可查看 [LLM 模型目录](https://archive.spacemit.com/spacemit-ai/model_zoo/llm) 按需下载。
+To evaluate additional models, refer to the [LLM model directory](https://archive.spacemit.com/spacemit-ai/model_zoo/llm).
 
-**步骤2：启动 OpenAI 兼容服务并调用示例**
+**Step 2: Start an OpenAI-compatible service and run the example**
 
 ```bash
-# 启动服务（8080）
+# Start the service on port 8080
 llama-server -m ~/.cache/models/llm/qwen2.5-0.5b-instruct-q4_0.gguf -t 8 --port 8080 &
 
-# 调用 SDK 示例程序
+# Run the SDK example program
 llm_chat "你好" "http://localhost:8080/v1" "qwen2.5-0.5b" "You are a helpful assistant." 256
 ```
 
-若使用**云端 / 远端 OpenAI 兼容服务**（如 DeepSeek 等），只需将第 2 个参数替换为云端的 `api_base`，并通过环境变量传入 API Key，例如：
+When using a **cloud-hosted or remote OpenAI-compatible service** such as DeepSeek, replace the second argument with the remote `api_base` and provide the API key through an environment variable:
 
 ```bash
-export OPENAI_API_KEY=你的云端key
+export OPENAI_API_KEY=your_cloud_api_key
 llm_chat "你好" "https://api.deepseek.com" "deepseek-chat" "You are a helpful assistant." 256
 ```
 
-## 4. 应用开发
+### 3.6 Voiceprint
 
-### 4.1 C++/Python
+The Voiceprint component provides speaker identification, speaker verification, and embedding extraction. By default, it uses the CamP+ (3D-Speaker) model, which is downloaded automatically to `~/.cache/models/vp/campplus/` on first run.
 
-SpacemiT AI SDK 各组件面向应用侧提供 **稳定的 C++ 头文件入口**（多数为 PIMPL 设计，便于集成与二进制发布），并提供对应的 Python 绑定与示例。应用侧建议先在 SDK workspace 中编译产物到 `output/staging`，再基于 staging 进行联调与部署。
+**Voiceprint examples**
 
-- **vision**：`vision_service.h`（详见 [vision/README.md](https://github.com/spacemit-com/model-zoo-vision/blob/main/README.md) 的「应用开发」章节）
-- **ASR**：`asr_service.h`（详见 [asr/README.md](https://github.com/spacemit-com/model-zoo-asr/blob/main/README.md) 的「应用开发」章节）
-- **TTS**：`tts_service.h`（详见 [tts/README.md](https://github.com/spacemit-com/model-zoo-tts/blob/main/README.md) 的「应用开发」章节）
-- **VAD**：`vad_service.h`（详见 [vad/README.md](https://github.com/spacemit-com/model-zoo-vad/blob/main/README.md) 的「应用开发」章节）
-- **LLM**：`llm_service.h`（详见 [llm/README.md](https://github.com/spacemit-com/model-zoo-llm/blob/main/README.md) 的「应用开发」章节）
+```bash
+# Download sample audio
+mkdir -p ~/.cache/models/assets/audio && wget -P ~/.cache/models/assets/audio https://archive.spacemit.com/spacemit-ai/model_zoo/assets/audio/002_en_daily_weather.wav
 
-如果你的目标是做“对话式应用”，建议直接从 `omni_agent` 入手：先跑通 `voice_chat`，再按需替换/裁剪 ASR、TTS、LLM 后端或接入 MCP 工具。
+# Register a speaker
+register_speaker -n manbo ~/.cache/models/assets/audio/002_en_daily_weather.wav
 
-### 4.2 HTTP/WS接口
+# Identify a speaker
+identify_speaker ~/.cache/models/assets/audio/001_zh_daily_weather.wav
+```
 
-除 C++/Python SDK 直连方式外，AI SDK 还在 gateway 层提供统一的 `HTTP/WS` 接口，用于对外暴露底层 AI 能力。该接口目前仍在开发中，相关能力与文档将持续补充完善。
+For additional parameters and C++ integration details, refer to the [model_zoo_voiceprint README](https://github.com/spacemit-com/model_zoo_voiceprint/blob/main/README.md) and the [Voiceprint API](https://github.com/spacemit-com/model_zoo_voiceprint/blob/main/API.md).
 
-- **HTTP 接口**：适合请求-响应式调用场景，便于业务系统通过标准 REST/HTTP 方式接入识别、推理、生成等能力。
-- **WebSocket 接口**：适合流式交互、实时推送和长连接场景，例如语音流处理、增量结果返回和对话类应用。
+### 3.7 RL
 
-## 5. 性能数据
+The RL component is currently used primarily for reinforcement learning policy inference in robotic control pipelines. It handles YAML configuration parsing, observation assembly, ONNX inference, and action mapping. It is intended for robotic motion-control scenarios and is typically integrated with specific robot applications, policy models, and control frameworks.
 
-关于各模型性能数据总表可参阅[Model Zoo 性能数据](https://www.spacemit.com/community/document/info?lang=zh&nodepath=ai/compute_stack/ai_compute_stack/modelzoo.md)。各细分方向的详细测试数据、测试方法与复现说明可进一步参考以下组件文档：
+For usage methods, runtime steps, and robot control examples, refer to the [reinforcement learning documentation](https://www.spacemit.com/community/document/info?lang=zh&nodepath=software/SDK/ros/k3/04-AI%E4%B8%8E%E7%AE%97%E6%B3%95/4.3-%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0.md).
 
-- [model-zoo-vision/README.md](https://github.com/spacemit-com/model-zoo-vision/blob/main/README.md)（附录：模型性能）
-- [model-zoo-asr/README.md](https://github.com/spacemit-com/model-zoo-asr/blob/main/README.md)（附录：性能指标）
-- [model-zoo-tts/README.md](https://github.com/spacemit-com/model-zoo-tts/blob/main/README.md)（附录：性能指标）
-- [model-zoo-llm/README.md](https://github.com/spacemit-com/model-zoo-llm/blob/main/README.md)（附录：模型性能）
+## 4. Gateway Unified HTTP/WS Access Layer
+
+gateway is not an independent algorithm component. It is a unified service layer built on top of foundational capabilities such as ASR, TTS, VAD, Vision, LLM, Embed, and Rerank. It provides HTTP/WebSocket APIs, model management, and a frontend console, making it suitable for cross-language, cross-process, distributed deployment, and business-system integration.
+
+### 4.1 Installation and Startup
+
+Debian package installation is recommended for production deployment:
+
+```bash
+sudo apt update
+sudo apt install spacemit-ai-gateway
+```
+
+After installation, two `systemd` services start automatically:
+
+| Service | Port | Description |
+| --- | --- | --- |
+| `spacemit-ai-gateway` | 18790 | Backend HTTP/WebSocket API |
+| `spacemit-ai-gateway-frontend` | 8326 | Frontend console static site |
+
+Check service status and logs:
+
+```bash
+systemctl status spacemit-ai-gateway
+journalctl -u spacemit-ai-gateway -f
+```
+
+For source-level debugging, the gateway service can also be started directly:
+
+```bash
+spacemit-ai-gateway
+# or
+uvicorn spacemit_ai_gateway.app.main:app --host 0.0.0.0 --port 18790
+```
+
+### 4.2 Verification
+
+First confirm that the gateway service is running:
+
+```bash
+curl -s localhost:18790/healthz | jq .
+```
+
+Prepare test assets:
+
+```bash
+mkdir -p ~/.cache/models/assets/audio
+wget -O ~/.cache/models/assets/audio/001_zh_daily_weather.wav \
+  https://archive.spacemit.com/spacemit-ai/model_zoo/assets/audio/001_zh_daily_weather.wav
+
+wget -O /tmp/vision_test.jpg \
+  https://archive.spacemit.com/spacemit-ai/model_zoo/assets/image/006_test.jpg
+```
+
+ASR speech recognition:
+
+```bash
+curl -s -X POST localhost:18790/v1/asr/recognize \
+  -F file=@${HOME}/.cache/models/assets/audio/001_zh_daily_weather.wav \
+  -F language=zh | jq .
+```
+
+TTS synthesis:
+
+```bash
+curl -s -X POST localhost:18790/v1/tts/synthesize \
+  -H 'Content-Type: application/json' \
+  -d '{"text":"Hello, welcome to SpacemiT AI Gateway","response_format":"wav"}' \
+  --output /tmp/gateway_tts.wav
+```
+
+LLM chat completion:
+
+```bash
+curl -s -X POST localhost:18790/v1/chat/completions \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model":"qwen3-0.6b-q4_0",
+    "messages":[{"role":"user","content":"Hello, please introduce yourself in one sentence."}],
+    "stream":false
+  }' | jq .
+```
+
+Vision image inference:
+
+```bash
+curl -s -X POST localhost:18790/v1/vision/models/load \
+  -H 'Content-Type: application/json' \
+  -d '{"model_id":"yolov8n","config_path":"configs/vision/yolov8n.yaml","lazy_load":false}' | jq .
+
+curl -s -X POST localhost:18790/v1/vision/inference \
+  -F file=@/tmp/vision_test.jpg \
+  -F 'tasks=["detect"]' \
+  -F model_id=yolov8n \
+  -F render=true \
+  -F render_mode=overlay | jq .
+```
+
+### 4.3 API
+
+Gateway interfaces continue to evolve with service capabilities. For current HTTP/WS routes, request parameters, and response formats, refer to:
+
+- [ai-gateway README](https://github.com/spacemit-com/ai-gateway/blob/main/README.md)
+
+## 5. Application Development
+
+### 5.1 C++/Python
+
+SpacemiT AI SDK components provide **stable C++ header-based entry points** for application integration. Most follow a PIMPL design, which simplifies integration and binary distribution, and corresponding Python bindings and examples are also provided. For application development, build artifacts should first be generated in `output/staging` within the SDK workspace, then used for integration testing and deployment.
+
+- **vision**: `vision_service.h` (see the Application Development section of [vision/README.md](https://github.com/spacemit-com/model-zoo-vision/blob/main/README.md))
+- **ASR**: `asr_service.h` (see the Application Development section of [asr/README.md](https://github.com/spacemit-com/model-zoo-asr/blob/main/README.md))
+- **TTS**: `tts_service.h` (see the Application Development section of [tts/README.md](https://github.com/spacemit-com/model-zoo-tts/blob/main/README.md))
+- **VAD**: `vad_service.h` (see the Application Development section of [vad/README.md](https://github.com/spacemit-com/model-zoo-vad/blob/main/README.md))
+- **LLM**: `llm_service.h` (see the Application Development section of [llm/README.md](https://github.com/spacemit-com/model-zoo-llm/blob/main/README.md))
+- **Voiceprint**: `vp_service.h` (see the Application Development section of [voiceprint/README.md](https://github.com/spacemit-com/model_zoo_voiceprint/blob/main/README.md))
+- **RL**: `rl_service.h` (see the Detailed Usage section of [rl/README.md](https://github.com/spacemit-com/model_zoo_rl/blob/main/README.md))
+
+For conversational applications, starting with `omni_agent` is recommended: first validate `voice_chat`, then replace or refine ASR, TTS, and LLM backends as needed, or integrate MCP tools.
+
+### 5.2 HTTP/WS Service Integration
+
+In addition to direct integration through the C++/Python SDK, AI SDK also provides unified `HTTP/WS` interfaces through the gateway layer to expose underlying AI capabilities as services. gateway does not replace the core capability components; instead, it provides a service-oriented encapsulation layer on top of them.
+
+- **HTTP interfaces**: suitable for request-response scenarios, enabling business systems to integrate recognition, inference, and generation capabilities through standard REST/HTTP access.
+- **WebSocket interfaces**: suitable for streaming interactions, real-time push delivery, and persistent connections, such as speech streaming, incremental results, and conversational applications.
+
+## 6. Performance Data
+
+For the consolidated performance summary across models, refer to [Model Zoo performance data](https://www.spacemit.com/community/document/info?lang=en&nodepath=ai/compute_stack/ai_compute_stack/modelzoo.md).
