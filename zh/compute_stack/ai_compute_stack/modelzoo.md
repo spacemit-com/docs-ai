@@ -296,7 +296,7 @@ CPU_RISCV64_SPACEMIT: failed to allocate init_barrier from shared mem, falling b
 | [qwen3-0.6B](https://www.modelscope.cn/models/unsloth/Qwen3-0.6B-GGUF/file/view/master/Qwen3-0.6B-Q4_0.gguf?status=2) | Q4_0 | 499.75 | 53.35 | - | - |
 | [qwen3-1.7B](https://www.modelscope.cn/models/unsloth/Qwen3-1.7B-GGUF/file/view/master/Qwen3-1.7B-Q4_0.gguf?status=2) | Q4_0 | 229.79 | 23.11 | - | - |
 | [qwen3-4B](https://www.modelscope.cn/models/unsloth/Qwen3-4B-Thinking-2507-GGUF/file/view/master/Qwen3-4B-Thinking-2507-Q4_0.gguf?status=2) | Q4_0 | 76.44 | 11.03 | - | - |
-| [qwen3-moe-30B-A3B](https://www.modelscope.cn/models/unsloth/Qwen3-30B-A3B-Thinking-2507-GGUF/file/view/master/Qwen3-30B-A3B-Thinking-2507-Q4_0.gguf?status=2) | Q4_0 | 55.54 | 13.33 | 43.86 | 11.93
+| [qwen3-moe-30B-A3B](https://www.modelscope.cn/models/unsloth/Qwen3-30B-A3B-Instruct-2507-GGUF/file/view/master/Qwen3-30B-A3B-Instruct-2507-Q4_0.gguf?status=2) | Q4_0 | 55.67 | 12.32 | 44.03 | 11.17
 | [qwen3.5-0.8B](https://www.modelscope.cn/models/unsloth/Qwen3.5-0.8B-GGUF/file/view/master/Qwen3.5-0.8B-Q4_0.gguf?status=2) | Q4_0 | 182.69 | 29.33 | - | - |
 | [qwen3.5-2B](https://www.modelscope.cn/models/unsloth/Qwen3.5-2B-GGUF/file/view/master/Qwen3.5-2B-Q4_0.gguf?status=2) | Q4_1 | 112.22 | 16.15 | - | - |
 
@@ -341,7 +341,7 @@ llama-server -m qwen3vl-30b-text-q4_1.gguf --media-backend smt --smt-config-dir 
 
 - K3
 
-| 模型名 | 图像规格 | vision_encoder 4 Core/ms | vision_encoder 8 Core/ms |
+| 模型名 | 图像规格 | LLM 8 Core + VisionEncoder 4 Core/ms | LLM 8 Core + VisionEncoder 8 Core/ms |
 | --- | --- | --- | --- |
 | fastvlm-0.5B | 512*512 | 256.47 | 164.50 |
 | Qwen3-VL-30B-A3B | 768*768 | 7928.13 | 4753.55 |
@@ -353,6 +353,6 @@ llama-server -m qwen3vl-30b-text-q4_1.gguf --media-backend smt --smt-config-dir 
 
 - K3
 
-| 模型名 | 4 Core/rtf | 4 Core/rtf |
-| --- | --- | --- |
-| qwen3-ASR-0.6B | 0.089 | 0.087 |
+| 模型名 | LLM 8 Core + AudioEncoder 4 Core/rtf |
+| --- | --- |
+| qwen3-ASR-0.6B | 0.186 |
