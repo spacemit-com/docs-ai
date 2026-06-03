@@ -343,11 +343,11 @@ llama-server -m qwen3vl-30b-text-q4_1.gguf --media-backend smt --smt-config-dir 
 
 | 模型名 | 图像规格 | LLM 8 Core + VisionEncoder 4 Core/ms | LLM 8 Core + VisionEncoder 8 Core/ms |
 | --- | --- | --- | --- |
-| fastvlm-0.5B | 512*512 | 256.47 | 164.50 |
-| Qwen3-VL-30B-A3B | 768*768 | 7928.13 | 4753.55 |
-| Qwen3.5-0.8B | 384*384 | 340.42 | 245.61 |
-| Qwen3.5-2B | 384*384 | 901.56 | 794.03 |
-| Qwen3.5-4B | 384*384 | 904.73 | 798.71 |
+| [fastvlm-0.5B](https://archive.spacemit.com/spacemit-ai/model_zoo/vlm/fastvlm-mm-0.5b-q4_1.tar.gz) | 512*512 | 256.47 | 164.50 |
+| [Qwen3-VL-30B-A3B](https://archive.spacemit.com/spacemit-ai/model_zoo/vlm/qwen30ba3b-mm-q4_1.tar.gz) | 768*768 | 7928.13 | 4753.55 |
+| [Qwen3.5-0.8B](https://archive.spacemit.com/spacemit-ai/model_zoo/vlm/Qwen3.5-0.8B.tar.gz) | 384*384 | 340.42 | 245.61 |
+| [Qwen3.5-2B](https://archive.spacemit.com/spacemit-ai/model_zoo/vlm/Qwen3.5-2B.tar.gz) | 384*384 | 901.56 | 794.03 |
+| [Qwen3.5-4B](https://archive.spacemit.com/spacemit-ai/model_zoo/vlm/Qwen3.5-4B.tar.gz) | 384*384 | 904.73 | 798.71 |
 
 ### ASR
 
@@ -355,4 +355,4 @@ llama-server -m qwen3vl-30b-text-q4_1.gguf --media-backend smt --smt-config-dir 
 
 | 模型名 | LLM 8 Core + AudioEncoder 4 Core/rtf |
 | --- | --- |
-| qwen3-ASR-0.6B | 0.186 |
+| [qwen3-ASR-0.6B](https://archive.spacemit.com/spacemit-ai/model_zoo/vlm/qwen3-asr-0.6B.tar.gz) | 0.186 |
