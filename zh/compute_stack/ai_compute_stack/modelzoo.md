@@ -251,14 +251,14 @@ P999 Latency: 0.00730163 s
 | 模型名 | type | 4 Core/rtf |
 | --- | --- | --- |
 | melotts | dyn_int8  | 0.984 |
-| sensevoice | dyn_int8 | --- |
+| [sensevoice](https://archive.spacemit.com/spacemit-ai/model_zoo/asr/sensevoice.tar.gz) | dyn_int8 | --- |
 
 - K3
 
 | 模型名 | type | 4 Core/rtf | 8 Core/rtf |
 | --- | --- | --- | --- |
 | melotts | dyn_int8  | 0.530 | --- |
-| sensevoice | dyn_int8 | 0.1124 | 0.1380 |
+| [sensevoice](https://archive.spacemit.com/spacemit-ai/model_zoo/asr/sensevoice.tar.gz) | dyn_int8 | 0.1124 | 0.1380 |
 
 ## 大模型
 
