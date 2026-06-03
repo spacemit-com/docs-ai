@@ -85,9 +85,9 @@ P999 Latency: 0.00730163 s
 
 | Model | Type | Shape | 1 Core/ms | 2 Core/ms | 4 Core/ms |
 | --- | --- | --- | --- | --- | --- |
-| resnet18 | int8 | 224x224 | 39.71 | 22.49 | 13.71 |
+| [resnet18](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/resnet/resnet18.q.onnx) | int8 | 224x224 | 39.71 | 22.49 | 13.71 |
 | [resnet50](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/resnet/resnet50.q.onnx) | int8 | 224x224 | 93.37 | 53.01 | 32.86 |
-| resnet50 | fp16 | 224x224 | 667.55 | 349.34 | 217.27 |
+| [resnet50](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/resnet/resnet50.fp16.onnx) | fp16 | 224x224 | 667.55 | 349.34 | 217.27 |
 
 - K3
 
@@ -166,7 +166,7 @@ P999 Latency: 0.00730163 s
 | --- | --- | --- | --- | --- | --- |
 | [yolov5n](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov5/yolov5n.q.onnx) | int8 | 640x640 | 233.24 | 149.24 | 111.18 |
 | [yolov5s](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov5/yolov5s.q.onnx) | int8 | 640x640 | 450.00 | 238.84 | 140.92 |
-| yolov5m | int8 | 640x640 | 996.12 | 483.86 | 269.41 |
+| [yolov5m](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov5/yolov5m.q.onnx) | int8 | 640x640 | 996.12 | 483.86 | 269.41 |
 
 - K3
 
@@ -174,7 +174,7 @@ P999 Latency: 0.00730163 s
 | --- | --- | --- | --- | --- | --- | --- |
 | [yolov5n](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov5/yolov5n.q.onnx) | int8 | 640x640 | 44.72 | 24.56 | 14.51 | 9.80 |
 | [yolov5s](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov5/yolov5s.q.onnx) | int8 | 640x640 | 74.38 | 40.77 | 24.27 | 15.96 |
-| yolov5m | int8 | 640x640 | 153.58 | 82.73 | 46.53 | 29.65 |
+| [yolov5m](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov5/yolov5m.q.onnx) | int8 | 640x640 | 153.58 | 82.73 | 46.53 | 29.65 |
 
 ### YOLOv6
 
@@ -254,15 +254,15 @@ P999 Latency: 0.00730163 s
 
 | Model | Type | 4 Core/rtf |
 | --- | --- | --- |
-| melotts | dynamicquant | 0.984 |
-| sensevoice | dynamicquant | 5.53 |
+| melotts | dyn_int8 | 0.984 |
+| sensevoice | dyn_int8 | --- |
 
 - K3
 
 | Model | Type | 4 Core/rtf | 8 Core/rtf |
 | --- | --- | --- | --- |
-| melotts | dynamicquant | 0.530 | --- |
-| sensevoice | dynamicquant | 0.1124 | 0.1380 |
+| melotts | dyn_int8 | 0.530 | --- |
+| sensevoice | dyn_int8 | 0.1124 | 0.1380 |
 
 ## Large Language Models
 
@@ -302,7 +302,7 @@ CPU_RISCV64_SPACEMIT: failed to allocate init_barrier from shared mem, falling b
 | [qwen3-0.6B](https://www.modelscope.cn/models/unsloth/Qwen3-0.6B-GGUF/file/view/master/Qwen3-0.6B-Q4_0.gguf?status=2) | Q4_0 | 499.75 | 53.35 | - | - |
 | [qwen3-1.7B](https://www.modelscope.cn/models/unsloth/Qwen3-1.7B-GGUF/file/view/master/Qwen3-1.7B-Q4_0.gguf?status=2) | Q4_0 | 229.79 | 23.11 | - | - |
 | [qwen3-4B](https://www.modelscope.cn/models/unsloth/Qwen3-4B-Thinking-2507-GGUF/file/view/master/Qwen3-4B-Thinking-2507-Q4_0.gguf?status=2) | Q4_0 | 76.44 | 11.03 | - | - |
-| [qwen3-moe-30B-A3B](https://www.modelscope.cn/models/unsloth/Qwen3-30B-A3B-Thinking-2507-GGUF/file/view/master/Qwen3-30B-A3B-Thinking-2507-Q4_0.gguf?status=2) | Q4_0 | 55.54 | 13.33 | 43.86 | 11.93 |
+| [qwen3-moe-30B-A3B](https://www.modelscope.cn/models/unsloth/Qwen3-30B-A3B-Instruct-2507-GGUF/file/view/master/Qwen3-30B-A3B-Instruct-2507-Q4_0.gguf?status=2) | Q4_0 | 55.67 | 12.32 | 44.03 | 11.17 |
 | [qwen3.5-0.8B](https://www.modelscope.cn/models/unsloth/Qwen3.5-0.8B-GGUF/file/view/master/Qwen3.5-0.8B-Q4_0.gguf?status=2) | Q4_0 | 182.69 | 29.33 | - | - |
 | [qwen3.5-2B](https://www.modelscope.cn/models/unsloth/Qwen3.5-2B-GGUF/file/view/master/Qwen3.5-2B-Q4_0.gguf?status=2) | Q4_1 | 112.22 | 16.15 | - | - |
 
@@ -348,18 +348,18 @@ llama-server -m qwen3vl-30b-text-q4_1.gguf --media-backend smt --smt-config-dir 
 
 - K3
 
-| Model | Image Size | vision_encoder 4 Core/ms | vision_encoder 8 Core/ms |
+| Model | Image Size | LLM 8 Core + VisionEncoder 4 Core/ms | LLM 8 Core + VisionEncoder 8 Core/ms |
 | --- | --- | --- | --- |
-| fastvlm-0.5B | 512*512 | 256.47 | 164.50 |
-| Qwen3-VL-30B-A3B | 768*768 | 7928.13 | 4753.55 |
-| Qwen3.5-0.8B | 384*384 | 340.42 | 245.61 |
-| Qwen3.5-2B | 384*384 | 901.56 | 794.03 |
-| Qwen3.5-4B | 384*384 | 904.73 | 798.71 |
+| [fastvlm-0.5B](https://archive.spacemit.com/spacemit-ai/model_zoo/vlm/fastvlm-mm-0.5b-q4_1.tar.gz) | 512*512 | 256.47 | 164.50 |
+| [Qwen3-VL-30B-A3B](https://archive.spacemit.com/spacemit-ai/model_zoo/vlm/qwen30ba3b-mm-q4_1.tar.gz) | 768*768 | 7928.13 | 4753.55 |
+| [Qwen3.5-0.8B](https://archive.spacemit.com/spacemit-ai/model_zoo/vlm/Qwen3.5-0.8B.tar.gz) | 384*384 | 340.42 | 245.61 |
+| [Qwen3.5-2B](https://archive.spacemit.com/spacemit-ai/model_zoo/vlm/Qwen3.5-2B.tar.gz) | 384*384 | 901.56 | 794.03 |
+| [Qwen3.5-4B](https://archive.spacemit.com/spacemit-ai/model_zoo/vlm/Qwen3.5-4B.tar.gz) | 384*384 | 904.73 | 798.71 |
 
 ### ASR
 
 - K3
 
-| Model | 4 Core/rtf | 4 Core/rtf |
-| --- | --- | --- |
-| qwen3-ASR-0.6B | 0.089 | 0.087 |
+| Model | LLM 8 Core + AudioEncoder 4 Core/rtf |
+| --- | --- |
+| [qwen3-ASR-0.6B](https://archive.spacemit.com/spacemit-ai/model_zoo/vlm/qwen3-asr-0.6B.tar.gz) | 0.186 |
