@@ -163,7 +163,7 @@ P999 Latency: 0.00730163 s
 | --- | --- | --- | --- | --- | --- |
 | [yolov5n](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov5/yolov5n.q.onnx) | int8 | 640x640 | 233.24 | 149.24 | 111.18 |
 | [yolov5s](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov5/yolov5s.q.onnx) | int8 | 640x640 | 450.00 | 238.84 | 140.92 |
-| yolov5m | int8 | 640x640 | 996.12 | 483.86 | 269.41 |
+| [yolov5m](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov5/yolov5m.q.onnx) | int8 | 640x640 | 996.12 | 483.86 | 269.41 |
 
 - K3
 
