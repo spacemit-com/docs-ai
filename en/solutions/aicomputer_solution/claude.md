@@ -1,120 +1,147 @@
-<!--
- * Copyright 2022-2023 SPACEMIT. All rights reserved.
- * Use of this source code is governed by a BSD-style license
- * that can be found in the LICENSE file.
- *
- * @Author: David(qiang.fu@spacemit.com)
- * @Date: 2026-03-09 14:26:58
- * @LastEditTime: 2026-05-13 14:41:22
- * @FilePath: \doc\docs-ai\zh\solutions\aicomputer_solution\claude.md
- * @Description:
--->
+---
 sidebar_position: 6
+---
 
-# Claude Code
+# Claude Code (Cloud Compute)
 
-**Claude Code** 是一个用于智能体编程的命令行工具,由**Anthropic**开发。它允许开发者通过命令行界面与 Claude AI 进行交互,实现代码生成、调试、重构等智能编程辅助功能。
+**Claude Code** is an AI-driven command-line coding tool developed by **Anthropic**. It provides a terminal interface for interacting with Claude and supports AI-assisted development workflows such as code generation, debugging, refactoring, and technical guidance.
 
-## 平台支持情况
+## Platform Support
 
-|      平台 & 系统       |       是否支持     |
-|-----------------------|-----------------------|
-| K1 Buildroot          | ❌ 不支持              |
-| K1 OpenHarmony     | ❌ 不支持              |
-| K1 Bianbu LXQT/GNOME    | ❌ 不支持             |
-| K3 Buildroot          | ❌ 不支持              |
-| K3 OpenHarmony     | ❌ 不支持              |
-| K3 Bianbu LXQT/GNOME  | ✅ 支持                |
+| Platform / OS        | Support |
+| -------------------- | ------- |
+| K1 Buildroot         | ❌ No   |
+| K1 OpenHarmony       | ❌ No   |
+| K1 Bianbu LXQT/GNOME | ✅ Yes  |
+| K3 Buildroot         | ❌ No   |
+| K3 OpenHarmony       | ❌ No   |
+| K3 Bianbu LXQT/GNOME | ✅ Yes  |
 
-## 1. 安装
+## 1. Installation
 
-### 1.1. 安装 npm
+### 1.1 Install npm
 
-```shell
+```bash
 sudo apt install npm
 ```
 
-### 1.2. 安装 Claude Code
+### 1.2 Install Claude Code
 
 ```bash
-sudo npm i --registry=http://nexus.bianbu.xyz/repository/npmproxy/ -g @anthropic-ai/claude-code
+sudo npm i -g @anthropic-ai/claude-code@2.1.112
 ```
 
-验证安装:
+If access to the default npm registry is restricted, install from a mirror registry instead.
+
+```bash
+sudo npm i --registry=https://registry.npmmirror.com -g @anthropic-ai/claude-code@2.1.112
+```
+
+**Note:** Version 2.1.112 is the currently supported release. Do not install a later version.
+
+Verify the installation:
 
 ```bash
 claude --version
 ```
 
-输出版本号表示安装成功：
-![](../static/claude-version.png)
+If a version number is returned, Claude Code has been installed successfully.
 
-## 2. 配置
+![Claude Code version](../static/claude-version.png)
 
-### 2.1. 设置环境变量
+**Note:** On K1, install nvm and switch to the required Node.js version before using Claude Code.
 
-**注意**: 创建 API Token 时,需要在分组选择中选择 **claude** 分组。
+```bash
+wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+source ~/.bashrc
+NVM_NODEJS_ORG_MIRROR=https://archive.spacemit.com/nodejs/k1 nvm install 22
+nvm use 22
+```
+
+## 2. Configuration
+
+### 2.1 Set Environment Variables
+
+After obtaining the provider URL and API key, add them to `~/.bashrc` as follows:
 
 ```bash
 cat >> ~/.bashrc << 'EOF'
-export ANTHROPIC_BASE_URL="供应商URL"
-export ANTHROPIC_AUTH_TOKEN="生成的API_KEY"
+export ANTHROPIC_BASE_URL="Provider URL"
+export ANTHROPIC_AUTH_TOKEN="Generated API key"
 EOF
 source ~/.bashrc
 ```
 
-### 2.2. 配置 API Key 自动批准
+### 2.2 Configure Automatic API Key Approval
 
 ```bash
 (cat ~/.claude.json 2>/dev/null || echo 'null') | jq --arg key "${ANTHROPIC_API_KEY: -20}" '(. // {}) | .customApiKeyResponses.approved |= ([.[]?, $key] | unique)' > ~/.claude.json.tmp && mv ~/.claude.json.tmp ~/.claude.json
 ```
 
-## 3. 使用
+## 3. Basic Usage
 
-启动 Claude Code 交互式会话:
+Start an interactive Claude Code session:
 
-```shell
+```bash
 claude
 ```
 
-启动界面如下:
-![](../static/claude-use.png)
+The startup screen appears below.
 
-Say Hello：
-![](../static/claude-hello.png)
+![Claude Code startup interface](../static/claude-use.png)
 
-执行/model切换模型：
-![](../static/claude-model.png)
+Example greeting using the `Say Hello` prompt:
 
+![Claude Code hello example](../static/claude-hello.png)
 
-在交互式会话中,您可以:
-- 询问编程问题
-- 请求代码生成和优化
-- 进行代码调试和重构
-- 获取技术建议和最佳实践
+Use `/model` to switch models.
 
-输入 `/exit` 退出会话。
+![Claude Code model selection](../static/claude-model.png)
 
-## 4. 举一个例子
+During an interactive session, Claude Code can help with:
 
-- 输入“帮我写一个程序，调用onnxruntime，下载并使用resnet50模型进行分类，显示分类结果”，Claude开始运行
-![](../static/claude-demo1.png)
+- Answering programming questions
+- Generating and optimizing code
+- Debugging and refactoring existing code
+- Providing technical recommendations and best practices
 
-- Claude完成了编码，并提供了操作步骤：
-![](../static/claude-demo2.png)
+Enter `/exit` to end the session.
 
-- 执行“run it”，出现异常，Claude自行修复异常中
-![](../static/claude-demo3.png)
+## 4. Example Workflow
 
-- Claude修复完异常后，程序可以正常执行
-![](../static/claude-demo4.png)
+This example demonstrates Claude Code generating and debugging an ONNX Runtime image-classification program.
 
-- 手动执行程序，可正常执行
-![](../static/claude-demo5.png)
+- Enter the following request:
 
-## 5. 对接端侧AI(简单尝试)
+   ```text
+   Write a program that calls ONNX Runtime, downloads and uses the ResNet50 model for image classification, and displays the classification result.
+   ```
 
-### 5.1. 设置环境变量
+   Claude Code starts analyzing the request and generating the program.
+
+   ![Claude Code demo request](../static/claude-demo1.png)
+
+- Claude Code completes the implementation and provides the execution steps.
+
+   ![Claude Code generated steps](../static/claude-demo2.png)
+
+- Run the program. If an exception occurs, Claude Code analyzes the error and applies a fix.
+
+   ![Claude Code debugging exception](../static/claude-demo3.png)
+
+- After the fix, the program runs successfully.
+
+   ![Claude Code fixed program](../static/claude-demo4.png)
+
+- The program can also be executed manually and produces the expected result.
+
+   ![Claude Code manual execution result](../static/claude-demo5.png)
+
+## 5. Connecting to On-Device AI: Basic Trial
+
+Claude Code can also connect to a local on-device inference service for basic experimentation. This section is optional and serves as a simple local trial.
+
+### 5.1 Set Environment Variables
 
 ```bash
 cat >> ~/.bashrc << 'EOF'
@@ -124,30 +151,34 @@ EOF
 source ~/.bashrc
 ```
 
-### 5.2. 配置 API Key 自动批准
+### 5.2 Configure Automatic API Key Approval
 
 ```bash
 (cat ~/.claude.json 2>/dev/null || echo 'null') | jq --arg key "${ANTHROPIC_API_KEY: -20}" '(. // {}) | .customApiKeyResponses.approved |= ([.[]?, $key] | unique)' > ~/.claude.json.tmp && mv ~/.claude.json.tmp ~/.claude.json
 ```
-### 5.3. 拉起llama-server
+
+### 5.3 Start llama-server
 
 ```bash
 llama-server -m Qwen2.5-0.5B-Instruct-Q4_0.gguf -t 8 --host 127.0.0.1 --port 8080 --ctx-size 153600 --n-gpu-layers 0 --batch-size 512 --metrics --no-mmap
 ```
 
-### 5.4. 运行claude
+**Note:** Claude Code uses a long input context, so `--ctx-size` must be set high enough. This example uses 153600 because 15360 is not sufficient for this scenario.
 
-启动claude并hello：
+### 5.4 Run Claude Code
+
+Start Claude Code with the local model and run a simple greeting test.
 
 ```bash
 claude --model qwen2.5:0.5b
 ```
 
-![](../static/claude-llama1.png)
+![Claude Code with llama-server](../static/claude-llama1.png)
 
-hello的耗时特别长，prefill了17000+tokens
+The initial greeting may take longer because the model prefill can exceed 17,000 tokens.
 
-![](../static/claude-llama2.png)
+![Claude Code long prefill example](../static/claude-llama2.png)
 
-后面写算法的耗时明显变短，但准确度欠佳
-![](../static/claude-llama3.png)
+Subsequent algorithm-generation tasks are noticeably faster, but output quality may still be constrained by the compact local model.
+
+![Claude Code local algorithm example](../static/claude-llama3.png)
