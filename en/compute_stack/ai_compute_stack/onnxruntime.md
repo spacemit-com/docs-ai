@@ -4,9 +4,21 @@ sidebar_position: 1
   
 **SpacemiT-ONNXRuntime** integrates the base inference library of [ONNXRuntime](https://github.com/microsoft/onnxruntime) with the SpacemiT ExecutionProvider acceleration backend. The overall architecture remains decoupled, so its usage is almost identical to the community version of ONNXRuntime.
 
+## Platform Support
+
+| Platform & OS               | Support |
+|-----------------------------|----------------|
+| K1 Buildroot                | ✅ Yes    |
+| K1 OpenHarmony 5.0          | ❌ No|
+| K1 Bianbu LXQT/GNOME        | ✅ Yes    |
+| K3 Buildroot                | ✅ Yes    |
+| K3 OpenHarmony 6.1          | ❌ No|
+| K3 Bianbu LXQT/GNOME        | ✅ Yes    |
+
 ---
 
 - [SpacemiT-ONNXRuntime](#spacemit-onnxruntime)
+  - [Platform Support](#platform-support)
   - [QuickStart](#quickstart)
     - [Getting Resources](#getting-resources)
     - [ONNXRuntime Model Inference](#onnxruntime-model-inference)
@@ -14,6 +26,8 @@ sidebar_position: 1
       - [Quick Performance Validation](#quick-performance-validation)
   - [Provider Option Reference](#provider-option-reference)
     - [`SPACEMIT_EP_INTRA_THREAD_NUM`](#spacemit_ep_intra_thread_num)
+    - [`SPACEMIT_EP_INTRA_THREAD_AFFINITY`](#spacemit_ep_intra_thread_affinity)
+    - [`SPACEMIT_EP_INTER_THREAD_NUM`](#spacemit_ep_inter_thread_num)
     - [`SPACEMIT_EP_USE_GLOBAL_INTRA_THREAD`](#spacemit_ep_use_global_intra_thread)
     - [`SPACEMIT_EP_DUMP_SUBGRAPHS`](#spacemit_ep_dump_subgraphs)
     - [`SPACEMIT_EP_DEBUG_PROFILE`](#spacemit_ep_debug_profile)
@@ -33,11 +47,11 @@ sidebar_position: 1
 
 ### Getting Resources
 
-The directory `https://archive.spacemit.com/spacemit-ai/onnxruntime/` is updated regularly.
+The latest release is available at [spacemit-onnxruntime](https://github.com/spacemit-com/onnxruntime/releases). You can also subscribe to release notifications, or install via the package manager on Bianbu systems:
 
-```bash
-# Example: download version 2.0.1
-wget https://archive.spacemit.com/spacemit-ai/onnxruntime/spacemit-ort.riscv64.2.0.1.tar.gz
+```shell
+sudo apt-get update
+sudo apt-get install -y spacemit-onnxruntime libopencv-dev python3-spacemit-ort python3-pillow python3-matplotlib python3-opencv
 ```
 
 ### ONNXRuntime Model Inference
@@ -113,6 +127,28 @@ Refer to [spacemit-demo](https://github.com/spacemit-com/spacemit-demo)
 ```cpp
 std::unordered_map<std::string, std::string> provider_options;
 provider_options["SPACEMIT_EP_INTRA_THREAD_NUM"] = "4";
+```
+
+### `SPACEMIT_EP_INTRA_THREAD_AFFINITY`
+
+- Specifies the thread affinity for EP threads, separated by semicolons. The count must match `SPACEMIT_EP_INTRA_THREAD_NUM`
+
+```c++
+std::unordered_map<std::string, std::string> provider_options;
+provider_options["SPACEMIT_EP_INTRA_THREAD_NUM"] = "4";
+// Pin to specific cores — adjust based on actual K1/K3 topology
+provider_options["SPACEMIT_EP_INTRA_THREAD_AFFINITY"] = "8;10;12;14";
+```
+
+### `SPACEMIT_EP_INTER_THREAD_NUM`
+
+- Enables multi-session inference within the EP, equivalent to `SPACEMIT_EP_INTRA_THREAD_NUM × SPACEMIT_EP_INTER_THREAD_NUM` total threads
+- For example, setting `SPACEMIT_EP_INTER_THREAD_NUM=2` allows the same Session to run on two threads simultaneously, achieving multi-stream inference
+
+```c++
+std::unordered_map<std::string, std::string> provider_options;
+provider_options["SPACEMIT_EP_INTRA_THREAD_NUM"] = "4";
+provider_options["SPACEMIT_EP_INTER_THREAD_NUM"] = "2";
 ```
 
 ### `SPACEMIT_EP_USE_GLOBAL_INTRA_THREAD`
@@ -293,4 +329,4 @@ mobilenetv2
 ## [FAQ](./onnxruntime_ep_faq.md)
 
 Questions can be raised in the [SpacemiT Developer Community](https://forum.spacemit.com/), and we will respond as soon as possible.
-Issues can be submitted on the [SpacemiT ONNX Runtime repository on GitHub](https://github.com/spacemit-com/onnxruntime)提出Issues
+Issues can be submitted on the [SpacemiT ONNX Runtime repository on GitHub](https://github.com/spacemit-com/onnxruntime).
