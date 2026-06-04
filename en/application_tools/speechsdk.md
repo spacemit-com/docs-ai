@@ -512,6 +512,39 @@ This is useful when you want to compose only the capabilities your application n
 - Running ASR and then invoking translation as a separate step.
 - Synthesizing speech from a text string directly, without any audio input.
 
+## Source Code Download
+
+On Bianbu, the `sm-sdk` source package can be retrieved directly via `apt`.
+
+### 1. Configure the `apt` Source
+
+Confirm that `/etc/apt/sources.list.d/bianbu.sources` includes both `deb` and `deb-src` under `Types`:
+
+```text
+Types: deb deb-src
+URIs: https://archive.spacemit.com/bianbu4/
+Suites: resolute resolute-security resolute-updates resolute-backports resolute-porting resolute-customization
+Components: main universe restricted multiverse
+```
+
+If only `deb` is present, add `deb-src` and then update the package index:
+
+```bash
+sudo apt update
+```
+
+### 2. Download the Source Package
+
+Once the source is configured, download the `sm-sdk` source package:
+
+```bash
+mkdir -p ~/Workspace/sm-sdk-src
+cd ~/Workspace/sm-sdk-src
+apt source sm-sdk
+```
+
+After this completes, the directory will contain a `.dsc` file, the original compressed archive, and the extracted source tree, which you can use to inspect the Debian packaging files and source code.
+
 ## 📁 Project Structure
 
 ```text
