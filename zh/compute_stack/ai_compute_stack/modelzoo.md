@@ -251,14 +251,14 @@ P999 Latency: 0.00730163 s
 | 模型名 | type | 4 Core/rtf |
 | --- | --- | --- |
 | melotts | dyn_int8  | 0.984 |
-| sensevoice | dyn_int8 | --- |
+| [sensevoice](https://archive.spacemit.com/spacemit-ai/model_zoo/asr/sensevoice.tar.gz) | dyn_int8 | --- |
 
 - K3
 
 | 模型名 | type | 4 Core/rtf | 8 Core/rtf |
 | --- | --- | --- | --- |
 | melotts | dyn_int8  | 0.530 | --- |
-| sensevoice | dyn_int8 | 0.1124 | 0.1380 |
+| [sensevoice](https://archive.spacemit.com/spacemit-ai/model_zoo/asr/sensevoice.tar.gz) | dyn_int8 | 0.1124 | 0.1380 |
 
 ## 大模型
 
@@ -295,7 +295,7 @@ CPU_RISCV64_SPACEMIT: failed to allocate init_barrier from shared mem, falling b
 | --- | --- | --- | --- | --- | --- |
 | [qwen3-0.6B](https://www.modelscope.cn/models/unsloth/Qwen3-0.6B-GGUF/file/view/master/Qwen3-0.6B-Q4_0.gguf?status=2) | Q4_0 | 499.75 | 53.35 | - | - |
 | [qwen3-1.7B](https://www.modelscope.cn/models/unsloth/Qwen3-1.7B-GGUF/file/view/master/Qwen3-1.7B-Q4_0.gguf?status=2) | Q4_0 | 229.79 | 23.11 | - | - |
-| [qwen3-4B](https://www.modelscope.cn/models/unsloth/Qwen3-4B-Thinking-2507-GGUF/file/view/master/Qwen3-4B-Thinking-2507-Q4_0.gguf?status=2) | Q4_0 | 76.44 | 11.03 | - | - |
+| [qwen3-4B](https://www.modelscope.cn/models/unsloth/Qwen3-4B-GGUF/file/view/master/Qwen3-4B-Q4_0.gguf?status=2) | Q4_0 | 76.44 | 11.03 | - | - |
 | [qwen3-moe-30B-A3B](https://www.modelscope.cn/models/unsloth/Qwen3-30B-A3B-Instruct-2507-GGUF/file/view/master/Qwen3-30B-A3B-Instruct-2507-Q4_0.gguf?status=2) | Q4_0 | 55.67 | 12.32 | 44.03 | 11.17
 | [qwen3.5-0.8B](https://www.modelscope.cn/models/unsloth/Qwen3.5-0.8B-GGUF/file/view/master/Qwen3.5-0.8B-Q4_0.gguf?status=2) | Q4_0 | 182.69 | 29.33 | - | - |
 | [qwen3.5-2B](https://www.modelscope.cn/models/unsloth/Qwen3.5-2B-GGUF/file/view/master/Qwen3.5-2B-Q4_0.gguf?status=2) | Q4_1 | 112.22 | 16.15 | - | - |

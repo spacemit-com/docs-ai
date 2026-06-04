@@ -64,6 +64,39 @@ sudo apt update
 sudo apt install yumeet llm-sdk sm-sdk
 ```
 
+## 源码下载
+
+在 Bianbu 环境中，可以直接通过 `apt` 获取 `yumeet` 的源码包。
+
+### 1. 配置 `apt` 源
+
+确认 `/etc/apt/sources.list.d/bianbu.sources` 中的 `Types` 同时包含 `deb` 和 `deb-src`：
+
+```text
+Types: deb deb-src
+URIs: https://archive.spacemit.com/bianbu4/
+Suites: resolute resolute-security resolute-updates resolute-backports resolute-porting resolute-customization
+Components: main universe restricted multiverse
+```
+
+如果当前只有 `deb`，需要补充 `deb-src` 后再更新索引：
+
+```bash
+sudo apt update
+```
+
+### 2. 下载源码包
+
+完成源配置后，可直接下载 `yumeet` 源码包：
+
+```bash
+mkdir -p ~/Workspace/yumeet-src
+cd ~/Workspace/yumeet-src
+apt source yumeet
+```
+
+执行完成后，当前目录下通常会生成 `.dsc`、原始压缩包以及解压后的源码目录，可用于查看 Debian 打包文件和源码内容。
+
 ## 快速开始
 
 ### 1) 启动应用
