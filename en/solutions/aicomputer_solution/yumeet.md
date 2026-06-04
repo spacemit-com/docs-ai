@@ -65,6 +65,39 @@ sudo apt update
 sudo apt install yumeet llm-sdk sm-sdk
 ```
 
+## Source Code Download
+
+On Bianbu, the `yumeet` source package can be retrieved directly via `apt`.
+
+### 1. Configure the `apt` Source
+
+Confirm that `/etc/apt/sources.list.d/bianbu.sources` includes both `deb` and `deb-src` under `Types`:
+
+```text
+Types: deb deb-src
+URIs: https://archive.spacemit.com/bianbu4/
+Suites: resolute resolute-security resolute-updates resolute-backports resolute-porting resolute-customization
+Components: main universe restricted multiverse
+```
+
+If only `deb` is present, add `deb-src` and then update the package index:
+
+```bash
+sudo apt update
+```
+
+### 2. Download the Source Package
+
+Once the source is configured, download the `yumeet` source package:
+
+```bash
+mkdir -p ~/Workspace/yumeet-src
+cd ~/Workspace/yumeet-src
+apt source yumeet
+```
+
+After this completes, the directory will contain a `.dsc` file, the original compressed archive, and the extracted source tree, which you can use to inspect the Debian packaging files and source code.
+
 ## Quick Start
 
 ### 1. Launch the Application
@@ -119,6 +152,8 @@ Field descriptions:
 - **Participants**: Supports registration of multiple attendees.
 
 ![](../static/yumeet_en-7.png)
+
+Click **Start Recording** when done.
 
 #### 1.3 Transcription in Progress
 
@@ -241,4 +276,4 @@ The **System Status** page shows current resource usage and lets you manually re
 - **UI Design**: Adjust font scaling and toggle animations.
 - **AI Service Connection**: Adjust ports and service addresses for LLM-SDK, SM-SDK, and the translation service.
 - **License**: Upload, collapse, and view license content.
-- **Audio Device Settings**: Filter and display matching settings by keyword.
+- **Settings Page Search**: Filter and display settings by keyword.

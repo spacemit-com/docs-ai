@@ -10,7 +10,7 @@ sidebar_position: 4
 | --------------------- | --------- |
 | K1 Buildroot          | ❌ No     |
 | K1 OpenHarmony        | ❌ No     |
-| K1 Bianbu LXQT/GNOME  | ❌ No     |
+| K1 Bianbu LXQT/GNOME  | ✅ Yes     |
 | K3 Buildroot          | ❌ No     |
 | K3 OpenHarmony        | ❌ No     |
 | K3 Bianbu LXQT/GNOME  | ✅ Yes    |
@@ -63,7 +63,7 @@ sudo apt update
 sudo apt install bianbu-agentforce
 ```
 
-The service starts automatically after installation. It is available in a browser at `http://127.0.0.1:8787`.
+The service starts automatically after installation. It is available in a browser at `http://127.0.0.1:8881`.
 
 ### Option 2: Source Installation (For Developers)
 
