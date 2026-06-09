@@ -312,7 +312,7 @@ CPU_RISCV64_SPACEMIT: failed to allocate init_barrier from shared mem, falling b
 
 | Model | Quantization | PP128 (token/s) | TG128 (token/s) | PP1280 (token/s) | TG1280 (token/s) |
 | --- | --- | --- | --- | --- | --- |
-| [HY-MT1.5-1.8B](https://www.modelscope.cn/models/Tencent-Hunyuan/HY-MT1.5-1.8B-GGUF/files) | Q4_K_M | 157.81 | 20.15 | - | - |
+| [HY-MT1.5-1.8B](https://www.modelscope.cn/models/Tencent-Hunyuan/HY-MT1.5-1.8B-GGUF/resolve/master/HY-MT1.5-1.8B-Q4_K_M.gguf) | Q4_K_M | 157.81 | 20.15 | - | - |
 
 ### Llama
 
@@ -320,7 +320,7 @@ CPU_RISCV64_SPACEMIT: failed to allocate init_barrier from shared mem, falling b
 
 | Model | Quantization | PP128 (token/s) | TG128 (token/s) | PP1280 (token/s) | TG1280 (token/s) |
 | --- | --- | --- | --- | --- | --- |
-| [llama2-7B](https://www.modelscope.cn/models/TheBloke/Llama-2-7B-GGUF/files) | Q4_0 | 50.40 | 7.07 | - | - |
+| [llama2-7B](https://www.modelscope.cn/models/TheBloke/Llama-2-7B-GGUF/resolve/master/llama-2-7b.Q4_0.gguf) | Q4_0 | 50.40 | 7.07 | - | - |
 
 ## Multimodal Large Models
 
