@@ -408,8 +408,8 @@ The tile shapes for the primary sub-extensions are as follows:
 
 **Scope of application:**
 
-- `vfwmadot` / `vfwmadot1/2/3`
-- Scale parameters and accumulator result formats in `vmadot.hp*`
+- `smt.vfwmadot` / `smt.vfwmadot1/2/3`
+- Scale parameters and accumulator result formats in `smt.vmadot.hp*`
 
 ### 2.6.2 `V0` / `V1`
 
@@ -417,22 +417,22 @@ In this instruction set, `v0` / `v1` are not used as general-purpose matrix mask
 
 | Instruction Type | Role of `v0` / `v1`                               |
 | ---------------- | ------------------------------------------------- |
-| `vmadot.sp*`     | Stores recovery masks for 4:2 structured sparsity |
-| `vmadot.hp*`     | Stores per-column or per-group scale parameters   |
+| `smt.vmadot.sp*`     | Stores recovery masks for 4:2 structured sparsity |
+| `smt.vmadot.hp*`     | Stores per-column or per-group scale parameters   |
 
 ### 2.6.3 `imm2` and `imm3`
 
 | Field  | Applicable Instructions | Width  | Function                                            |
 | ------ | ----------------------- | ------ | --------------------------------------------------- |
-| `imm2` | `vmadot.sp*`            | 2 bits | Selects a segment within the mask register          |
-| `imm3` | `vmadot.hp*`            | 3 bits | Selects a group within the scale parameter register |
+| `imm2` | `smt.vmadot.sp*`            | 2 bits | Selects a segment within the mask register          |
+| `imm3` | `smt.vmadot.hp*`            | 3 bits | Selects a group within the scale parameter register |
 
 **Additional Notes**
 
-- For `vmadot.sp*`, the `imm2` field is split across instruction bits `[15]` and `[7]`.
+- For `smt.vmadot.sp*`, the `imm2` field is split across instruction bits `[15]` and `[7]`.
   These bits are available for encoding because `vs1` and `vd` are constrained to even-numbered registers, meaning their least significant bit (LSB, `bit 0`) is always zero. As a result, only bits `[4:1]` need to be explicitly encoded for register indices, freeing encoding space for `imm2`.
 
-- For `vmadot.hp*`, the `imm3` field occupies a dedicated instruction field `[14:12]` and does not rely on encoding space derived from register constraints.
+- For `smt.vmadot.hp*`, the `imm3` field occupies a dedicated instruction field `[14:12]` and does not rely on encoding space derived from register constraints.
 
 ## 2.7 Data Layout
 
@@ -494,23 +494,23 @@ The table below summarizes the key differences between the community extensions 
 | `Zvvm`              | Data layout                       | A and C row-major, B column-major  | Same                                                                |
 | `Zvvm`              | Instruction                       | `vmmacc`                           | Not supported                                                       |
 | `Zvvm`              | Instruction                       | `vwmmacc`                          | Not supported                                                       |
-| `Zvvm`              | Instruction                       | `vqwmmacc`                         | `vmadot*`, Int8                                                     |
-| `Zvvm`              | Instruction                       | `v8wmmacc`                         | `vmadot*`, Int4                                                     |
+| `Zvvm`              | Instruction                       | `vqwmmacc`                         | `smt.vmadot*`, Int8                                                     |
+| `Zvvm`              | Instruction                       | `v8wmmacc`                         | `smt.vmadot*`, Int4                                                     |
 | `Zvvm`              | Instruction                       | `vfmmacc`                          | Not supported                                                       |
-| `Zvvm`              | Instruction                       | `vfwmmacc`                         | `vfwmadot`                                                          |
+| `Zvvm`              | Instruction                       | `vfwmmacc`                         | `smt.vfwmadot`                                                          |
 | `Zvvm`              | Instruction                       | `vfqwmmacc`                        | Not supported                                                       |
 | `Zvvm`              | Instruction                       | `vf8wmmacc`                        | Not supported                                                       |
-| `Zvvm`              | Instruction                       | `vfwimmacc`                        | `vmadot.hp*`, Int8 with FP16/BF16 scale                             |
-| `Zvvm`              | Instruction                       | `vfqwimmacc` (scale type e4m3)     | `vmadot.hp*`, Int4 with FP16/BF16 scale                             |
+| `Zvvm`              | Instruction                       | `vfwimmacc`                        | `smt.vmadot.hp*`, Int8 with FP16/BF16 scale                             |
+| `Zvvm`              | Instruction                       | `vfqwimmacc` (scale type e4m3)     | `smt.vmadot.hp*`, Int4 with FP16/BF16 scale                             |
 | `Zvvm`              | Instruction                       | `vf8wimmacc` (scale type e5m2)     | Not supported                                                       |
 | `Zvvm`              | Dedicated load/store              | `Zvvmtls` extension                | Not implemented; similar functionality can be achieved with `vpack` |
 | `Zvvm`              | Specialized (convolution)         | Not supported                      | Provides dedicated sliding-window convolution instructions          |
 | `Zvvm`              | Specialized (structured sparsity) | Not supported                      | Supports 4:2 structured sparsity                                    |
-| `Zvzip`             | Instruction                       | `vzip.vv`                          | `vpack.vv` (functionally equivalent)                                |
-| `Zvzip`             | Instruction                       | `vunzipe.v`                        | `vupack.vv` (functionally equivalent)                               |
-| `Zvzip`             | Instruction                       | `vunzipo.v`                        | `vupack.vv` (functionally equivalent)                               |
-| `Zvzip`             | Instruction                       | `vpaire.vv`                        | `vnpack.vv` (functionally equivalent)                               |
-| `Zvzip`             | Instruction                       | `vpairo.vv`                        | `vnpack.vv` (functionally equivalent with `vsrl.vv`)                |
+| `Zvzip`             | Instruction                       | `vzip.vv`                          | `smt.vpack.vv` (functionally equivalent)                                |
+| `Zvzip`             | Instruction                       | `vunzipe.v`                        | `smt.vupack.vv` (functionally equivalent)                               |
+| `Zvzip`             | Instruction                       | `vunzipo.v`                        | `smt.vupack.vv` (functionally equivalent)                               |
+| `Zvzip`             | Instruction                       | `vpaire.vv`                        | `smt.vnpack.vv` (functionally equivalent)                               |
+| `Zvzip`             | Instruction                       | `vpairo.vv`                        | `smt.vnpack.vv` (functionally equivalent with `vsrl.vv`)                |
 
 # Chapter 4 Instruction Overview, Sub-extensions, and Quick Index
 
@@ -518,13 +518,13 @@ The table below summarizes the key differences between the community extensions 
 
 | Sub-extension | Instruction Count | Representative Instructions  | Input | Output / Accumulator | Special Resources |
 | ---------- | --- | ---- | ---- | --- | ----- |
-| `Xsmti*i32mm` <br>(integer matrix multiplication)                                               | 8                 | `vmadot*`                                          | Int4 / Int8         | Int32                | None                             |
-| `Xsmti*i32mm_slide` <br>(integer sliding-window matrix multiplication for convolution)          | 12                | `vmadot1*`, `vmadot2*`, `vmadot3*`                 | Int8                | Int32                | `vs1` must be even-numbered      |
-| `Xsmti*i32mm_42sp` <br>(4:2 structured sparse integer matrix multiplication)                    | 8                 | `vmadot.sp*`                                       | Int4 / Int8         | Int32                | `v0` / `v1`, `imm2`              |
-| `Xsmti**16mm_scl16f` <br>(integer matrix multiplication with block scaling)                     | 8                 | `vmadot.hp*`                                       | Int4 / Int8 + scale | FP16 / BF16          | `v0` / `v1`, `imm3`, `MCPM.BF16` |
-| `Xsmt*16fp32mm` <br>(floating-point matrix multiplication)                                      | 1                 | `vfwmadot`                                         | FP16 / BF16         | FP32                 | `MCPM.BF16`                      |
-| `Xsmt*16fp32mm_slide` <br>(floating-point sliding-window matrix multiplication for convolution) | 3                 | `vfwmadot1/2/3`                                    | FP16 / BF16         | FP32                 | `vs1` must be even-numbered;<br>`MCPM.BF16`                      |
-| Data layout transformation instructions                                                     | 6                 | `vpack.vv`, `vupack.vv`, `vnpack.vv`, `vnpack4.vv` | Various             | Various              | `imm2`, `SEW`, `LMUL`            |
+| `Xsmti*i32mm` <br>(integer matrix multiplication)                                               | 8                 | `smt.vmadot*`                                          | Int4 / Int8         | Int32                | None                             |
+| `Xsmti*i32mm_slide` <br>(integer sliding-window matrix multiplication for convolution)          | 12                | `smt.vmadot1*`, `smt.vmadot2*`, `smt.vmadot3*`                 | Int8                | Int32                | `vs1` must be even-numbered      |
+| `Xsmti*i32mm_42sp` <br>(4:2 structured sparse integer matrix multiplication)                    | 8                 | `smt.vmadot.sp*`                                       | Int4 / Int8         | Int32                | `v0` / `v1`, `imm2`              |
+| `Xsmti**16mm_scl16f` <br>(integer matrix multiplication with block scaling)                     | 8                 | `smt.vmadot.hp*`                                       | Int4 / Int8 + scale | FP16 / BF16          | `v0` / `v1`, `imm3`, `MCPM.BF16` |
+| `Xsmt*16fp32mm` <br>(floating-point matrix multiplication)                                      | 1                 | `smt.vfwmadot`                                         | FP16 / BF16         | FP32                 | `MCPM.BF16`                      |
+| `Xsmt*16fp32mm_slide` <br>(floating-point sliding-window matrix multiplication for convolution) | 3                 | `smt.vfwmadot1/2/3`                                    | FP16 / BF16         | FP32                 | `vs1` must be even-numbered;<br>`MCPM.BF16`                      |
+| Data layout transformation instructions                                                     | 6                 | `smt.vpack.vv`, `smt.vupack.vv`, `smt.vnpack.vv`, `smt.vnpack4.vv` | Various             | Various              | `imm2`, `SEW`, `LMUL`            |
 
 ## 4.2 `signedness` Variant Conventions
 
@@ -541,59 +541,59 @@ Integer matrix instructions in this extension use suffixes to indicate the signe
 
 ### Integer Matrix Multiplication Instructions (Base Path)
 
-- `vmadot`
-- `vmadotu`
-- `vmadotus`
-- `vmadotsu`
+- `smt.vmadot`
+- `smt.vmadotu`
+- `smt.vmadotus`
+- `smt.vmadotsu`
 
 ### Integer Sliding-Window Matrix Multiplication (for Convolution)
 
-- `vmadot1`
-- `vmadot1u`
-- `vmadot1us`
-- `vmadot1su`
-- `vmadot2`
-- `vmadot2u`
-- `vmadot2us`
-- `vmadot2su`
-- `vmadot3`
-- `vmadot3u`
-- `vmadot3us`
-- `vmadot3su`
+- `smt.vmadot1`
+- `smt.vmadot1u`
+- `smt.vmadot1us`
+- `smt.vmadot1su`
+- `smt.vmadot2`
+- `smt.vmadot2u`
+- `smt.vmadot2us`
+- `smt.vmadot2su`
+- `smt.vmadot3`
+- `smt.vmadot3u`
+- `smt.vmadot3us`
+- `smt.vmadot3su`
 
 ### 4:2 Structured Sparse Integer Matrix Multiplication
 
-- `vmadot.sp`
-- `vmadotu.sp`
-- `vmadotus.sp`
-- `vmadotsu.sp`
+- `smt.vmadot.sp`
+- `smt.vmadotu.sp`
+- `smt.vmadotus.sp`
+- `smt.vmadotsu.sp`
 
 ### Integer Matrix Multiplication with Block Scaling
 
-- `vmadot.hp`
-- `vmadotu.hp`
-- `vmadotus.hp`
-- `vmadotsu.hp`
+- `smt.vmadot.hp`
+- `smt.vmadotu.hp`
+- `smt.vmadotus.hp`
+- `smt.vmadotsu.hp`
 
 ### Floating-Point Matrix Multiplication Instructions
 
-- `vfwmadot`
-- `vfwmadot1`
-- `vfwmadot2`
-- `vfwmadot3`
+- `smt.vfwmadot`
+- `smt.vfwmadot1`
+- `smt.vfwmadot2`
+- `smt.vfwmadot3`
 
 ### Data Layout Transformation Instructions
 
-- `vpack.vv`
-- `vupack.vv`
-- `vnpack.vv`
-- `vnspack.vv`
-- `vnpack4.vv`
-- `vnspack4.vv`
+- `smt.vpack.vv`
+- `smt.vupack.vv`
+- `smt.vnpack.vv`
+- `smt.vnspack.vv`
+- `smt.vnpack4.vv`
+- `smt.vnspack4.vv`
 
 # Chapter 5 Integer Matrix Multiplication Instructions
 
-## 5.1 Integer Matrix Multiplication (Base Path): `vmadot*`
+## 5.1 Integer Matrix Multiplication (Base Path): `smt.vmadot*`
 
 ### 5.1.1 Functional Overview
 
@@ -605,8 +605,8 @@ $$
 
 The geometric relationship of the matrix multiplication is illustrated in Figure 4, where the left side represents matrix `A` and the right side represents matrix `B`.
 
-![Figure 4: Matrix computation for the vmadot base path](images/ime_extension_png/fig3vmadot.png)
-**Figure 4.** Matrix computation for `vmadot` under
+![Figure 4: Matrix computation for the smt.vmadot base path](images/ime_extension_png/fig3vmadot.png)
+**Figure 4.** Matrix computation for `smt.vmadot` under
 `VLEN = 1024`, `λ = 4`, `W = 4`, and `LMUL = 1`.
 The left side shows the `A` tile, and the right side shows the `B` tile.
 
@@ -614,10 +614,10 @@ The left side shows the `A` tile, and the right side shows the `B` tile.
 
 | Instruction | Assembly Format | Data Type Path | Tile (`M × N × K`) |
 | ----------- | ---------------- | -------------- | ------- |
-| `vmadot`    | `vmadot vd, vs1, vs2, i4`<br>`vmadot vd, vs1, vs2, i8`     | `Int4 × Int4 → Int32`<br>`Int8 × Int8 → Int32`     | **A60**:<br>Int8: `4 × 8 × 4`;<br>**A100**:<br>Int4: `8 × 32 × 8`;<br>Int8: `8 × 16 × 8` |
-| `vmadotu`   | `vmadotu vd, vs1, vs2, i4`<br>`vmadotu vd, vs1, vs2, i8`   | `UInt4 × UInt4 → Int32`<br>`UInt8 × UInt8 → Int32` | Same as above                                                                            |
-| `vmadotus`  | `vmadotus vd, vs1, vs2, i4`<br>`vmadotus vd, vs1, vs2, i8` | `UInt4 × Int4 → Int32`<br>`UInt8 × Int8 → Int32`   | Same as above                                                                            |
-| `vmadotsu`  | `vmadotsu vd, vs1, vs2, i4`<br>`vmadotsu vd, vs1, vs2, i8` | `Int4 × UInt4 → Int32`<br>`Int8 × UInt8 → Int32`   | Same as above                                                                            |
+| `smt.vmadot`    | `smt.vmadot vd, vs1, vs2, i4`<br>`smt.vmadot vd, vs1, vs2, i8`     | `Int4 × Int4 → Int32`<br>`Int8 × Int8 → Int32`     | **A60**:<br>Int8: `4 × 8 × 4`;<br>**A100**:<br>Int4: `8 × 32 × 8`;<br>Int8: `8 × 16 × 8` |
+| `smt.vmadotu`   | `smt.vmadotu vd, vs1, vs2, i4`<br>`smt.vmadotu vd, vs1, vs2, i8`   | `UInt4 × UInt4 → Int32`<br>`UInt8 × UInt8 → Int32` | Same as above                                                                            |
+| `smt.vmadotus`  | `smt.vmadotus vd, vs1, vs2, i4`<br>`smt.vmadotus vd, vs1, vs2, i8` | `UInt4 × Int4 → Int32`<br>`UInt8 × Int8 → Int32`   | Same as above                                                                            |
+| `smt.vmadotsu`  | `smt.vmadotsu vd, vs1, vs2, i4`<br>`smt.vmadotsu vd, vs1, vs2, i8` | `Int4 × UInt4 → Int32`<br>`Int8 × UInt8 → Int32`   | Same as above                                                                            |
 
 ### 5.1.3 Program-Visible Semantics
 
@@ -702,7 +702,7 @@ void matmul(const int8_t *A, const int8_t *B, int32_t *C) {
         "vsetvli        t0, zero, e8, m1          \n\t"
         "vle8.v         v0, (%[A])                \n\t"
         "vle8.v         v1, (%[B])                \n\t"
-        "vmadot         v16, v0, v1               \n\t"
+        "smt.vmadot         v16, v0, v1               \n\t"
         "vsetvli        t0, zero, e32, m2         \n\t"
         "vse32.v        v16, (%[C])               \n\t"
         : [ A ] "+r"(A), [ B ] "+r"(B), [ C ] "+r"(C)
@@ -742,7 +742,7 @@ int main()
 }
 ```
 
-## 5.2 Integer Sliding-Window Matrix Multiplication for Convolution: `vmadot1*` / `vmadot2*` / `vmadot3*`
+## 5.2 Integer Sliding-Window Matrix Multiplication for Convolution: `smt.vmadot1*` / `smt.vmadot2*` / `smt.vmadot3*`
 
 ### 5.2.1 Functional Overview
 
@@ -752,16 +752,16 @@ Its computation is identical to the base Int8 matrix multiplication, except that
 Figure 5 illustrates the window movement for `slide = 1 / 2 / 3`, as well as how elements are assembled when the window spans across `vs1` and `vs1+1`.
 
 ![Figure 5: Integer sliding-window matrix multiplication (slide = 1)](images/ime_extension_png/fig4vmadotslide.png)
-**Figure 5.** Sliding-window data access and computation for `vmadot1` (i.e., `slide = 1`) under
+**Figure 5.** Sliding-window data access and computation for `smt.vmadot1` (i.e., `slide = 1`) under
 `VLEN = 1024`, `λ = 4`, `W = 4`, and `LMUL = 1`.
 
 ### 5.2.2 Instruction Variants
 
 | Instruction Class | Variants | Assembly Format  | slide | Data Type Path  | Tile |
 |---|---|---|---|---|---|
-|`vmadot1*`|`vmadot1`,<br> `vmadot1u`,<br> `vmadot1us`,<br> `vmadot1su`|`vmadot1 vd, vs1, vs2, i8`<br>`vmadot1u vd, vs1, vs2, i8`<br>`vmadot1us vd, vs1, vs2, i8`<br>`vmadot1su vd, vs1, vs2, i8`|1|`[U]Int8 × [U]Int8 → Int32`|**A60**: `4 × 8 × 4`<br>**A100**: `8 × 16 × 8`|
-|`vmadot2*`|`vmadot2`,<br> `vmadot2u`,<br> `vmadot2us`,<br> `vmadot2su`|`vmadot2 vd, vs1, vs2, i8`<br>`vmadot2u vd, vs1, vs2, i8`<br>`vmadot2us vd, vs1, vs2, i8`<br>`vmadot2su vd, vs1, vs2, i8`|2|Same as above|Same as above|
-|`vmadot3*`|`vmadot3`,<br> `vmadot3u`,<br> `vmadot3us`,<br> `vmadot3su`|`vmadot3 vd, vs1, vs2, i8`<br>`vmadot3u vd, vs1, vs2, i8`<br>`vmadot3us vd, vs1, vs2, i8`<br>`vmadot3su vd, vs1, vs2, i8`|3|Same as above|Same as above|
+|`smt.vmadot1*`|`smt.vmadot1`,<br> `smt.vmadot1u`,<br> `smt.vmadot1us`,<br> `smt.vmadot1su`|`smt.vmadot1 vd, vs1, vs2, i8`<br>`smt.vmadot1u vd, vs1, vs2, i8`<br>`smt.vmadot1us vd, vs1, vs2, i8`<br>`smt.vmadot1su vd, vs1, vs2, i8`|1|`[U]Int8 × [U]Int8 → Int32`|**A60**: `4 × 8 × 4`<br>**A100**: `8 × 16 × 8`|
+|`smt.vmadot2*`|`smt.vmadot2`,<br> `smt.vmadot2u`,<br> `smt.vmadot2us`,<br> `smt.vmadot2su`|`smt.vmadot2 vd, vs1, vs2, i8`<br>`smt.vmadot2u vd, vs1, vs2, i8`<br>`smt.vmadot2us vd, vs1, vs2, i8`<br>`smt.vmadot2su vd, vs1, vs2, i8`|2|Same as above|Same as above|
+|`smt.vmadot3*`|`smt.vmadot3`,<br> `smt.vmadot3u`,<br> `smt.vmadot3us`,<br> `smt.vmadot3su`|`smt.vmadot3 vd, vs1, vs2, i8`<br>`smt.vmadot3u vd, vs1, vs2, i8`<br>`smt.vmadot3us vd, vs1, vs2, i8`<br>`smt.vmadot3su vd, vs1, vs2, i8`|3|Same as above|Same as above|
 
 ### 5.2.3 Program-Visible Semantics
 
@@ -810,7 +810,7 @@ for (p = 0; p < (2 * VLEN * LMUL / 32); p++) {
 *     [5 6 7 8  9 10 11 12] 
 *     [6 7 8 9 10 11 12 13]
 *
-*  "vmadot     v16, v0, v8             \n\t"
+*  "smt.vmadot     v16, v0, v8             \n\t"
 *  MatrixA[4, 8]         × MatrixB[8, 4]    = MatrixC[4, 4]
 *     [0 1 2 3 4 5  6  7]       [0 1 2 11]           [140 168 196 224] 
 *     [1 2 3 4 5 6  7  8]       [1 2 3  4]           [168 204 240 284] 
@@ -821,7 +821,7 @@ for (p = 0; p < (2 * VLEN * LMUL / 32); p++) {
 *                               [6 7 8  9]
 *                               [7 8 9 10]
 *
-*  "vmadot1    v16, v0, v8             \n\t"
+*  "smt.vmadot1    v16, v0, v8             \n\t"
 *  MatrixA[4, 8]         × MatrixB[8, 4]  + MatrixC[4, 4] = MatrixC[4, 4]
 *     [1 2 3 4 5  6  7  8]      [0 1 2 11]           [308 372 436 224] 
 *     [2 3 4 5 6  7  8  9]      [1 2 3  4]           [364 444 524 628] 
@@ -832,7 +832,7 @@ for (p = 0; p < (2 * VLEN * LMUL / 32); p++) {
 *                               [6 7 8  9]
 *                               [7 8 9 10]
 *
-*  "vmadot2     v16, v0, v8            \n\t"
+*  "smt.vmadot2     v16, v0, v8            \n\t"
 * MatrixA[4, 8]         × MatrixB[8, 4]  + MatrixC[4, 4] = MatrixC[4, 4]
 *     [2 3 4 5 6  7  8   9]     [0 1 2 11]           [504  612  720  852] 
 *     [4 5 6 7 8  9  10 11]     [1 2 3  4]           [616  756  896 1092] 
@@ -855,9 +855,9 @@ void conv1d(const int8_t *feature, const int8_t *weight, int32_t *output) {
         "addi       %[A], %[A], 4*8         \n\t"
         "vle8.v     v8, (%[B])              \n\t"
         "addi       %[B], %[B], 4*8         \n\t"
-        "vmadot     v16, v0, v8             \n\t"
-        "vmadot1    v16, v0, v8             \n\t"
-        "vmadot2    v16, v0, v8             \n\t"
+        "smt.vmadot     v16, v0, v8             \n\t"
+        "smt.vmadot1    v16, v0, v8             \n\t"
+        "smt.vmadot2    v16, v0, v8             \n\t"
         "vsetvli    t0, zero, e32, m2       \n\t"
         "vse32.v    v16, (%[C])             \n\t"
         
@@ -902,7 +902,7 @@ int main()
 }
 ```
 
-## 5.3 4:2 Structured Sparse Integer Matrix Multiplication: `vmadot.sp*`
+## 5.3 4:2 Structured Sparse Integer Matrix Multiplication: `smt.vmadot.sp*`
 
 ### 5.3.1 Functional Overview
 
@@ -911,19 +911,19 @@ In this path, for every group of four source elements from operand `A`, two vali
 
 **Figure 6** illustrates the 4:2 structured sparsity reconstruction process, showing how two valid elements are selected from each group of four candidates based on the mask.
 
-![Figure 6: 4:2 structured sparsity reconstruction and vmadot.sp computation.](images/ime_extension_png/fig5vmadotsp.png)
+![Figure 6: 4:2 structured sparsity reconstruction and smt.vmadot.sp computation.](images/ime_extension_png/fig5vmadotsp.png)
 **Figure 6.** Sparse reconstruction and multiply-accumulate flow for
-`vmadot.sp v16, v2, v8, v0, i8` under
+`smt.vmadot.sp v16, v2, v8, v0, i8` under
 `VLEN = 1024`, `λ = 4`, `W = 4`, and `LMUL = 1`.
 
 ### 5.3.2 Instruction Variants
 
 | Instruction | Assembly Format | Data Type Path | Mask Register | Selection Field | Tile |
 |---|---|---|---|---|---|
-|`vmadot.sp`|`vmadot.sp vd, vs1, vs2, v0/v1, imm2, i4`<br>`vmadot.sp vd, vs1, vs2, v0/v1, imm2, i8`|`Int4 × Int4 → Int32`<br>`Int8 × Int8 → Int32`|`V0` / `V1`|`imm2`|Int4: `8 × 64 × 8`;<br>Int8: `8 × 32 × 8`|
-|`vmadotu.sp`|`vmadotu.sp vd, vs1, vs2, v0/v1, imm2, i4`<br>`vmadotu.sp vd, vs1, vs2, v0/v1, imm2, i8`|`UInt4 × UInt4 → Int32`<br>`UInt8 × UInt8 → Int32`|Same as above|Same as above|Same as above|
-|`vmadotus.sp`|`vmadotus.sp vd, vs1, vs2, v0/v1, imm2, i4`<br>`vmadotus.sp vd, vs1, vs2, v0/v1, imm2, i8`|`UInt4 × Int4 → Int32`<br>`UInt8 × Int8 → Int32`|Same as above|Same as above|Same as above|
-|`vmadotsu.sp`|`vmadotsu.sp vd, vs1, vs2, v0/v1, imm2, i4`<br>`vmadotsu.sp vd, vs1, vs2, v0/v1, imm2, i8`|`Int4 × UInt4 → Int32`<br>`Int8 × UInt8 → Int32`|Same as above|Same as above|Same as above|
+|`smt.vmadot.sp`|`smt.vmadot.sp vd, vs1, vs2, v0/v1, imm2, i4`<br>`smt.vmadot.sp vd, vs1, vs2, v0/v1, imm2, i8`|`Int4 × Int4 → Int32`<br>`Int8 × Int8 → Int32`|`V0` / `V1`|`imm2`|Int4: `8 × 64 × 8`;<br>Int8: `8 × 32 × 8`|
+|`smt.vmadotu.sp`|`smt.vmadotu.sp vd, vs1, vs2, v0/v1, imm2, i4`<br>`smt.vmadotu.sp vd, vs1, vs2, v0/v1, imm2, i8`|`UInt4 × UInt4 → Int32`<br>`UInt8 × UInt8 → Int32`|Same as above|Same as above|Same as above|
+|`smt.vmadotus.sp`|`smt.vmadotus.sp vd, vs1, vs2, v0/v1, imm2, i4`<br>`smt.vmadotus.sp vd, vs1, vs2, v0/v1, imm2, i8`|`UInt4 × Int4 → Int32`<br>`UInt8 × Int8 → Int32`|Same as above|Same as above|Same as above|
+|`smt.vmadotsu.sp`|`smt.vmadotsu.sp vd, vs1, vs2, v0/v1, imm2, i4`<br>`smt.vmadotsu.sp vd, vs1, vs2, v0/v1, imm2, i8`|`Int4 × UInt4 → Int32`<br>`Int8 × UInt8 → Int32`|Same as above|Same as above|Same as above|
 
 ### 5.3.3 Valid Mask Values
 
@@ -936,7 +936,7 @@ The following 4-bit mask values are defined as valid reconstruction patterns:
 - `0b'0110`
 - `0b'0011`
 
-For all mask values other than the six valid patterns listed above, `vmadot.sp*` **shall not** select any elements from the source group.
+For all mask values other than the six valid patterns listed above, `smt.vmadot.sp*` **shall not** select any elements from the source group.
 In such cases, the reconstructed values shall be treated as zero (i.e., equivalent to `vs1_tmp1 = 0` and `vs1_tmp2 = 0`).
 
 ### 5.3.4 Program-Visible Semantics
@@ -1072,7 +1072,7 @@ In the Int4 pseudocode above, the `default` branch is consistent with the Int8 p
 *          [...                                                                            ]
 *          [...                                                                            ]
 *
-*  "vmadot.sp     v16, v2, v8, v0, 0, i8            \n\t"
+*  "smt.vmadot.sp     v16, v2, v8, v0, 0, i8            \n\t"
 *  MatrixA[8, 32] × Recover(compressed MatrixBt[8, 16], v0[0 : 511]) = MatrixC[8, 8]
 *     [0 1 ... 30 31]        [0 0 0 1 ... 14  0  0 15]           [2544, 2856, 3184, 3200, 3528, 3576, 4032, 4322,]
 *     [1 2 ... 31 32]        [1 0 2 0 ... 15  0 16  0]           [2664, 2992, 3336, 3368, 3712, 3776, 4248, 4544,]
@@ -1096,7 +1096,7 @@ void spgemm(const int8_t *feature, const int8_t *weight, const int8_t *sparse, i
         "vle8.v     v8, (%[B])              \n\t"
         "addi       %[B], %[B], 8*16        \n\t"
         "vle8.v     v0, (%[B_sp])           \n\t"
-        "vmadot.sp  v16, v2, v8, v0, 0, i8  \n\t"
+        "smt.vmadot.sp  v16, v2, v8, v0, 0, i8  \n\t"
         "vsetvli    t0, zero, e32, m2       \n\t"
         "vse32.v    v16, (%[C])             \n\t"
 
@@ -1161,7 +1161,7 @@ int main()
 }
 ```
 
-## 5.4 Integer Matrix Multiplication for Block Quantization: `vmadot.hp*`
+## 5.4 Integer Matrix Multiplication for Block Quantization: `smt.vmadot.hp*`
 
 ### 5.4.1 Functional Overview
 
@@ -1176,17 +1176,17 @@ This instruction set defines a mixed-precision computation path for block quanti
 
 Figure 7 illustrates the computation flow of this path.
 
-![Figure 7: Block-quantized integer matrix multiplication (vmadot.hp) illustration](images/ime_extension_png/fig6vmadothp.png)
-**Figure 7.** Computation flow of `vmadot.hp v16, v2, v8, v0, i8` under VLEN=1024, λ=8, W=2, LMUL=1.
+![Figure 7: Block-quantized integer matrix multiplication (smt.vmadot.hp) illustration](images/ime_extension_png/fig6vmadothp.png)
+**Figure 7.** Computation flow of `smt.vmadot.hp v16, v2, v8, v0, i8` under VLEN=1024, λ=8, W=2, LMUL=1.
 
 ### 5.4.2 Instruction Variants
 
 | Instruction | Assembly Format | Data Type Path | Scale Source | Selection Field | Tile |
 |---|---|---|---|---|---|
-|`vmadot.hp`|`vmadot.hp vd, vs1, vs2, v0/v1, imm3, i4`<br>`vmadot.hp vd, vs1, vs2, v0/v1, imm3, i8`|`(Int4 × Int4) * FP16 → FP16`<br>`(Int4 × Int4) * BF16 → BF16`<br>`(Int8 × Int8) * FP16 → FP16`<br>`(Int8 × Int8) * BF16 → BF16`|`V0` / `V1`|`imm3`|Int4: `8 × 32 × 8`;<br>Int8: `8 × 16 × 8`|
-|`vmadotu.hp`|`vmadotu.hp vd, vs1, vs2, v0/v1, imm3, i4`<br>`vmadotu.hp vd, vs1, vs2, v0/v1, imm3, i8`|`(UInt4 × UInt4) * FP16 → FP16`<br>`(UInt4 × UInt4) * BF16 → BF16`<br>`(UInt8 × UInt8) * FP16 → FP16`<br>`(UInt8 × UInt8) * BF16 → BF16`|Same as above |Same as above |Same as above |
-|`vmadotus.hp`|`vmadotus.hp vd, vs1, vs2, v0/v1, imm3, i4`<br>`vmadotus.hp vd, vs1, vs2, v0/v1, imm3, i8`|`(UInt4 × Int4) * FP16 → FP16`<br>`(UInt4 × Int4) * BF16 → BF16`<br>`(UInt8 × Int8) * FP16 → FP16`<br>`(UInt8 × Int8) * BF16 → BF16`|Same as above |Same as above |Same as above |
-|`vmadotsu.hp`|`vmadotsu.hp vd, vs1, vs2, v0/v1, imm3, i4`<br>`vmadotsu.hp vd, vs1, vs2, v0/v1, imm3, i8`|`(Int4 × UInt4) * FP16 → FP16`<br>`(Int4 × UInt4) * BF16 → BF16`<br>`(Int8 × UInt8) * FP16 → FP16`<br>`(Int8 × UInt8) * BF16 → BF16`|Same as above |Same as above |Same as above |
+|`smt.vmadot.hp`|`smt.vmadot.hp vd, vs1, vs2, v0/v1, imm3, i4`<br>`smt.vmadot.hp vd, vs1, vs2, v0/v1, imm3, i8`|`(Int4 × Int4) * FP16 → FP16`<br>`(Int4 × Int4) * BF16 → BF16`<br>`(Int8 × Int8) * FP16 → FP16`<br>`(Int8 × Int8) * BF16 → BF16`|`V0` / `V1`|`imm3`|Int4: `8 × 32 × 8`;<br>Int8: `8 × 16 × 8`|
+|`smt.vmadotu.hp`|`smt.vmadotu.hp vd, vs1, vs2, v0/v1, imm3, i4`<br>`smt.vmadotu.hp vd, vs1, vs2, v0/v1, imm3, i8`|`(UInt4 × UInt4) * FP16 → FP16`<br>`(UInt4 × UInt4) * BF16 → BF16`<br>`(UInt8 × UInt8) * FP16 → FP16`<br>`(UInt8 × UInt8) * BF16 → BF16`|Same as above |Same as above |Same as above |
+|`smt.vmadotus.hp`|`smt.vmadotus.hp vd, vs1, vs2, v0/v1, imm3, i4`<br>`smt.vmadotus.hp vd, vs1, vs2, v0/v1, imm3, i8`|`(UInt4 × Int4) * FP16 → FP16`<br>`(UInt4 × Int4) * BF16 → BF16`<br>`(UInt8 × Int8) * FP16 → FP16`<br>`(UInt8 × Int8) * BF16 → BF16`|Same as above |Same as above |Same as above |
+|`smt.vmadotsu.hp`|`smt.vmadotsu.hp vd, vs1, vs2, v0/v1, imm3, i4`<br>`smt.vmadotsu.hp vd, vs1, vs2, v0/v1, imm3, i8`|`(Int4 × UInt4) * FP16 → FP16`<br>`(Int4 × UInt4) * BF16 → BF16`<br>`(Int8 × UInt8) * FP16 → FP16`<br>`(Int8 × UInt8) * BF16 → BF16`|Same as above |Same as above |Same as above |
 
 ### 5.4.3 Program-Visible Semantics
 
@@ -1296,7 +1296,7 @@ In the pseudocode above, `fp16_or_bf16` denotes a 16-bit floating-point format d
 *          [...                                   ]
 *          [...                                   ]
 *
-*  "vmadot.hp     v16, v2, v8, v0, 0, i8            \n\t"
+*  "smt.vmadot.hp     v16, v2, v8, v0, 0, i8            \n\t"
 *  (MatrixA[8, 16] × MatrixBt[8, 16]) * v0[0 : 128] = MatrixC[8, 8]
 *     [0 1 ... 30 31]      [0 1 ... 30 31]   [1.0 ... 8.0]      [1240.0 2720.0 4440.0  6400.0  8600.0 11040.0 13720.0 16640.0]
 *     [1 2 ... 31 32]      [1 2 ... 31 32]                      [1360.0 2992.0 4896.0  7072.0  9520.0 12240.0 15232.0 18496.0]
@@ -1318,7 +1318,7 @@ void gemm(const int8_t *feature, const int8_t *weight, const _Float16 *scale, _F
         "vle8.v     v8, (%[B])              \n\t"
         "vsetvli    t0, zero, e16, m1       \n\t"
         "vle16.v    v0, (%[BSCL])           \n\t"
-        "vmadot.hp  v16, v2, v8, v0, 0, i8  \n\t"
+        "smt.vmadot.hp  v16, v2, v8, v0, 0, i8  \n\t"
         "vse16.v    v16, (%[C])             \n\t"
 
         :
@@ -1373,11 +1373,11 @@ int main()
 
 # Chapter 6 Floating-Point Matrix Multiply Instructions
 
-## 6.1 Floating-Point Matrix Multiply (Base Path): `vfwmadot`
+## 6.1 Floating-Point Matrix Multiply (Base Path): `smt.vfwmadot`
 
 ### 6.1.1 Functional Overview
 
-`vfwmadot` performs floating-point matrix multiplication with FP16 / BF16 inputs and FP32 accumulation:
+`smt.vfwmadot` performs floating-point matrix multiplication with FP16 / BF16 inputs and FP32 accumulation:
 
 $$
 C \leftarrow C + A \times B^T
@@ -1385,14 +1385,14 @@ $$
 
 **Figure 8** illustrates the computation flow of this path.
 
-![Figure 8: vfwmadot floating-point matrix multiplication.](images/ime_extension_png/fig7fwmadot.png)
-**Figure 8.** Computation flow of `vfwmadot v16, v2, v8` under VLEN=1024, λ=8, W=2, LMUL=1.
+![Figure 8: smt.vfwmadot floating-point matrix multiplication.](images/ime_extension_png/fig7fwmadot.png)
+**Figure 8.** Computation flow of `smt.vfwmadot v16, v2, v8` under VLEN=1024, λ=8, W=2, LMUL=1.
 
 ### 6.1.2 Instruction Variants
 
 | Instruction | Assembly Format | Data Type Path | Tile | Control|
 |---|---|---|---|---|
-|`vfwmadot`|`vfwmadot vd, vs1, vs2`|`FP16 × FP16 → FP32`<br>`BF16 × BF16 → FP32`|`8 × 8 × 8`|`MCPM.BF16`|
+|`smt.vfwmadot`|`smt.vfwmadot vd, vs1, vs2`|`FP16 × FP16 → FP32`<br>`BF16 × BF16 → FP32`|`8 × 8 × 8`|`MCPM.BF16`|
 
 ### 6.1.3 Input Format Interpretation
 
@@ -1457,7 +1457,7 @@ for (p = 0; p < (2 * VLEN / 32); p++) {
 *          [6.0  7.0  8.0  9.0 10.0 11.0 12.0 13.0]
 *          [7.0  8.0  9.0 10.0 11.0 12.0 13.0 14.0]
 *
-*  "vfwmadot     v16, v2, v8           \n\t"
+*  "smt.vfwmadot     v16, v2, v8           \n\t"
 *   MatrixA[8, 8]   ×  MatrixBt[8, 8]   =   MatrixC[8, 8]
 *     [0.0 ...  7.0]      [0.0 ...  7.0]   =   [140.0 168.0 196.0 224.0 252.0 280.0 308.0 336.0]
 *     [1.0 ...  8.0]      [1.0 ...  8.0]       [168.0 204.0 240.0 276.0 312.0 348.0 384.0 420.0]
@@ -1477,7 +1477,7 @@ void gemm(const _Float16 *feature, const _Float16 *weight, float *output) {
         "vmv.v.i    v16, 0                   \n\t"
         "vle16.v    v2, (%[A])               \n\t"
         "vle16.v    v8, (%[B])               \n\t"
-        "vfwmadot   v16, v2, v8              \n\t"
+        "smt.vfwmadot   v16, v2, v8              \n\t"
         "vsetvli    t0, zero, e32, m2        \n\t"
         "vse32.v    v16, (%[C])              \n\t"
 
@@ -1531,22 +1531,22 @@ int main()
 
 ```
 
-## 6.2 Floating-Point Sliding-Window Matrix Multiply for Convolution: `vfwmadot1/2/3`
+## 6.2 Floating-Point Sliding-Window Matrix Multiply for Convolution: `smt.vfwmadot1/2/3`
 
 ### 6.2.1 Functional Overview
 
-`vfwmadot1`, `vfwmadot2`, and `vfwmadot3` have the same computation type as `vfwmadot`, but introduce a fixed sliding-window offset on the operand `A` during load.
+`smt.vfwmadot1`, `smt.vfwmadot2`, and `smt.vfwmadot3` have the same computation type as `smt.vfwmadot`, but introduce a fixed sliding-window offset on the operand `A` during load.
 
-![Figure 9: illustrates the sliding-window computation of `vfwmadot1`](images/ime_extension_png/fig8fwmadotslide.png)
-**Figure 9** illustrates the sliding-window computation of `vfwmadot1` under `VLEN=1024`, `λ=8`, `W=2`, `LMUL=1`.
+![Figure 9: illustrates the sliding-window computation of `smt.vfwmadot1`](images/ime_extension_png/fig8fwmadotslide.png)
+**Figure 9** illustrates the sliding-window computation of `smt.vfwmadot1` under `VLEN=1024`, `λ=8`, `W=2`, `LMUL=1`.
 
 ### 6.2.2 Instruction Variants
 
 | Instruction | Assembly Format | slide | Data Path | tile  | Control |
 |---|---|---|---|---|---|
-|`vfwmadot1`|`vfwmadot1 vd, vs1, vs2`|1|`FP16 × FP16 → FP32`<br>`BF16 × BF16 → FP32`|`8 × 8 × 8`|`MCPM.BF16`|
-|`vfwmadot2`|`vfwmadot2 vd, vs1, vs2`|2|`FP16 × FP16 → FP32`<br>`BF16 × BF16 → FP32`|`8 × 8 × 8`|`MCPM.BF16`|
-|`vfwmadot3`|`vfwmadot3 vd, vs1, vs2`|3|`FP16 × FP16 → FP32`<br>`BF16 × BF16 → FP32`|`8 × 8 × 8`|`MCPM.BF16`|
+|`smt.vfwmadot1`|`smt.vfwmadot1 vd, vs1, vs2`|1|`FP16 × FP16 → FP32`<br>`BF16 × BF16 → FP32`|`8 × 8 × 8`|`MCPM.BF16`|
+|`smt.vfwmadot2`|`smt.vfwmadot2 vd, vs1, vs2`|2|`FP16 × FP16 → FP32`<br>`BF16 × BF16 → FP32`|`8 × 8 × 8`|`MCPM.BF16`|
+|`smt.vfwmadot3`|`smt.vfwmadot3 vd, vs1, vs2`|3|`FP16 × FP16 → FP32`<br>`BF16 × BF16 → FP32`|`8 × 8 × 8`|`MCPM.BF16`|
 
 ### 6.2.3 Program-Visible Semantics
 
@@ -1579,7 +1579,7 @@ for (p = 0; p < (2 * VLEN * LMUL / 32); p++) {
 - The accumulation data type is FP32;
 - The sliding distance of matrix `A` is determined by the suffix `N` in the instruction name (`vfwmadotN`), indicating a shift of `N` rows.
 
-### 6.2.6 Differences from `vfwmadot`
+### 6.2.6 Differences from `smt.vfwmadot`
 
 - Same computation type;
 - Same tile shape;
@@ -1617,7 +1617,7 @@ for (p = 0; p < (2 * VLEN * LMUL / 32); p++) {
 *          [6.0  7.0  8.0  9.0 10.0 11.0 12.0 13.0]
 *          [7.0  8.0  9.0 10.0 11.0 12.0 13.0 14.0]
 *
-*  "vfwmadot     v16, v2, v8           \n\t"
+*  "smt.vfwmadot     v16, v2, v8           \n\t"
 *   MatrixA[8, 8]   *  MatrixBt[8, 8]   =   MatrixC[8, 8]
 *     [0.0 ...  7.0]      [0.0 ...  7.0]   =   [140.0 168.0 196.0 224.0 252.0 280.0 308.0 336.0]
 *     [1.0 ...  8.0]      [1.0 ...  8.0]       [168.0 204.0 240.0 276.0 312.0 348.0 384.0 420.0]
@@ -1628,7 +1628,7 @@ for (p = 0; p < (2 * VLEN * LMUL / 32); p++) {
 *     [6.0 ... 13.0]      [6.0 ... 13.0]       [308.0 384.0 460.0 536.0 612.0 688.0 764.0 840.0]
 *     [7.0 ... 14.0]      [7.0 ... 14.0]       [336.0 420.0 504.0 588.0 672.0 756.0 840.0 924.0]
 *
-*  "vfwmadot1    v16, v0, v8             \n\t"
+*  "smt.vfwmadot1    v16, v0, v8             \n\t"
 *  MatrixA[8, 8]   *  MatrixB[8, 8]  + MatrixC[8, 8]  =  MatrixC[8, 8]
 *     [1.0 ...  8.0]      [0.0 ...  7.0]   =   [308.0 372.0  436.0  500.0  564.0  628.0  692.0  756.0]
 *     [2.0 ...  9.0]      [1.0 ...  8.0]       [364.0 444.0  524.0  604.0  684.0  764.0  844.0  924.0]
@@ -1639,7 +1639,7 @@ for (p = 0; p < (2 * VLEN * LMUL / 32); p++) {
 *     [7.0 ... 14.0]      [6.0 ... 13.0]       [644.0 804.0  964.0 1124.0 1284.0 1444.0 1604.0 1764.0]
 *     [8.0 ... 15.0]      [7.0 ... 14.0]       [700.0 876.0 1052.0 1228.0 1404.0 1580.0 1756.0 1932.0]
 *
-*  "vfwmadot2     v16, v0, v8            \n\t"
+*  "smt.vfwmadot2     v16, v0, v8            \n\t"
 * MatrixA[8, 8]    *  MatrixB[8, 8]  + MatrixC[8, 8]   =   MatrixC[8, 8]
 *     [2.0 ...  9.0]      [0.0 ...  7.0]   =   [ 504.0      612.0      720.0      828.0    936.0  1044.0  1152.0  1260.0]
 *     [3.0 ... 10.0]      [1.0 ...  8.0]       [ 588.0      720.0      852.0      984.0   1116.0  1248.0  1380.0  1512.0]
@@ -1661,9 +1661,9 @@ void conv1d(const _Float16 *feature, const _Float16 *weight, float *output) {
         "vle16.v     v1, (%[A])              \n\t"
         "addi       %[A], %[A], 8*16         \n\t"
         "vle16.v     v8, (%[B])              \n\t"
-        "vfwmadot     v16, v0, v8            \n\t"
-        "vfwmadot1    v16, v0, v8            \n\t"
-        "vfwmadot2    v16, v0, v8            \n\t"
+        "smt.vfwmadot     v16, v0, v8            \n\t"
+        "smt.vfwmadot1    v16, v0, v8            \n\t"
+        "smt.vfwmadot2    v16, v0, v8            \n\t"
         "vsetvli    t0, zero, e32, m2        \n\t"
         "vse32.v    v16, (%[C])              \n\t"
         
@@ -1746,18 +1746,18 @@ The behavior of `pack` and `unpack` instructions is illustrated in Figure 10.
 
 | Instruction   | Assembly Format                  | Description                            |
 | ------------- | -------------------------------- | -------------------------------------- |
-| `vpack.vv`    | `vpack.vv vd, vs1, vs2, imm2`    | Interleave two source streams          |
-| `vupack.vv`   | `vupack.vv vd, vs1, vs2, imm2`   | De-interleave an interleaved stream    |
-| `vnpack.vv`   | `vnpack.vv vd, vs1, vs2, imm2`   | Narrow and interleave                  |
-| `vnspack.vv`  | `vnspack.vv vd, vs1, vs2, imm2`  | Saturating narrow and interleave       |
-| `vnpack4.vv`  | `vnpack4.vv vd, vs1, vs2, imm2`  | 4-bit narrowing and packing            |
-| `vnspack4.vv` | `vnspack4.vv vd, vs1, vs2, imm2` | 4-bit saturating narrowing and packing |
+| `smt.vpack.vv`    | `smt.vpack.vv vd, vs1, vs2, imm2`    | Interleave two source streams          |
+| `smt.vupack.vv`   | `smt.vupack.vv vd, vs1, vs2, imm2`   | De-interleave an interleaved stream    |
+| `smt.vnpack.vv`   | `smt.vnpack.vv vd, vs1, vs2, imm2`   | Narrow and interleave                  |
+| `smt.vnspack.vv`  | `smt.vnspack.vv vd, vs1, vs2, imm2`  | Saturating narrow and interleave       |
+| `smt.vnpack4.vv`  | `smt.vnpack4.vv vd, vs1, vs2, imm2`  | 4-bit narrowing and packing            |
+| `smt.vnspack4.vv` | `smt.vnspack4.vv vd, vs1, vs2, imm2` | 4-bit saturating narrowing and packing |
 
 ## 7.2.1 `imm2` and `pack_len` Mapping
 
 For data layout transformation instructions, the `imm2` field selects the interleaving or packing granularity. The interpretation of `imm2` varies across instruction groups.
 
-### `vpack.vv` / `vupack.vv`
+### `smt.vpack.vv` / `smt.vupack.vv`
 
 | `imm2` | `pack_len` | Description                                   |
 | ------ | ---------- | --------------------------------------------- |
@@ -1766,7 +1766,7 @@ For data layout transformation instructions, the `imm2` field selects the interl
 | `10`   | 256-bit    | Interleave/de-interleave in 256-bit blocks    |
 | `11`   | 512-bit    | Interleave/de-interleave in 512-bit blocks    |
 
-### `vnpack.vv` / `vnspack.vv` / `vnpack4.vv` / `vnspack4.vv`
+### `smt.vnpack.vv` / `smt.vnspack.vv` / `smt.vnpack4.vv` / `smt.vnspack4.vv`
 
 | `imm2` | `pack_len` | Description                                  |
 | ------ | ---------- | -------------------------------------------- |
@@ -1793,8 +1793,8 @@ where `EEW` is the target element width.
 
 Examples:
 
-- For `vnpack.vv` / `vnspack.vv`, the target width is half of the original input width;
-- For `vnpack4.vv` / `vnspack4.vv`, the target width is fixed at 4 bits.
+- For `smt.vnpack.vv` / `smt.vnspack.vv`, the target width is half of the original input width;
+- For `smt.vnpack4.vv` / `smt.vnspack4.vv`, the target width is fixed at 4 bits.
 
 ### `SCLIP(x)`
 
@@ -1813,9 +1813,9 @@ If the implementation interprets source elements as unsigned values, unsigned sa
 
 In this specification, `SCLIP()` is used to express the semantic behavior of “saturate first, then narrow.”
 
-## 7.3 `vpack.vv`
+## 7.3 `smt.vpack.vv`
 
-`vpack.vv` interleaves elements from `vs1` and `vs2` into the destination register `vd` according to the specified `pack_len`.
+`smt.vpack.vv` interleaves elements from `vs1` and `vs2` into the destination register `vd` according to the specified `pack_len`.
 
 ```c
 if (pack_len > VLEN * LMUL) {
@@ -1858,15 +1858,15 @@ add     a0, a0, matrix_row_stride
 vle8.v  v3, (a0)
 add     a0, a0, matrix_row_stride
 vsetvli  t0, x0, e64, m1, tu, mu
-vpack.vv v8, v0, v1, 0             // abab
-vpack.vv v10, v2, v3, 0            // cdcd
-vpack.vv v4, v8, v10, 0            // abcd
-vpack.vv v6, v9, v11, 0            // abcd
+smt.vpack.vv v8, v0, v1, 0             // abab
+smt.vpack.vv v10, v2, v3, 0            // cdcd
+smt.vpack.vv v4, v8, v10, 0            // abcd
+smt.vpack.vv v6, v9, v11, 0            // abcd
 ```
 
-## 7.4 `vupack.vv`
+## 7.4 `smt.vupack.vv`
 
-`vupack.vv` performs the inverse transformation of an interleaved layout, splitting the stream back into an expanded destination layout.
+`smt.vupack.vv` performs the inverse transformation of an interleaved layout, splitting the stream back into an expanded destination layout.
 
 ```c
 if (pack_len > VLEN * LMUL) {
@@ -1892,13 +1892,13 @@ for (p = 0; p < (VLEN * LMUL / (pack_len * 2)); p++) {
 }
 ```
 
-## 7.5 `vnpack.vv` and `vnspack.vv`
+## 7.5 `smt.vnpack.vv` and `smt.vnspack.vv`
 
 Both instructions narrow the input elements to half of the original element width, and then interleave the results into the destination according to `pack_len`.
 
-### 7.5.1 `vnpack.vv`
+### 7.5.1 `smt.vnpack.vv`
 
-`vnpack.vv` truncates the lower half of each input element and then performs interleaving:
+`smt.vnpack.vv` truncates the lower half of each input element and then performs interleaving:
 
 ```c
 if (pack_len > VLEN * LMUL) {
@@ -1925,9 +1925,9 @@ for (p = 0; p < (VLEN * LMUL / pack_len); p++) {
 }
 ```
 
-### 7.5.2 `vnspack.vv`
+### 7.5.2 `smt.vnspack.vv`
 
-`vnspack.vv` performs saturating narrowing prior to interleaving:
+`smt.vnspack.vv` performs saturating narrowing prior to interleaving:
 
 ```c
 if (pack_len > VLEN * LMUL) {
@@ -1954,16 +1954,16 @@ for (p = 0; p < (VLEN * LMUL / pack_len); p++) {
 }
 ```
 
-## 7.6 `vnpack4.vv` and `vnspack4.vv`
+## 7.6 `smt.vnpack4.vv` and `smt.vnspack4.vv`
 
-- `vnpack4.vv`: nibble-level packing for 4-bit outputs;
-- `vnspack4.vv`: nibble-level saturating packing for 4-bit outputs.
+- `smt.vnpack4.vv`: nibble-level packing for 4-bit outputs;
+- `smt.vnspack4.vv`: nibble-level saturating packing for 4-bit outputs.
 
-These instructions can be viewed as the half-byte (nibble) counterparts of `vnpack.vv` / `vnspack.vv`, intended for preparing low-bitwidth data such as Int4.
+These instructions can be viewed as the half-byte (nibble) counterparts of `smt.vnpack.vv` / `smt.vnspack.vv`, intended for preparing low-bitwidth data such as Int4.
 
-### 7.6.1 `vnpack4.vv`
+### 7.6.1 `smt.vnpack4.vv`
 
-`vnpack4.vv` shall first truncate each source element to 4 bits, then interleave at granularity `pack_len`, and pack every two 4-bit values into one byte in the destination.
+`smt.vnpack4.vv` shall first truncate each source element to 4 bits, then interleave at granularity `pack_len`, and pack every two 4-bit values into one byte in the destination.
 
 ```c
 if (pack_len > VLEN * LMUL) {
@@ -1995,9 +1995,9 @@ for (p = 0; p < (VLEN * LMUL / pack_len); p++) {
 }
 ```
 
-### 7.6.2 `vnspack4.vv`
+### 7.6.2 `smt.vnspack4.vv`
 
-`vnspack4.vv` follows the same procedure as `vnpack4.vv`, except that each source element shall be saturated to 4 bits prior to packing.
+`smt.vnspack4.vv` follows the same procedure as `smt.vnpack4.vv`, except that each source element shall be saturated to 4 bits prior to packing.
 
 ```c
 if (pack_len > VLEN * LMUL) {
@@ -2032,7 +2032,7 @@ for (p = 0; p < (VLEN * LMUL / pack_len); p++) {
 ### 7.6.3 Additional Notes
 
 - `CLIP_4()` and `SCLIP_4()` denote truncation and saturating truncation to a 4-bit destination width, respectively.
-- The nibble ordering and intra-byte layout in `vnpack4.vv` / `vnspack4.vv` are based on current implementation references; if an implementation defines a fixed convention, that definition shall take precedence.
+- The nibble ordering and intra-byte layout in `smt.vnpack4.vv` / `smt.vnspack4.vv` are based on current implementation references; if an implementation defines a fixed convention, that definition shall take precedence.
 - If the implementation specifies a different nibble ordering within a byte, the implementation-defined behavior shall prevail.
 
 ## 7.7 Usage Positioning of Data Layout Transformation Instructions
@@ -2047,7 +2047,7 @@ Although these instructions do not directly perform matrix multiplication, they 
 
 This chapter reorganizes the encoding information from the SpacemiT implementation documentation for easier reference. If any bit-level detail conflicts with the original specification, the original implementation definition shall prevail.
 
-## 8.1 Integer Matrix Multiplication Instructions (Base Path): `vmadot*`
+## 8.1 Integer Matrix Multiplication Instructions (Base Path): `smt.vmadot*`
 
 Register Constraints
 
@@ -2055,10 +2055,10 @@ Register Constraints
 - `Vd`: even-numbered vector register in the range `0–30`.
 
 - `funct3[14:12]` selects signedness:
-  - `000`: `vmadotu`
-  - `001`: `vmadotus`
-  - `010`: `vmadotsu`
-  - `011`: `vmadot`
+  - `000`: `smt.vmadotu`
+  - `001`: `smt.vmadotus`
+  - `010`: `smt.vmadotsu`
+  - `011`: `smt.vmadot`
 - `DT[30:29]` selects data type:
   - `10`: Int4
   - `11`: Int8
@@ -2069,10 +2069,10 @@ Formal Encoding
 
 |Mnemonic|`[31]`|`[30:29]`|`[28:26]`|`[25]`|`[24:20]`|`[19:15]`|`[14:12]`|`[11:7]`|`[6:0]`|
 |---|---|---|---|---|---|---|---|---|---|
-|`vmadotu`|`1`|`DT`|`000`|`1`|`vs2`|`vs1`|`000`|`{vd[4:1],0}`|`0101011`|
-|`vmadotus`|`1`|`DT`|`000`|`1`|`vs2`|`vs1`|`001`|`{vd[4:1],0}`|`0101011`|
-|`vmadotsu`|`1`|`DT`|`000`|`1`|`vs2`|`vs1`|`010`|`{vd[4:1],0}`|`0101011`|
-|`vmadot`|`1`|`DT`|`000`|`1`|`vs2`|`vs1`|`011`|`{vd[4:1],0}`|`0101011`|
+|`smt.vmadotu`|`1`|`DT`|`000`|`1`|`vs2`|`vs1`|`000`|`{vd[4:1],0}`|`0101011`|
+|`smt.vmadotus`|`1`|`DT`|`000`|`1`|`vs2`|`vs1`|`001`|`{vd[4:1],0}`|`0101011`|
+|`smt.vmadotsu`|`1`|`DT`|`000`|`1`|`vs2`|`vs1`|`010`|`{vd[4:1],0}`|`0101011`|
+|`smt.vmadot`|`1`|`DT`|`000`|`1`|`vs2`|`vs1`|`011`|`{vd[4:1],0}`|`0101011`|
 
 Where,
 
@@ -2080,7 +2080,7 @@ Where,
 - Only even-numbered vector registers in the range `0–30` are valid for `Vd`. Since the LSB of `Vd` is always 0, the register index is encoded as `{vd[4:1],0}`.
 
 
-## 8.2 Integer Sliding-Window Matrix Multiplication for Convolution: `vmadot1/2/3*`
+## 8.2 Integer Sliding-Window Matrix Multiplication for Convolution: `smt.vmadot1/2/3*`
 
 Register Constraints
 
@@ -2108,26 +2108,26 @@ Formal Encoding
 
 |Mnemonic|`[31]`|`[30:29]`|`[28:26]`|`[25]`|`[24:20]`|`[19:15]`|`[14:12]`|`[11:7]`|`[6:0]`|
 |---|---|---|---|---|---|---|---|---|---|
-|`vmadot1u`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`000`|`{vd[4:1],0}`|`0101011`|
-|`vmadot1us`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`001`|`{vd[4:1],0}`|`0101011`|
-|`vmadot1su`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`010`|`{vd[4:1],0}`|`0101011`|
-|`vmadot1`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`011`|`{vd[4:1],0}`|`0101011`|
-|`vmadot2u`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`100`|`{vd[4:1],0}`|`0101011`|
-|`vmadot2us`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`101`|`{vd[4:1],0}`|`0101011`|
-|`vmadot2su`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`110`|`{vd[4:1],0}`|`0101011`|
-|`vmadot2`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`111`|`{vd[4:1],0}`|`0101011`|
-|`vmadot3u`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],1}`|`000`|`{vd[4:1],0}`|`0101011`|
-|`vmadot3us`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],1}`|`001`|`{vd[4:1],0}`|`0101011`|
-|`vmadot3su`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],1}`|`010`|`{vd[4:1],0}`|`0101011`|
-|`vmadot3`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],1}`|`011`|`{vd[4:1],0}`|`0101011`|
+|`smt.vmadot1u`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`000`|`{vd[4:1],0}`|`0101011`|
+|`smt.vmadot1us`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`001`|`{vd[4:1],0}`|`0101011`|
+|`smt.vmadot1su`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`010`|`{vd[4:1],0}`|`0101011`|
+|`smt.vmadot1`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`011`|`{vd[4:1],0}`|`0101011`|
+|`smt.vmadot2u`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`100`|`{vd[4:1],0}`|`0101011`|
+|`smt.vmadot2us`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`101`|`{vd[4:1],0}`|`0101011`|
+|`smt.vmadot2su`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`110`|`{vd[4:1],0}`|`0101011`|
+|`smt.vmadot2`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`111`|`{vd[4:1],0}`|`0101011`|
+|`smt.vmadot3u`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],1}`|`000`|`{vd[4:1],0}`|`0101011`|
+|`smt.vmadot3us`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],1}`|`001`|`{vd[4:1],0}`|`0101011`|
+|`smt.vmadot3su`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],1}`|`010`|`{vd[4:1],0}`|`0101011`|
+|`smt.vmadot3`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],1}`|`011`|`{vd[4:1],0}`|`0101011`|
 
 where,
 
 - `DT[30:29]` is currently defined only as `11` (Int8).
 - `slide[15:14]` is jointly encoded by bit `[15]` and the upper bit of `[14:12]`, where `[15]` reuses the LSB freed by the even-register constraint on `Vs1`.
-- Since `Vs1` and `Vd` are constrained to even-numbered registers, their LSB is always `0`, and are therefore represented in the table as `{vs1[4:1],0}` and `{vd[4:1],0}` respectively. Specifically, the `vmadot3u` instruction is an exception where the LSB of `Vs1` is encoded as 1.
+- Since `Vs1` and `Vd` are constrained to even-numbered registers, their LSB is always `0`, and are therefore represented in the table as `{vs1[4:1],0}` and `{vd[4:1],0}` respectively. Specifically, the `smt.vmadot3u` instruction is an exception where the LSB of `Vs1` is encoded as 1.
 
-## 8.3 4:2 Structured Sparse Integer Matrix Multiplication: `vmadot.sp*`
+## 8.3 4:2 Structured Sparse Integer Matrix Multiplication: `smt.vmadot.sp*`
 
 Register Constraints
 
@@ -2157,10 +2157,10 @@ Formal Encoding
 
 |Mnemonic|`[31]`|`[30:29]`|`[28:26]`|`[25]`|`[24:20]`|`[19:16]`|`[15]`|`[14:12]`|`[11:8]`|`[7]`|`[6:0]`|
 |---|---|---|---|---|---|---|---|---|---|---|---|
-|`vmadotu.sp`|`1`|`DT`|`010`|`v`|`vs2`|`vs1[4:1]`|`imm2[1]`|`000`|`vd[4:1]`|`imm2[0]`|`0101011`|
-|`vmadotus.sp`|`1`|`DT`|`010`|`v`|`vs2`|`vs1[4:1]`|`imm2[1]`|`001`|`vd[4:1]`|`imm2[0]`|`0101011`|
-|`vmadotsu.sp`|`1`|`DT`|`010`|`v`|`vs2`|`vs1[4:1]`|`imm2[1]`|`010`|`vd[4:1]`|`imm2[0]`|`0101011`|
-|`vmadot.sp`|`1`|`DT`|`010`|`v`|`vs2`|`vs1[4:1]`|`imm2[1]`|`011`|`vd[4:1]`|`imm2[0]`|`0101011`|
+|`smt.vmadotu.sp`|`1`|`DT`|`010`|`v`|`vs2`|`vs1[4:1]`|`imm2[1]`|`000`|`vd[4:1]`|`imm2[0]`|`0101011`|
+|`smt.vmadotus.sp`|`1`|`DT`|`010`|`v`|`vs2`|`vs1[4:1]`|`imm2[1]`|`001`|`vd[4:1]`|`imm2[0]`|`0101011`|
+|`smt.vmadotsu.sp`|`1`|`DT`|`010`|`v`|`vs2`|`vs1[4:1]`|`imm2[1]`|`010`|`vd[4:1]`|`imm2[0]`|`0101011`|
+|`smt.vmadot.sp`|`1`|`DT`|`010`|`v`|`vs2`|`vs1[4:1]`|`imm2[1]`|`011`|`vd[4:1]`|`imm2[0]`|`0101011`|
 
 Where,
 
@@ -2169,7 +2169,7 @@ Where,
 - `imm2` is formed from bits `[15]` and `[7]`, both of which reuse the LSB freed by the even-register constraint on `Vs1` and `Vd`.
 - Since `Vs1` and `Vd` are constrained to even-numbered registers, their `bit 0` is always `0`, hence encoded as `{vs1[4:1],0}` and `{vd[4:1],0}` respectively.
 
-## 8.4 Block-Quantization-Oriented Integer Matrix Multiplication: `vmadot.hp*`
+## 8.4 Block-Quantization-Oriented Integer Matrix Multiplication: `smt.vmadot.hp*`
 
 Register Constraints
 
@@ -2193,20 +2193,20 @@ Register Constraints
 
 Related `funct3[28:26]`:
 
-- `011`: `vmadotu.hp`
-- `110`: `vmadotus.hp`
-- `101`: `vmadotsu.hp`
-- `100`: `vmadot.hp`
+- `011`: `smt.vmadotu.hp`
+- `110`: `smt.vmadotus.hp`
+- `101`: `smt.vmadotsu.hp`
+- `100`: `smt.vmadot.hp`
 - others: reserved
 
 Formal Encoding
 
 |Mnemonic|`[31]`|`[30:29]`|`[28:26]`|`[25]`|`[24:20]`|`[19:15]`|`[14:12]`|`[11:7]`|`[6:0]`|
 |---|---|---|---|---|---|---|---|---|---|
-|`vmadotu.hp`|`1`|`DT`|`011`|`vscale`|`vs2`|`vs1`|`imm3`|`vd`|`0101011`|
-|`vmadotus.hp`|`1`|`DT`|`110`|`vscale`|`vs2`|`vs1`|`imm3`|`vd`|`0101011`|
-|`vmadotsu.hp`|`1`|`DT`|`101`|`vscale`|`vs2`|`vs1`|`imm3`|`vd`|`0101011`|
-|`vmadot.hp`|`1`|`DT`|`100`|`vscale`|`vs2`|`vs1`|`imm3`|`vd`|`0101011`|
+|`smt.vmadotu.hp`|`1`|`DT`|`011`|`vscale`|`vs2`|`vs1`|`imm3`|`vd`|`0101011`|
+|`smt.vmadotus.hp`|`1`|`DT`|`110`|`vscale`|`vs2`|`vs1`|`imm3`|`vd`|`0101011`|
+|`smt.vmadotsu.hp`|`1`|`DT`|`101`|`vscale`|`vs2`|`vs1`|`imm3`|`vd`|`0101011`|
+|`smt.vmadot.hp`|`1`|`DT`|`100`|`vscale`|`vs2`|`vs1`|`imm3`|`vd`|`0101011`|
 
 Where,
 
@@ -2216,33 +2216,33 @@ Where,
 
 ## 8.5 Floating-Point Instructions
 
-- `vfwmadot`: `Vs1` and `Vs2` may use any vector register `0–31`, while `Vd` is restricted to even-numbered vector registers `0–30`.
-- `vfwmadot1/2/3`: `Vs2` may use any vector register `0–31`, while `Vs1` and `Vd` is restricted to even-numbered vector registers `0–30`.
-- The variants `vfwmadot1/2/3` are distinguished directly via `funct3[14:12]`:
-  - `101` → `vfwmadot1`
-  - `110` → `vfwmadot2`
-  - `111` → `vfwmadot3`
-- The FP16 / BF16 format selection for both `vfwmadot` and `vfwmadot1/2/3` is controlled by `MCPM.BF16`.
+- `smt.vfwmadot`: `Vs1` and `Vs2` may use any vector register `0–31`, while `Vd` is restricted to even-numbered vector registers `0–30`.
+- `smt.vfwmadot1/2/3`: `Vs2` may use any vector register `0–31`, while `Vs1` and `Vd` is restricted to even-numbered vector registers `0–30`.
+- The variants `smt.vfwmadot1/2/3` are distinguished directly via `funct3[14:12]`:
+  - `101` → `smt.vfwmadot1`
+  - `110` → `smt.vfwmadot2`
+  - `111` → `smt.vfwmadot3`
+- The FP16 / BF16 format selection for both `smt.vfwmadot` and `smt.vfwmadot1/2/3` is controlled by `MCPM.BF16`.
 - Mixed FP16/BF16 encoding within a single floating-point matrix instruction is not defined.
 
-### 8.5.1 `vfwmadot`
+### 8.5.1 `smt.vfwmadot`
 
 |Mnemonic|`[31:25]`|`[24:20]`|`[19:15]`|`[14:12]`|`[11:7]`|`[6:0]`|
 |---|---|---|---|---|---|---|
-|`vfwmadot`|`1001111`|`vs2`|`vs1`|`100`|`{vd[4:1],0}`|`0101011`|
+|`smt.vfwmadot`|`1001111`|`vs2`|`vs1`|`100`|`{vd[4:1],0}`|`0101011`|
 
 Where,
 
-- `[14:12] = 100` identifies `vfwmadot`.
+- `[14:12] = 100` identifies `smt.vfwmadot`.
 - Due to the even-register constraint on `Vd`, its `bit 0` is always `0`, hence encoded as `{vd[4:1],0}`.
 
-### 8.5.2 `vfwmadot1/2/3`
+### 8.5.2 `smt.vfwmadot1/2/3`
 
 |Mnemonic|`[31:25]`|`[24:20]`|`[19:15]`|`[14:12]`|`[11:7]`|`[6:0]`|
 |---|---|---|---|---|---|---|
-|`vfwmadot1`|`1001111`|`vs2`|`{vs1[4:1],0}`|`101`|`{vd[4:1],0}`|`0101011`|
-|`vfwmadot2`|`1001111`|`vs2`|`{vs1[4:1],0}`|`110`|`{vd[4:1],0}`|`0101011`|
-|`vfwmadot3`|`1001111`|`vs2`|`{vs1[4:1],0}`|`111`|`{vd[4:1],0}`|`0101011`|
+|`smt.vfwmadot1`|`1001111`|`vs2`|`{vs1[4:1],0}`|`101`|`{vd[4:1],0}`|`0101011`|
+|`smt.vfwmadot2`|`1001111`|`vs2`|`{vs1[4:1],0}`|`110`|`{vd[4:1],0}`|`0101011`|
+|`smt.vfwmadot3`|`1001111`|`vs2`|`{vs1[4:1],0}`|`111`|`{vd[4:1],0}`|`0101011`|
 
 where,
 
@@ -2254,7 +2254,7 @@ where,
 
 ## 8.6 Data Layout Transformation Instruction Encoding
 
-### 8.6.1 `vpack.vv` / `vupack.vv`
+### 8.6.1 `smt.vpack.vv` / `smt.vupack.vv`
 
 Register Constraints
 
@@ -2272,17 +2272,17 @@ Formal Encoding
 
 |Mnemonic|`[31:26]`|`[25]`|`[24:20]`|`[19:15]`|`[14]`|`[13:12]`|`[11:7]`|`[6:0]`|
 |---|---|---|---|---|---|---|---|---|
-|`vpack.vv`|`011001`|`1`|`vs2`|`vs1`|`0`|`imm2`|`{vd[4:1],0}`|`0101011`|
-|`vupack.vv`|`011001`|`1`|`vs2`|`vs1`|`1`|`imm2`|`{vd[4:1],0}`|`0101011`|
+|`smt.vpack.vv`|`011001`|`1`|`vs2`|`vs1`|`0`|`imm2`|`{vd[4:1],0}`|`0101011`|
+|`smt.vupack.vv`|`011001`|`1`|`vs2`|`vs1`|`1`|`imm2`|`{vd[4:1],0}`|`0101011`|
 
 Where,
 
-- `[14]` distinguishes `vpack.vv` and `vupack.vv`.
+- `[14]` distinguishes `smt.vpack.vv` and `smt.vupack.vv`.
 - `[13:12]` is the data interleaving granularity selection field.
 - `imm2` is directly encoded in `[13:12]`, without reusing any encoding space freed by the even-register constraint.
 - Due to the even-register constraint on `Vd`, its `bit 0` is always `0`, and is therefore represented in the table as `{vd[4:1],0}`.
 
-### 8.6.2 `vnpack.vv` / `vnspack.vv` / `vnpack4.vv` / `vnspack4.vv`
+### 8.6.2 `smt.vnpack.vv` / `smt.vnspack.vv` / `smt.vnpack4.vv` / `smt.vnspack4.vv`
 
 Register Constraints
 
@@ -2299,10 +2299,10 @@ Formal Encoding
 
 |Mnemonic|`[31:26]`|`[25]`|`[24:20]`|`[19:15]`|`[14]`|`[13:12]`|`[11:7]`|`[6:0]`|
 |---|---|---|---|---|---|---|---|---|
-|`vnpack.vv`|`011000`|`1`|`vs2`|`vs1`|`0`|`imm2`|`vd`|`0101011`|
-|`vnspack.vv`|`011000`|`1`|`vs2`|`vs1`|`1`|`imm2`|`vd`|`0101011`|
-|`vnpack4.vv`|`010000`|`1`|`vs2`|`vs1`|`0`|`imm2`|`vd`|`0101011`|
-|`vnspack4.vv`|`010000`|`1`|`vs2`|`vs1`|`1`|`imm2`|`vd`|`0101011`|
+|`smt.vnpack.vv`|`011000`|`1`|`vs2`|`vs1`|`0`|`imm2`|`vd`|`0101011`|
+|`smt.vnspack.vv`|`011000`|`1`|`vs2`|`vs1`|`1`|`imm2`|`vd`|`0101011`|
+|`smt.vnpack4.vv`|`010000`|`1`|`vs2`|`vs1`|`0`|`imm2`|`vd`|`0101011`|
+|`smt.vnspack4.vv`|`010000`|`1`|`vs2`|`vs1`|`1`|`imm2`|`vd`|`0101011`|
 
 where,
 
