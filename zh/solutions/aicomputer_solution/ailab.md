@@ -7,8 +7,9 @@ K3 设备本地同样内置 AI Lab 桌面应用，支持下载模型后在本地
 ## ✨ 核心能力
 
 - **云上真机体验**：申请云 K3 实例，网页直接调用真实硬件进行推理，实时返回结果与性能数据
-- **视觉模型体验**：目标检测、图像分割、姿态估计、人脸识别、图像分类
+- **视觉模型体验**：目标检测、图像分割、姿态估计、图像分类
 - **大语言模型对话**：智能问答、文本生成，流式输出
+- **视觉语言(VLM)模型**：图片理解与问答，上传图片后用自然语言提问，流式返回分析结果
 - **语音识别（ASR）**：音频转文字、实时录音识别
 - **语音合成（TTS）**：文字转语音播放
 - **语音活动检测（VAD）**：语音片段检测与切分
@@ -36,12 +37,12 @@ K3 设备本地同样内置 AI Lab 桌面应用，支持下载模型后在本地
 - **桌面框架**：Electron 41（RISC-V 优化版本，K3 本地应用）
 - **前端技术**：原生 JavaScript + HTML5 + CSS3
 - **后端服务**：SpacemiT AI Gateway（端口 18790）
-- **模型推理**：ONNX Runtime（视觉/语音模型）+ llama.cpp（大语言模型，SpacemiT 加速版本）
+- **模型推理**：ONNX Runtime（视觉/语音模型）+ llama.cpp（大语言模型 / 视觉语言(VLM)模型，SpacemiT 加速版本）
 
 ### 依赖服务
 
-- **AI Gateway**：统一推理网关，通过 HTTP/WebSocket 提供 ASR / TTS / VAD / Vision / LLM 域 API（`/v1/asr`、`/v1/tts`、`/v1/vad`、`/v1/vision`、`/v1/chat/completions`）
-- **llama-server**：独立 LLM 数据面服务，由 AI Gateway 代理转发推理请求（端口 8080）
+- **AI Gateway**：统一推理网关，通过 HTTP/WebSocket 提供 ASR / TTS / VAD / Vision / LLM / VLM 域 API（`/v1/asr`、`/v1/tts`、`/v1/vad`、`/v1/vision`、`/v1/chat/completions`、`/v1/vlm/chat/completions`）
+- **llama-server**：独立 LLM / VLM 数据面服务，由 AI Gateway 代理转发推理请求
 - **模型数据源**：从 SpacemiT Model Zoo 获取最新模型信息与性能数据
 
 ### 工作流程
@@ -74,7 +75,7 @@ sudo apt update
 sudo apt install spacemit-ailab spacemit-ai-gateway
 ```
 
-安装完成后会自动配置 systemd 服务。
+安装完成后会自动配置 systemd 服务并创建桌面快捷方式。
 
 ### 验证安装
 
@@ -104,7 +105,6 @@ curl -s localhost:18790/healthz
 
 在系统菜单中搜索 **ai lab** 并启动。
    ![本地入口](../static/ailab-start.png)
-> 💡 **小贴士**：右键应用图标选择”添加到桌面”并信任，方便下次快速启动。
 
 ### 3) 界面概览
 
@@ -112,7 +112,7 @@ curl -s localhost:18790/healthz
 
 - **顶部导航栏**：局域网分享链接及复制按钮、开机自启开关、语言切换按钮
 - **实例状态栏**：云上体验时显示剩余可用时间
-- **模型分类标签**：热门、视觉、大语言模型、语音
+- **模型分类标签**：热门、大语言、语音、视觉、视觉语言(VLM)模型
 - **模型卡片网格**：展示各类 AI 模型及下载/体验状态
 - **性能数据看板**：各模型在 K3 真实硬件上的性能指标
 
@@ -134,6 +134,8 @@ curl -s localhost:18790/healthz
 
 ![实例状态栏](../static/ailab-2.png)
 
+![释放实例](../static/ailab-tip.png)
+
 #### 3) 释放实例
 
 - **自动释放**：2 小时到期后或关闭模型中心页面时自动回收
@@ -151,6 +153,7 @@ curl -s localhost:18790/healthz
 - **热门**：最受欢迎的模型
 - **视觉**：目标检测、图像分割、姿态估计、图像分类等
 - **大语言模型**：对话、文本生成
+- **视觉语言(VLM)模型**：图片理解与问答
 - **语音**：ASR 语音识别、TTS 语音合成、VAD 语音检测
 
 ![模型分类浏览](../static/ailab-3.png)
@@ -187,19 +190,53 @@ curl -s localhost:18790/healthz
 | 目标检测 | YOLOv8n/s/m、YOLOv11n/s/m 、YOLOv5-Gesture、YOLOv5n-Face |
 | 图像分割 | YOLOv8n/s/m-seg 系列                                     |
 | 姿态估计 | YOLOv8n/s/m-pose 系列                                    |
-| 人脸识别 | ArcFace-MobileFaceNet                                    |
 | 图像分类 | ResNet50                                                 |
 
 ### 大语言模型对话
 
 1. 找到大语言模型（如 Qwen-3-0.6B），点击"试用模型"
 2. 在底部输入框输入问题，支持添加文档链接，按回车发送
-3. AI 流式返回回复，支持多轮连续对话
+3. AI 流式返回回复
 4. 点击消息右侧复制按钮可复制回复内容
 
 ![LLM 对话界面](../static/ailab-5.png)
 
 **支持的 LLM 模型：** Qwen2.5、Qwen3、Qwen3.5 系列等
+
+### 视觉语言(VLM)模型体验
+
+视觉语言(VLM)模型能够同时理解图像与文字，用户上传一张图片后，用自然语言提问，模型即可返回对图像内容的分析与描述。
+
+1. 在模型列表中找到 VLM 模型（如 FastVLM-0.5B），点击"试用模型"
+2. 在左侧边栏选择图片来源：
+   - **示例图**：直接点击左侧内置示例图片
+   - **上传图片**：点击上传按钮，从本地选择图片（最多可预览 3 张，点击缩略图切换当前使用图片）
+3. 在文字提问框中输入问题（最多 200 字），例如"请描述这张图片的内容"
+4. 点击"开始视觉理解"，等待模型处理（右侧显示"模型处理中"动画）
+5. 推理完成后，右侧显示：
+   - 输入图片缩略图
+   - 流式渲染的 Markdown 格式回答（打字机效果）
+   - 性能指标：**延迟 / 首字延迟 / tokens/s**
+
+![VLM 对话界面](../static/ailab-vlm.png)
+
+
+![VLM 对话界面](../static/ailab-vlm-result.png)
+
+**支持的 VLM 模型：**
+
+| 模型                    | 参数量    | 大小     | 特点                             |
+| ----------------------- | --------- | -------- | -------------------------------- |
+| FastVLM-MM-0.5B (Q4_1)  | 0.5B      | ~766 MB  | 体积最小，响应最快，适合快速验证 |
+| Qwen3.5-VL-0.8B         | 0.8B      | ~932 MB  | 综合性能均衡                     |
+| Qwen3.5-VL-2B           | 2B        | ~2.6 GB  | 理解能力较强                     |
+| Qwen3.5-VL-4B           | 4B        | ~3.9 GB  | 高精度图像理解                   |
+| Qwen3-VL-30B-A3B (Q4_1) | 30B (MoE) | ~17.6 GB | 旗舰模型，理解能力最强           |
+
+> **注意事项：**
+> - 当前每次推理仅支持单张图片
+> - 每次提问最多 200 个字符
+> - 切换页面时模型自动卸载以释放内存
 
 ### 语音识别（ASR）
 
@@ -233,7 +270,7 @@ curl -s localhost:18790/healthz
 
 在主页下方查看所有模型在 K3 上的性能指标：
 
-- 点击分类标签筛选视觉 / LLM / 语音模型
+- 点击分类标签筛选大语言 / 语音 / 视觉 / 视觉语言(VLM)模型
 - 指标说明：
 
   | 指标            | 全称              | 含义                                                                 |
@@ -293,9 +330,15 @@ netstat -tulpn | grep 18790
 
 ### 推理速度较慢？
 
-- 选择较小参数量的模型（如 YOLOv8n 而非 YOLOv8m）
+- 选择较小参数量的模型（如 YOLOv8n 而非 YOLOv8m，FastVLM-0.5B 而非 Qwen3.5-VL-4B）
 - 关闭其他占用资源的应用
 - 同一时间只运行一个推理任务
+
+### VLM 图片理解结果不准确？
+
+- 尝试更换更大参数量的 VLM 模型（如从 FastVLM-0.5B 换为 Qwen3.5-VL-2B）
+- 优化提问描述，提供更具体的问题
+- 确保上传图片清晰，分辨率不过低
 
 ### 局域网分享无法访问？
 
@@ -319,13 +362,14 @@ rm -rf ~/.cache/models/
 
 ## 支持的模型
 
-| 类型 | 代表模型                     | 格式   |
-| ---- | ---------------------------- | ------ |
-| LLM  | Qwen2.5/3/3.5、              | GGUF   |
-| 视觉 | YOLOv5/v8/v11 系列、ResNet50 | ONNX   |
-| ASR  | SenseVoice、Qwen3-ASR        | tar.gz |
-| TTS  | Matcha-TTS（中文/英文）      | tar.gz |
-| VAD  | Silero VAD                   | tar.gz |
+| 类型 | 代表模型                                    | 格式                |
+| ---- | ------------------------------------------- | ------------------- |
+| LLM  | Qwen2.5/3/3.5、                             | GGUF                |
+| 视觉 | YOLOv5/v8/v11 系列、ResNet50                | ONNX                |
+| VLM  | FastVLM-0.5B、Qwen3.5系列、Qwen3-30B-A3B-VL | GGUF（tar.gz 打包） |
+| ASR  | SenseVoice、Qwen3-ASR                       | tar.gz              |
+| TTS  | Matcha-TTS（中文/英文）                     | tar.gz              |
+| VAD  | Silero VAD                                  | tar.gz              |
 
 ## 技术支持
 
