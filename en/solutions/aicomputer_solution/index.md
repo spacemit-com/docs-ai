@@ -4,6 +4,12 @@ sidebar_position: 2
 
 # AI Computer Solution Overview
 
+## AI NAS
+
+**AI NAS (AI Network Attached Storage)** is a new type of storage device that combines traditional NAS storage functionality with local AI inference capabilities.
+
+- [AI NAS](ainas.md)
+
 ## Zenow
 
 **Zenow** is a locally deployed AI knowledge assistant desktop application. All data processing is performed locally to protect privacy and data security. It supports multi-model management, intelligent conversation, knowledge base question answering, voice interaction, and related capabilities.
@@ -28,17 +34,17 @@ sidebar_position: 2
 
 - [Agentforce](agentforce.md)
 
-## SpacemiT AI Lab
-
-**SpacemiT AI Lab** is a web-based AI evaluation platform. Cloud-based K3 instances can be requested through the web interface, making it possible to evaluate model inference results and real performance data on the SpacemiT K3 AI CPU online without any hardware preparation, enabling a **zero-configuration, ready-to-use** evaluation experience.
-
-- [SpacemiT AI Lab](ailab.md)
-
 ## Claude Code
 
 **Claude Code** is a terminal-based AI coding assistant developed by Anthropic. It can run on the SpacemiT K-series platform to support software development workflows.
 
 - [Claude Code](claude.md)
+
+## SpacemiT AI Lab
+
+**SpacemiT AI Lab** is a web-based AI evaluation platform. Cloud-based K3 instances can be requested through the web interface, making it possible to evaluate model inference results and real performance data on the SpacemiT K3 AI CPU online without any hardware preparation, enabling a **zero-configuration, ready-to-use** evaluation experience.
+
+- [SpacemiT AI Lab](ailab.md)
 
 ## OpenClaw
 
