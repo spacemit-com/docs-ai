@@ -45,7 +45,7 @@ K3 devices also include a built-in AI Lab desktop application for downloading mo
 
 ### Dependent Services
 
-- **AI Gateway**: Unified inference gateway that exposes ASR / TTS / VAD / Vision / LLM / VLM domain APIs over HTTP/WebSocket (`/v1/asr`、`/v1/tts`、`/v1/vad`、`/v1/vision`、`/v1/chat/completions`、`/v1/vlm/chat/completions`).
+- **AI Gateway**: Unified inference gateway that exposes ASR / TTS / VAD / Vision / LLM / VLM domain APIs over HTTP/WebSocket (`/v1/asr`,`/v1/tts`,`/v1/vad`,`/v1/vision`,`/v1/chat/completions`,`/v1/vlm/chat/completions`).
 - **llama-server**: Standalone LLM / VLM  data-plane service; inference requests are proxied through AI Gateway.
 - **Model data source**: Latest model metadata and performance data are fetched from the SpacemiT Model Zoo.
 
