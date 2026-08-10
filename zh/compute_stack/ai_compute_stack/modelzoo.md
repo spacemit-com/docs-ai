@@ -31,14 +31,14 @@ sidebar_position: 9
 
 ## 基础模型
 - K1
->- 推理引擎版本: spacemit-ort-2.0.2+beta1
+>- 推理引擎版本: spacemit-ort-2.0.6
 >- OS：bianbu-3.0
->- date：2026-2-9
+>- date：2026-7-27
 
 - K3
->- 推理引擎版本: [v2.0.3](https://github.com/spacemit-com/onnxruntime/releases/download/2.0.3/spacemit-ort.riscv64.2.0.3.tar.gz)
+>- 推理引擎版本: [v2.0.6](https://github.com/spacemit-com/onnxruntime/releases/download/2.0.6/spacemit-ort.riscv64.2.0.6.tar.gz)
 >- OS：bianbu-4.0rc3
->- date：2026-5-26
+>- date：2026-7-27
 
 ### 测试方式
 ~~~
@@ -82,18 +82,18 @@ P999 Latency: 0.00730163 s
 
 | 模型名 | type | shape | 1 Core/ms | 2 Core/ms | 4 Core/ms |
 | --- | --- | --- | --- | --- | --- |
-| [resnet18](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/resnet/resnet18.q.onnx) | int8 | 224x224 | 39.71 | 22.49 | 13.71 |
-| [resnet50](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/resnet/resnet50.q.onnx) | int8 | 224x224 | 93.37 | 53.01 | 32.86 |
-| [resnet50](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/resnet/resnet50.fp16.onnx) | fp16 | 224x224 | 667.55 | 349.34 | 217.27 |
+| [resnet18](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/resnet/resnet18.q.onnx) | int8 | 224x224 | 40.68 | 22.15 | 12.99 |
+| [resnet50](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/resnet/resnet50.q.onnx) | int8 | 224x224 | 95.36 | 52.89 | 32.29 |
+| [resnet50](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/resnet/resnet50.fp16.onnx) | fp16 | 224x224 | 674.48 | 363.79 | 227.39 |
 
 - K3
 
 | 模型名 | type | shape | 1 Core/ms | 2 Core/ms | 4 Core/ms | 8 Core/ms |
 | --- | --- | --- | --- | --- | --- | --- |
-| [resnet18](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/resnet/resnet18.q.onnx) | int8 | 224x224 | 7.88 | 4.74 | 2.94 | 2.11 |
-| [resnet50](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/resnet/resnet50.q.onnx) | int8 | 224x224 | 19.54 | 11.47 | 7.25 | 5.22 |
+| [resnet18](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/resnet/resnet18.q.onnx) | int8 | 224x224 | 8.00 | 4.74 | 2.90 | 2.07 |
+| [resnet50](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/resnet/resnet50.q.onnx) | int8 | 224x224 | 21.00 | 12.21 | 7.72 | 5.47 |
 | [resnet50.batch4](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/resnet/resnet50.b4.q.onnx) | int8 | 224x224 | 73.37 | 40.19 | 23.19 | 15.55 |
-| [resnet50](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/resnet/resnet50.fp16.onnx) | fp16 | 224x224 | 35.38 | 24.00 | 19.27 | 16.68 |
+| [resnet50](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/resnet/resnet50.fp16.onnx) | fp16 | 224x224 | 37.64 | 21.95 | 14.89 | 11.36 |
 
 ### mobilenet
 
@@ -101,19 +101,19 @@ P999 Latency: 0.00730163 s
 
 | 模型名 | type | shape | 1 Core/ms | 2 Core/ms | 4 Core/ms |
 | --- | --- | --- | --- | --- | --- |
-| [mobilenet_v1](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/mobilenet/mobilenet_v1.q.onnx) | int8 | 224x224 | 32.10 | 16.56 | 10.72 |
-| [mobilenet_v2](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/mobilenet/mobilenet_v2.q.onnx) | int8 | 224x224 | 28.44 | 18.17 | 13.03 |
-| [mobilenet_v3_small](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/mobilenet/mobilenet_v3_small.fp16.onnx) | fp16 | 224x224 | 24.22 | 16.84 | 12.44 |
-| [mobilenet_v3_large](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/mobilenet/mobilenet_v3_large.fp16.onnx) | fp16 | 224x224 | 61.62 | 38.90 | 26.61 |
+| [mobilenet_v1](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/mobilenet/mobilenet_v1.q.onnx) | int8 | 224x224 | 31.06 | 16.16 | 10.21 |
+| [mobilenet_v2](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/mobilenet/mobilenet_v2.q.onnx) | int8 | 224x224 | 30.48 | 19.30 | 13.70 |
+| [mobilenet_v3_small](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/mobilenet/mobilenet_v3_small.fp16.onnx) | fp16 | 224x224 | 26.91 | 16.31 | 10.60 |
+| [mobilenet_v3_large](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/mobilenet/mobilenet_v3_large.fp16.onnx) | fp16 | 224x224 | 67.58 | 40.64 | 28.37 |
 
 - K3
 
 | 模型名 | type | shape | 1 Core/ms | 2 Core/ms | 4 Core/ms | 8 Core/ms |
 | --- | --- | --- | --- | --- | --- |---|
-| [mobilenet_v1](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/mobilenet/mobilenet_v1.q.onnx) | int8 | 224x224 | 12.71 | 7.24 | 3.95 | 2.38 |
-| [mobilenet_v2](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/mobilenet/mobilenet_v2.q.onnx) | int8 | 224x224 | 17.35 | 9.80 | 5.14 | 3.29 |
-| [mobilenet_v3_small](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/mobilenet/mobilenet_v3_small.fp16.onnx) | fp16 | 224x224 | 7.62 | 4.71 | 3.13 | 2.82 |
-| [mobilenet_v3_large](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/mobilenet/mobilenet_v3_large.fp16.onnx) | fp16 | 224x224 | 13.68 | 8.32 | 5.28 | 4.14 |
+| [mobilenet_v1](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/mobilenet/mobilenet_v1.q.onnx) | int8 | 224x224 | 12.67 | 7.21 | 3.91 | 2.35 |
+| [mobilenet_v2](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/mobilenet/mobilenet_v2.q.onnx) | int8 | 224x224 | 17.69 | 9.92 | 5.22 | 3.26 |
+| [mobilenet_v3_small](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/mobilenet/mobilenet_v3_small.fp16.onnx) | fp16 | 224x224 | 8.71 | 5.14 | 3.23 | 2.75 |
+| [mobilenet_v3_large](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/mobilenet/mobilenet_v3_large.fp16.onnx) | fp16 | 224x224 | 16.59 | 9.67 | 5.95 | 4.52 |
 
 ### efficientnet
 
@@ -121,23 +121,23 @@ P999 Latency: 0.00730163 s
 
 | 模型名 | type | shape | 1 Core/ms | 2 Core/ms | 4 Core/ms |
 | --- | --- | --- | --- | --- | --- |
-| [efficientnet_v1_b0](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/efficientnet/efficientnet_v1_b0.q.onnx) | int8 | 224x224 | 68.81 | 40.65 | 26.30 |
-| [efficientnet_v1_b1](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/efficientnet/efficientnet_v1_b1.q.onnx) | int8 | 224x224 | 97.24 | 57.21 | 37.28 |
-| [efficientnet_v2_s](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/efficientnet/efficientnet_v2_s.q.onnx) | int8 | 224x224 | 144.81 | 83.11 | 52.66 |
-| [efficientnet_v1_b0](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/efficientnet/efficientnet_v1_b0.fp16.onnx) | fp16 | 224x224 | 121.70 | 71.87 | 46.47 |
-| [efficientnet_v1_b1](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/efficientnet/efficientnet_v1_b1.fp16.onnx) | fp16 | 224x224 | 172.87 | 102.10 | 65.98 |
-| [efficientnet_v2_s](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/efficientnet/efficientnet_v2_s.fp16.onnx) | fp16 | 224x224 | 563.58 | 305.40 | 176.87 |
+| [efficientnet_v1_b0](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/efficientnet/efficientnet_v1_b0.q.onnx) | int8 | 224x224 | 82.84 | 49.03 | 33.74 |
+| [efficientnet_v1_b1](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/efficientnet/efficientnet_v1_b1.q.onnx) | int8 | 224x224 | 119.96 | 68.63 | 47.31 |
+| [efficientnet_v2_s](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/efficientnet/efficientnet_v2_s.q.onnx) | int8 | 224x224 | 170.51 | 95.03 | 60.96 |
+| [efficientnet_v1_b0](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/efficientnet/efficientnet_v1_b0.fp16.onnx) | fp16 | 224x224 | 140.58 | 83.16 | 59.58 |
+| [efficientnet_v1_b1](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/efficientnet/efficientnet_v1_b1.fp16.onnx) | fp16 | 224x224 | 198.59 | 120.75 | 83.44 |
+| [efficientnet_v2_s](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/efficientnet/efficientnet_v2_s.fp16.onnx) | fp16 | 224x224 | 621.82 | 337.15 | 200.57 |
 
 - K3
 
 | 模型名 | type | shape | 1 Core/ms | 2 Core/ms | 4 Core/ms | 8 Core/ms |
 | --- | --- | --- | --- | --- | --- |---|
-| [efficientnet_v1_b0](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/efficientnet/efficientnet_v1_b0.q.onnx) | int8 | 224x224 | 33.32 | 18.66 | 10.36 | 7.93 |
-| [efficientnet_v1_b1](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/efficientnet/efficientnet_v1_b1.q.onnx) | int8 | 224x224 | 52.32 | 28.79 | 16.12 | 12.07 |
-| [efficientnet_v2_s](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/efficientnet/efficientnet_v2_s.q.onnx) | int8 | 224x224 | 43.06 | 24.64 | 15.19 | 10.65 |
-| [efficientnet_v1_b0](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/efficientnet/efficientnet_v1_b0.fp16.onnx) | fp16 | 224x224 | 34.16 | 19.70 | 12.82 | 9.86 |
-| [efficientnet_v1_b1](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/efficientnet/efficientnet_v1_b1.fp16.onnx) | fp16 | 224x224 | 50.25 | 29.40 | 18.94 | 14.44 |
-| [efficientnet_v2_s](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/efficientnet/efficientnet_v2_s.fp16.onnx) | fp16 | 224x224 | 55.02 | 32.48 | 20.85 | 14.25 |
+| [efficientnet_v1_b0](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/efficientnet/efficientnet_v1_b0.q.onnx) | int8 | 224x224 | 40.84 | 22.51 | 12.89 | 9.85 |
+| [efficientnet_v1_b1](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/efficientnet/efficientnet_v1_b1.q.onnx) | int8 | 224x224 | 63.51 | 34.50 | 20.16 | 15.49 |
+| [efficientnet_v2_s](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/efficientnet/efficientnet_v2_s.q.onnx) | int8 | 224x224 | 58.41 | 33.46 | 19.80 | 13.53 |
+| [efficientnet_v1_b0](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/efficientnet/efficientnet_v1_b0.fp16.onnx) | fp16 | 224x224 | 43.35 | 23.67 | 14.30 | 10.91 |
+| [efficientnet_v1_b1](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/efficientnet/efficientnet_v1_b1.fp16.onnx) | fp16 | 224x224 | 63.37 | 35.19 | 20.96 | 15.63 |
+| [efficientnet_v2_s](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/efficientnet/efficientnet_v2_s.fp16.onnx) | fp16 | 224x224 | 82.89 | 47.68 | 29.77 | 20.67 |
 
 ### vit
 
@@ -145,15 +145,15 @@ P999 Latency: 0.00730163 s
 
 | 模型名 | type | shape | 1 Core/ms | 2 Core/ms | 4 Core/ms |
 | --- | --- | --- | --- | --- | --- |
-| [vit_b_16](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/vit/vit_b_16.q.onnx) | int8 | 224x224 | 527.78 | 356.00 | 200.91 |
-| [vit_b_16](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/vit/vit_b_16.fp16.onnx) | fp16 | 224x224 | 2557.03 | 1425.90 | 774.00 |
+| [vit_b_16](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/vit/vit_b_16.q.onnx) | int8 | 224x224 | 518.05 | 344.59 | 179.51 |
+| [vit_b_16](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/vit/vit_b_16.fp16.onnx) | fp16 | 224x224 | 2549.14 | 1410.04 | 766.46 |
 
 - K3
 
 | 模型名 | type | shape | 1 Core/ms | 2 Core/ms | 4 Core/ms | 8 Core/ms |
 | --- | --- | --- | --- | --- | --- | --- |
-| [vit_b_16](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/vit/vit_b_16.q.onnx) | int8 | 224x224 | 104.25 | 58.93 | 37.39 | 25.01 |
-| [vit_b_16](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/vit/vit_b_16.fp16.onnx) | fp16 | 224x224 | 206.15 | 122.17 | 82.56 | 62.04 |
+| [vit_b_16](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/vit/vit_b_16.q.onnx) | int8 | 224x224 | 100.90 | 56.64 | 35.19 | 23.76 |
+| [vit_b_16](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/vit/vit_b_16.fp16.onnx) | fp16 | 224x224 | 138.46 | 86.37 | 62.11 | 48.75 |
 
 ### yolov5
 
@@ -161,17 +161,17 @@ P999 Latency: 0.00730163 s
 
 | 模型名 | type | shape | 1 Core/ms | 2 Core/ms | 4 Core/ms |
 | --- | --- | --- | --- | --- | --- |
-| [yolov5n](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov5/yolov5n.q.onnx) | int8 | 640x640 | 233.24 | 149.24 | 111.18 |
-| [yolov5s](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov5/yolov5s.q.onnx) | int8 | 640x640 | 450.00 | 238.84 | 140.92 |
-| [yolov5m](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov5/yolov5m.q.onnx) | int8 | 640x640 | 996.12 | 483.86 | 269.41 |
+| [yolov5n](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov5/yolov5n.q.onnx) | int8 | 640x640 | 248.40 | 138.78 | 85.24 |
+| [yolov5s](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov5/yolov5s.q.onnx) | int8 | 640x640 | 473.59 | 252.89 | 150.95 |
+| [yolov5m](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov5/yolov5m.q.onnx) | int8 | 640x640 | 996.62 | 516.62 | 286.32 |
 
 - K3
 
 | 模型名 | type | shape | 1 Core/ms | 2 Core/ms | 4 Core/ms | 8 Core/ms |
 | --- | --- | --- | --- | --- | --- | --- |
-| [yolov5n](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov5/yolov5n.q.onnx) | int8 | 640x640 | 44.72 | 24.56 | 14.51 | 9.80 |
-| [yolov5s](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov5/yolov5s.q.onnx) | int8 | 640x640 | 74.38 | 40.77 | 24.27 | 15.96 |
-| [yolov5m](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov5/yolov5m.q.onnx) | int8 | 640x640 | 153.58 | 82.73 | 46.53 | 29.65 |
+| [yolov5n](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov5/yolov5n.q.onnx) | int8 | 640x640 | 43.76 | 24.11 | 14.36 | 9.57 |
+| [yolov5s](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov5/yolov5s.q.onnx) | int8 | 640x640 | 73.40 | 40.20 | 23.95 | 15.81 |
+| [yolov5m](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov5/yolov5m.q.onnx) | int8 | 640x640 | 152.03 | 81.90 | 45.88 | 28.97 |
 
 ### yolov6
 
@@ -179,32 +179,32 @@ P999 Latency: 0.00730163 s
 
 | 模型名 | type | shape | 1 Core/ms | 2 Core/ms | 4 Core/ms |
 | --- | --- | --- | --- | --- | --- |
-| [yolov6n](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov6/yolov6n.q.onnx) | int8 | 640x640 | 177.65 | 100.04 | 62.43 |
-| [yolov6s](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov6/yolov6s.q.onnx) | int8 | 640x640 | 462.12 | 237.01 | 132.61 |
+| [yolov6n](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov6/yolov6n.q.onnx) | int8 | 640x640 | 173.42 | 93.21 | 55.98 |
+| [yolov6s](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov6/yolov6s.q.onnx) | int8 | 640x640 | 438.71 | 224.39 | 123.60 |
 
 - K3
 
 | 模型名 | type | shape | 1 Core/ms | 2 Core/ms | 4 Core/ms | 8 Core/ms |
 | --- | --- | --- | --- | --- | --- | --- |
-| [yolov6n](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov6/yolov6n.q.onnx) | int8 | 640x640 | 32.93 | 18.59 | 11.11 | 7.72 |
-| [yolov6s](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov6/yolov6s.q.onnx) | int8 | 640x640 | 66.36 | 36.61 | 21.56 | 13.60 |
+| [yolov6n](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov6/yolov6n.q.onnx) | int8 | 640x640 | 31.90 | 18.04 | 10.95 | 7.53 |
+| [yolov6s](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov6/yolov6s.q.onnx) | int8 | 640x640 | 65.37 | 35.98 | 21.33 | 13.42 |
 
 ### yolov8
 - K1
 
 | 模型名 | type | shape | 1 Core/ms | 2 Core/ms | 4 Core/ms |
 | --- | --- | --- | --- | --- | --- |
-| [yolov8n](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8/yolov8n.q.onnx) | int8 | 640x640 | 211.49 | 118.88 | 76.18 |
-| [yolov8s](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8/yolov8s.q.onnx) | int8 | 640x640 | 463.19 | 240.62 | 142.38 |
-| [yolov8m](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8/yolov8m.q.onnx) | int8 | 640x640 | 994.91 | 510.06 | 284.39 |
+| [yolov8n](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8/yolov8n.q.onnx) | int8 | 640x640 | 233.76 | 123.09 | 73.74 |
+| [yolov8s](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8/yolov8s.q.onnx) | int8 | 640x640 | 517.42 | 274.48 | 153.08 |
+| [yolov8m](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8/yolov8m.q.onnx) | int8 | 640x640 | 1079.16 | 529.76 | 297.77 |
 
 - K3
 
 | 模型名 | type | shape | 1 Core/ms | 2 Core/ms | 4 Core/ms | 8 Core/ms |
 | --- | --- | --- | --- | --- | --- | --- |
-| [yolov8n](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8/yolov8n.q.onnx) | int8 | 640x640 | 43.05 | 23.91 | 14.23 | 9.82 |
-| [yolov8s](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8/yolov8s.q.onnx) | int8 | 640x640 | 76.96 | 42.41 | 25.52 | 17.14 |
-| [yolov8m](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8/yolov8m.q.onnx) | int8 | 640x640 | 163.62 | 88.08 | 49.67 | 32.66 |
+| [yolov8n](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8/yolov8n.q.onnx) | int8 | 640x640 | 41.41 | 23.08 | 13.85 | 9.51 |
+| [yolov8s](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8/yolov8s.q.onnx) | int8 | 640x640 | 74.50 | 41.19 | 24.89 | 16.65 |
+| [yolov8m](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8/yolov8m.q.onnx) | int8 | 640x640 | 157.80 | 85.68 | 48.90 | 32.31 |
 
 ### yolov8-seg
 
@@ -212,9 +212,9 @@ P999 Latency: 0.00730163 s
 
 | 模型名 | type | shape | 1 Core/ms | 2 Core/ms | 4 Core/ms | 8 Core/ms |
 | --- | --- | --- | --- | --- | --- | --- |
-| [yolov8n-seg](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8_seg/yolov8n-seg.q.onnx) | int8 | 640x640 | 68.70 | 37.34 | 21.44 | 13.97 |
-| [yolov8s-seg](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8_seg/yolov8s-seg.q.onnx) | int8 | 640x640 | 111.86 | 60.74 | 35.67 | 23.22 |
-| [yolov8m-seg](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8_seg/yolov8m-seg.q.onnx) | int8 | 640x640 | 216.20 | 115.77 | 64.78 | 41.56 |
+| [yolov8n-seg](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8_seg/yolov8n-seg.q.onnx) | int8 | 640x640 | 61.59 | 33.57 | 19.40 | 12.75 |
+| [yolov8s-seg](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8_seg/yolov8s-seg.q.onnx) | int8 | 640x640 | 103.27 | 56.33 | 33.24 | 21.51 |
+| [yolov8m-seg](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8_seg/yolov8m-seg.q.onnx) | int8 | 640x640 | 204.94 | 109.94 | 61.93 | 39.61 |
 
 ### yolov8-pose
 
@@ -222,27 +222,27 @@ P999 Latency: 0.00730163 s
 
 | 模型名 | type | shape | 1 Core/ms | 2 Core/ms | 4 Core/ms | 8 Core/ms |
 | --- | --- | --- | --- | --- | --- | --- |
-| [yolov8n-pose](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8_pose/yolov8n-pose.q.onnx) | int8 | 640x640 | 47.14 | 26.73 | 16.46 | 11.44 |
-| [yolov8s-pose](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8_pose/yolov8s-pose.q.onnx) | int8 | 640x640 | 83.19 | 46.34 | 28.31 | 19.15 |
-| [yolov8m-pose](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8_pose/yolov8m-pose.q.onnx) | int8 | 640x640 | 170.45 | 92.66 | 52.62 | 34.96 |
+| [yolov8n-pose](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8_pose/yolov8n-pose.q.onnx) | int8 | 640x640 | 46.42 | 26.18 | 16.16 | 11.16 |
+| [yolov8s-pose](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8_pose/yolov8s-pose.q.onnx) | int8 | 640x640 | 81.61 | 45.33 | 27.87 | 18.64 |
+| [yolov8m-pose](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolov8_pose/yolov8m-pose.q.onnx) | int8 | 640x640 | 165.60 | 90.30 | 51.75 | 33.84 |
 
-### yolov12
+### yolo12
 
 - K1
 
 | 模型名 | type | shape | 1 Core/ms | 2 Core/ms | 4 Core/ms |
 | --- | --- | --- | --- | --- | --- |
-| [yolo12n](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolo12/yolo12n.q.onnx) | int8 | 640x640 | 405.57 | 238.88 | 161.90 |
-| [yolo12s](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolo12/yolo12s.q.onnx) | int8 | 640x640 | 912.32 | 533.02 | 312.74 |
-| [yolo12m](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolo12/yolo12m.q.onnx) | int8 | 640x640 | 2050.74 | 1096.84 | 661.23 |
+| [yolo12n](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolo12/yolo12n.q.onnx) | int8 | 640x640 | 377.06 | 203.86 | 130.24 |
+| [yolo12s](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolo12/yolo12s.q.onnx) | int8 | 640x640 | 831.48 | 464.78 | 265.56 |
+| [yolo12m](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolo12/yolo12m.q.onnx) | int8 | 640x640 | 1979.32 | 1076.22 | 590.99 |
 
 - K3
 
 | 模型名 | type | shape | 1 Core/ms | 2 Core/ms | 4 Core/ms | 8 Core/ms |
 | --- | --- | --- | --- | --- | --- | --- |
-| [yolo12n](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolo12/yolo12n.q.onnx) | int8 | 640x640 | 119.64 | 64.88 | 38.08 | 27.60 |
-| [yolo12s](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolo12/yolo12s.q.onnx) | int8 | 640x640 | 218.19 | 117.37 | 68.71 | 48.16 |
-| [yolo12m](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolo12/yolo12m.q.onnx) | int8 | 640x640 | 428.03 | 228.18 | 130.62 | 89.44 |
+| [yolo12n](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolo12/yolo12n.q.onnx) | int8 | 640x640 | 107.56 | 57.85 | 32.55 | 21.73 |
+| [yolo12s](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolo12/yolo12s.q.onnx) | int8 | 640x640 | 191.31 | 102.05 | 56.90 | 36.24 |
+| [yolo12m](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/yolo12/yolo12m.q.onnx) | int8 | 640x640 | 378.55 | 200.75 | 110.23 | 69.17 |
 
 ### 音频模型
 
