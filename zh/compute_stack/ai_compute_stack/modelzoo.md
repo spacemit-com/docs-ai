@@ -92,7 +92,7 @@ P999 Latency: 0.00730163 s
 | --- | --- | --- | --- | --- | --- | --- |
 | [resnet18](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/resnet/resnet18.q.onnx) | int8 | 224x224 | 8.00 | 4.74 | 2.90 | 2.07 |
 | [resnet50](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/resnet/resnet50.q.onnx) | int8 | 224x224 | 21.00 | 12.21 | 7.72 | 5.47 |
-| [resnet50.batch4](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/resnet/resnet50.b4.q.onnx) | int8 | 224x224 | 73.37 | 40.19 | 23.19 | 15.55 |
+| [resnet50.batch4](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/resnet/resnet50.b4.q.onnx) | int8 | 224x224 | 77.99 | 42.75 | 24.62 | 15.38 |
 | [resnet50](https://archive.spacemit.com/spacemit-ai/model_zoo/vision/resnet/resnet50.fp16.onnx) | fp16 | 224x224 | 37.64 | 21.95 | 14.89 | 11.36 |
 
 ### mobilenet
