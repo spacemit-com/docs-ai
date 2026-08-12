@@ -353,6 +353,18 @@ llama-server -m qwen3vl-30b-text-q4_1.gguf --media-backend smt --smt-config-dir 
 
 - K3
 
-| 模型名 | LLM 8 Core + AudioEncoder 4 Core/rtf |
-| --- | --- |
-| [qwen3-ASR-0.6B](https://archive.spacemit.com/spacemit-ai/model_zoo/vlm/qwen3-asr-0.6B.tar.gz) | 0.186 |
+| 模型名 | 量化方式 | 线程配置 | RTF |
+| --- | --- | --- | --- |
+| [Qwen3-ASR 0.6B](https://archive.spacemit.com/spacemit-ai/model_zoo/asr/qwen3-asr-0.6B-dynq-q40.tar.gz) | Q4_0 + 动态量化 ONNX | LLM 8 / AudioEncoder 4 | 0.169 |
+| [Qwen3-ASR 1.7B](https://archive.spacemit.com/spacemit-ai/model_zoo/asr/qwen3-asr-1.7B-dynq-q40.tar.gz) | Q4_0 + 动态量化 ONNX | LLM 8 / AudioEncoder 4 | 0.329 |
+| [Fun-ASR Nano](https://archive.spacemit.com/spacemit-ai/model_zoo/asr/fun-asr-nano-2512-qq-q4km.tar.gz) | Q4_K_M + 量化 ONNX | LLM 4 / AudioEncoder 4 | 0.247 |
+| [Gemma4 ASR E2B](https://archive.spacemit.com/spacemit-ai/model_zoo/asr/gemma4-asr-E2B-q40.tar.gz) | Q4_0 + 量化 ONNX | llama-server 8 / AudioEncoder 默认 | 0.689（转写）/ 0.578（翻译） |
+
+Qwen3-ASR 0.6B 和 1.7B 均使用 `001_zh_daily_weather.wav` 和
+`004_zh_selling_sausages.wav` 连续测试 3 轮，总音频时长 47.331 秒，总处理时间分别为
+7.977 秒和 15.572 秒。Fun-ASR Nano 使用中文、英文、日文三条音频测试，单轮总音频
+时长 28.558 秒，预热后处理时间 7.063 秒。Gemma4 ASR 中文转写使用
+`004_zh_selling_sausages.wav`，音频时长 14.158 秒，处理时间 9.758 秒；翻译使用
+日语、韩语、粤语样例连续测试 2 轮，总音频时长 34.104 秒，预热后处理时间
+19.703 秒。首个动态 ONNX encoder session 初始化请求未计入。表中 RTF 为端到端
+结果。由于测试集和任务不同，各模型的 RTF 不宜直接横向比较识别或翻译质量。

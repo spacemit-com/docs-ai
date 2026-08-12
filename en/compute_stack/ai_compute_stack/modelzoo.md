@@ -360,6 +360,23 @@ llama-server -m qwen3vl-30b-text-q4_1.gguf --media-backend smt --smt-config-dir 
 
 - K3
 
-| Model | LLM 8 Core + AudioEncoder 4 Core/rtf |
-| --- | --- |
-| [qwen3-ASR-0.6B](https://archive.spacemit.com/spacemit-ai/model_zoo/vlm/qwen3-asr-0.6B.tar.gz) | 0.186 |
+| Model | Quantization | Thread Configuration | RTF |
+| --- | --- | --- | --- |
+| [Qwen3-ASR 0.6B](https://archive.spacemit.com/spacemit-ai/model_zoo/asr/qwen3-asr-0.6B-dynq-q40.tar.gz) | Q4_0 + dynamic ONNX | LLM 8 / AudioEncoder 4 | 0.169 |
+| [Qwen3-ASR 1.7B](https://archive.spacemit.com/spacemit-ai/model_zoo/asr/qwen3-asr-1.7B-dynq-q40.tar.gz) | Q4_0 + dynamic ONNX | LLM 8 / AudioEncoder 4 | 0.329 |
+| [Fun-ASR Nano](https://archive.spacemit.com/spacemit-ai/model_zoo/asr/fun-asr-nano-2512-qq-q4km.tar.gz) | Q4_K_M + quantized ONNX | LLM 4 / AudioEncoder 4 | 0.247 |
+| [Gemma4 ASR E2B](https://archive.spacemit.com/spacemit-ai/model_zoo/asr/gemma4-asr-E2B-q40.tar.gz) | Q4_0 + quantized ONNX | llama-server 8 / AudioEncoder default | 0.689 (transcription) / 0.578 (translation) |
+
+Qwen3-ASR 0.6B and 1.7B were each measured for three rounds with
+`001_zh_daily_weather.wav` and `004_zh_selling_sausages.wav`: 47.331 seconds
+of audio and 7.977 and 15.572 seconds of total processing time, respectively.
+Fun-ASR Nano was measured with one Chinese, one English, and one Japanese
+sample: 28.558 seconds of audio per round and 7.063 seconds of processing time
+after warmup. Gemma4 ASR transcription used `004_zh_selling_sausages.wav`:
+14.158 seconds of audio and 9.758 seconds of processing time. Its translation
+measurement used two rounds of Japanese, Korean, and Cantonese speech-to-English
+samples: 34.104 seconds of audio and 19.703 seconds of processing time after
+warmup. The first request that initialized the dynamic ONNX encoder session was
+excluded. The reported RTF values are end-to-end results. Because the test sets
+and tasks differ, these RTF values should not be used to directly compare
+recognition or translation quality.

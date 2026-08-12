@@ -16,6 +16,12 @@ sidebar_position: 2
 
 # AI Computer解决方案汇总
 
+## AI NAS
+
+**AI NAS（AI Network Attached Storage）**是在传统 NAS 存储功能基础上，融合本地 AI 推理能力的新型存储设备。
+
+- [AI NAS](ainas.md)
+
 ## 知了(Zenow)
 
 **知了（Zenow）** 是一款本地运行的 AI 知识助手桌面应用，所有数据处理均在本地完成，充分保护您的隐私安全。支持多模型管理、智能对话、知识库问答、语音交互等功能。

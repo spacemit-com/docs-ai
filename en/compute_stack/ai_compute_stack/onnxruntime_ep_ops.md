@@ -28,14 +28,19 @@ sidebar_position: 2
   - [Reduce](#reduce)
     - [ReduceMean](#reducemean)
     - [ReduceMax](#reducemax)
+    - [ReduceSum](#reducesum)
+    - [ArgMax](#argmax)
+    - [ArgMin](#argmin)
   - [Math](#math)
     - [Add](#add)
     - [Sub](#sub)
+    - [Sum](#sum)
     - [Mul](#mul)
     - [Div](#div)
     - [Pow](#pow)
     - [Sqrt](#sqrt)
     - [Abs](#abs)
+    - [Neg](#neg)
     - [Log](#log)
     - [Reciprocal](#reciprocal)
     - [Sin](#sin)
@@ -54,13 +59,16 @@ sidebar_position: 2
     - [LeakyRelu](#leakyrelu)
     - [Clip](#clip)
     - [Relu](#relu)
+    - [PRelu](#prelu)
     - [Elu](#elu)
     - [Gelu](#gelu)
     - [Celu](#celu)
+    - [Selu](#selu)
     - [Softplus](#softplus)
     - [Softsign](#softsign)
     - [Erf](#erf)
     - [Softmax](#softmax)
+    - [LogSoftmax](#logsoftmax)
   - [Tensor](#tensor)
     - [Cast](#cast)
     - [Concat](#concat)
@@ -71,19 +79,31 @@ sidebar_position: 2
     - [Reshape](#reshape)
     - [Flatten](#flatten)
     - [Gather](#gather)
+    - [GatherND](#gathernd)
+    - [ScatterND](#scatternd)
     - [Slice](#slice)
     - [Resize](#resize)
     - [Where](#where)
+    - [Pad](#pad)
+    - [Tile](#tile)
+    - [GridSample](#gridsample)
   - [Norm](#norm)
     - [LayerNormalization](#layernormalization)
     - [InstanceNormalization](#instancenormalization)
     - [BatchNormalization](#batchnormalization)
+    - [RMSNormalization](#rmsnormalization)
+    - [GroupNormalization](#groupnormalization)
   - [Compare](#compare)
     - [Equal](#equal)
     - [Greater](#greater)
     - [GreaterOrEqual](#greaterorequal)
     - [Less](#less)
     - [LessOrEqual](#lessorequal)
+  - [Transformer](#transformer)
+    - [RotaryEmbedding](#rotaryembedding)
+    - [Attention](#attention)
+  - [Contrib Function operator](#contrib-function-operator)
+    - [YoloDecode](#yolodecode)
 
 ## Dense
 ### Conv
@@ -97,7 +117,7 @@ sidebar_position: 2
 > - Domain: ai.onnx
 > - Opset: 11
 > - Attributes: `kernel_shape` must be present; `W` must be a constant initializer or provided by a `DequantizeLinear` node with no upstream input edges
-> - Type - T: `tensor(float)`
+> - Type - T: `tensor(float)` | `tensor(float16)`
 > - Notes: `kernel_shape` rank must not exceed 2; supports 1D and 2D
 
 ### Gemm
@@ -188,6 +208,26 @@ sidebar_position: 2
 > - Attributes: All inputs beyond the first must be constant initializers
 > - Type - T: `tensor(float)` | `tensor(float16)`
 
+### ReduceSum
+> - Domain: ai.onnx
+> - Opset: 13
+> - Attributes: All inputs beyond the first must be constant initializers
+> - Type - T: `tensor(float)` | `tensor(float16)`
+
+### ArgMax
+> - Domain: ai.onnx
+> - Opset: 13
+> - Attributes: None
+> - Type - T1: `tensor(float)` | `tensor(float16)` | `tensor(int8)`
+> - Type - T2: `tensor(int64)`
+
+### ArgMin
+> - Domain: ai.onnx
+> - Opset: 13
+> - Attributes: None
+> - Type - T1: `tensor(float)` | `tensor(float16)` | `tensor(int8)`
+> - Type - T2: `tensor(int64)`
+
 ## Math
 ### Add
 > - Domain: ai.onnx
@@ -198,6 +238,12 @@ sidebar_position: 2
 ### Sub
 > - Domain: ai.onnx
 > - Opset: 14
+> - Attributes: None
+> - Type - T: `tensor(float)` | `tensor(float16)`
+
+### Sum
+> - Domain: ai.onnx
+> - Opset: 13
 > - Attributes: None
 > - Type - T: `tensor(float)` | `tensor(float16)`
 
@@ -228,6 +274,12 @@ sidebar_position: 2
 ### Abs
 > - Domain: ai.onnx
 > - Opset: 14
+> - Attributes: None
+> - Type - T: `tensor(float)` | `tensor(float16)`
+
+### Neg
+> - Domain: ai.onnx
+> - Opset: 13
 > - Attributes: None
 > - Type - T: `tensor(float)` | `tensor(float16)`
 
@@ -334,6 +386,12 @@ sidebar_position: 2
 > - Attributes: None
 > - Type - T: `tensor(float)` | `tensor(float16)`
 
+### PRelu
+> - Domain: ai.onnx
+> - Opset: 9
+> - Attributes: None
+> - Type - T: `tensor(float)` | `tensor(float16)`
+
 ### Elu
 > - Domain: ai.onnx
 > - Opset: 22
@@ -349,6 +407,12 @@ sidebar_position: 2
 ### Celu
 > - Domain: ai.onnx
 > - Opset: 12
+> - Attributes: None
+> - Type - T: `tensor(float)` | `tensor(float16)`
+
+### Selu
+> - Domain: ai.onnx
+> - Opset: 6
 > - Attributes: None
 > - Type - T: `tensor(float)` | `tensor(float16)`
 
@@ -371,6 +435,12 @@ sidebar_position: 2
 > - Type - T: `tensor(float)` | `tensor(float16)`
 
 ### Softmax
+> - Domain: ai.onnx
+> - Opset: 13
+> - Attributes: None
+> - Type - T: `tensor(float)` | `tensor(float16)`
+
+### LogSoftmax
 > - Domain: ai.onnx
 > - Opset: 13
 > - Attributes: None
@@ -431,6 +501,18 @@ sidebar_position: 2
 > - Attributes: None
 > - Type - T: `tensor(float)` | `tensor(float16)` | `tensor(int32)` | `tensor(uint32)` | `tensor(int8)` | `tensor(uint8)` | `tensor(bool)`
 
+### GatherND
+> - Domain: ai.onnx
+> - Opset: 13
+> - Attributes: None
+> - Type - T: `tensor(float)` | `tensor(float16)` | `tensor(int32)` | `tensor(uint32)` | `tensor(int8)` | `tensor(uint8)` | `tensor(bool)`
+
+### ScatterND
+> - Domain: ai.onnx
+> - Opset: 16
+> - Attributes: None
+> - Type - T: `tensor(float)` | `tensor(float16)` | `tensor(int32)` | `tensor(uint32)` | `tensor(int8)` | `tensor(uint8)` | `tensor(bool)`
+
 ### Slice
 > - Domain: ai.onnx
 > - Opset: 13
@@ -449,6 +531,24 @@ sidebar_position: 2
 > - Attributes: None
 > - Type - T: `tensor(float)` | `tensor(float16)` | `tensor(int32)` | `tensor(uint32)` | `tensor(int8)` | `tensor(uint8)` | `tensor(bool)`
 
+### Pad
+> - Domain: ai.onnx
+> - Opset: 21
+> - Attributes: The `pads` input must be a constant initializer
+> - Type - T: `tensor(float)` | `tensor(float16)` | `tensor(int32)` | `tensor(int8)` | `tensor(uint8)`
+
+### Tile
+> - Domain: ai.onnx
+> - Opset: 6
+> - Attributes: The `repeats` input must be a constant initializer
+> - Type - T: `tensor(float)` | `tensor(float16)` | `tensor(int32)` | `tensor(uint32)` | `tensor(int8)` | `tensor(uint8)` | `tensor(bool)`
+
+### GridSample
+> - Domain: ai.onnx
+> - Opset: 16
+> - Attributes: `mode` supports `bilinear` and `nearest` only; `padding_mode` supports `zeros` and `border` only
+> - Type - T1: `tensor(float)` | `tensor(float16)`
+
 ## Norm
 ### LayerNormalization
 > - Domain: ai.onnx
@@ -466,6 +566,18 @@ sidebar_position: 2
 > - Domain: ai.onnx
 > - Opset: 15
 > - Attributes: No additional constant constraints during the capability-check phase
+> - Type - T: `tensor(float)` | `tensor(float16)`
+
+### RMSNormalization
+> - Domain: ai.onnx
+> - Opset: 23
+> - Attributes: None
+> - Type - T: `tensor(float)` | `tensor(float16)`
+
+### GroupNormalization
+> - Domain: ai.onnx
+> - Opset: 21
+> - Attributes: None
 > - Type - T: `tensor(float)` | `tensor(float16)`
 
 ## Compare
@@ -503,3 +615,23 @@ sidebar_position: 2
 > - Attributes: None
 > - Type - T1: `tensor(float)` | `tensor(float16)` | `tensor(int32)` | `tensor(uint32)` | `tensor(int8)` | `tensor(uint8)` | `tensor(bool)`
 > - Type - T2: `tensor(uint8)` | `tensor(bool)`
+
+## Transformer
+### RotaryEmbedding
+> - Domain: ai.onnx
+> - Opset: 23
+> - Attributes: None
+> - Type - T: `tensor(float)` | `tensor(float16)`
+
+### Attention
+> - Domain: ai.onnx
+> - Opset: 23
+> - Attributes: None
+> - Type - T: `tensor(float)` | `tensor(float16)`
+
+## Contrib Function operator
+### YoloDecode
+> - Domain: spacemit_functions.YoloDecode
+> - Opset: N/A
+> - Attributes: None
+> - Type - T: `tensor(float)` | `tensor(float16)`

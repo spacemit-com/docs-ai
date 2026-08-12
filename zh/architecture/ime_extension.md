@@ -301,8 +301,8 @@ $$
 
 作用范围：
 
-- `vfwmadot` / `vfwmadot1/2/3`；
-- `vmadot.hp*` 的 scale 参数和累加结果格式。
+- `smt.vfwmadot` / `smt.vfwmadot1/2/3`；
+- `smt.vmadot.hp*` 的 scale 参数和累加结果格式。
 
 ### 2.6.2 `V0` / `V1`
 
@@ -310,20 +310,20 @@ $$
 
 |指令类型|`V0` / `V1` 的角色|
 |---|---|
-|`vmadot.sp*`|存放 4:2 结构化稀疏恢复掩码|
-|`vmadot.hp*`|存放逐列或按组 scale 参数|
+|`smt.vmadot.sp*`|存放 4:2 结构化稀疏恢复掩码|
+|`smt.vmadot.hp*`|存放逐列或按组 scale 参数|
 
 ### 2.6.3 `imm2` 与 `imm3`
 
 |字段|适用指令|立即数位宽|作用|
 |---|---|---|---|
-|`imm2`|`vmadot.sp*`|2bit|选择掩码寄存器中的分段|
-|`imm3`|`vmadot.hp*`|3bit|选择 scale 参数寄存器中的分组|
+|`imm2`|`smt.vmadot.sp*`|2bit|选择掩码寄存器中的分段|
+|`imm3`|`smt.vmadot.hp*`|3bit|选择 scale 参数寄存器中的分组|
 
 补充说明：
 
-- `vmadot.sp*` 的 `imm2` 采用分裂编码，分别位于 `[15]` 与 `[7]`；这两位之所以可用于承载 `imm2`，是因为 `Vs1` 与 `Vd` 受偶数寄存器约束，其 `bit 0` 恒为 0，编码时仅需显式保留 `[4:1]`；
-- `vmadot.hp*` 的 `imm3` 直接占用独立的 `[14:12]` 字段，不依赖寄存器最低位省出的编码空间。
+- `smt.vmadot.sp*` 的 `imm2` 采用分裂编码，分别位于 `[15]` 与 `[7]`；这两位之所以可用于承载 `imm2`，是因为 `Vs1` 与 `Vd` 受偶数寄存器约束，其 `bit 0` 恒为 0，编码时仅需显式保留 `[4:1]`；
+- `smt.vmadot.hp*` 的 `imm3` 直接占用独立的 `[14:12]` 字段，不依赖寄存器最低位省出的编码空间。
 
 ## 2.7 数据布局
 
@@ -379,23 +379,23 @@ $$
 |Zvvm|data layout|A 和 C 行主序，B 列主序|A 和 C 行主序，B 列主序|
 |Zvvm|指令|vmmacc|未支持|
 |Zvvm|指令|vwmmacc|未支持|
-|Zvvm|指令|vqwmmacc|vmadot*,i8|
-|Zvvm|指令|v8wmmacc|vmadot*,i4|
+|Zvvm|指令|vqwmmacc|smt.vmadot*,i8|
+|Zvvm|指令|v8wmmacc|smt.vmadot*,i4|
 |Zvvm|指令|vfmmacc|未支持|
-|Zvvm|指令|vfwmmacc|vfwmadot|
+|Zvvm|指令|vfwmmacc|smt.vfwmadot|
 |Zvvm|指令|vfqwmmacc|未支持|
 |Zvvm|指令|vf8wmmacc|未支持|
-|Zvvm|指令|vfwimmacc|vmadot.hp*, i8；scale 类型 FP16 / BF16|
-|Zvvm|指令|vfqwimmacc;scale类型e4m3|vmadot.hp*, i4；scale 类型 FP16 / BF16|
+|Zvvm|指令|vfwimmacc|smt.vmadot.hp*, i8；scale 类型 FP16 / BF16|
+|Zvvm|指令|vfqwimmacc;scale类型e4m3|smt.vmadot.hp*, i4；scale 类型 FP16 / BF16|
 |Zvvm|指令|vf8wimmacc;scale类型e5m2|未支持|
 |Zvvm|专用的 load/store 指令|Zvvmtls 指令扩展|未实现；可配合 `vpack` 指令实现近似功能|
 |Zvvm|专用指令：卷积加速|未支持|提供专用滑窗卷积指令|
 |Zvvm|专用指令：结构化稀疏|未支持|支持 4:2 稀疏|
-|Zvzip|指令|vzip.vv|vpack.vv，功能等效|
-|Zvzip|指令|vunzipe.v|vupack.vv，可实现等效功能|
-|Zvzip|指令|vunzipo.v|vupack.vv，可实现等效功能|
-|Zvzip|指令|vpaire.vv|vnpack.vv，可实现等效功能|
-|Zvzip|指令|vpairo.vv|vnpack.vv，结合 `vsrl.vv` 可实现等效功能|
+|Zvzip|指令|vzip.vv|smt.vpack.vv，功能等效|
+|Zvzip|指令|vunzipe.v|smt.vupack.vv，可实现等效功能|
+|Zvzip|指令|vunzipo.v|smt.vupack.vv，可实现等效功能|
+|Zvzip|指令|vpaire.vv|smt.vnpack.vv，可实现等效功能|
+|Zvzip|指令|vpairo.vv|smt.vnpack.vv，结合 `vsrl.vv` 可实现等效功能|
 
 
 # 第 4 章 指令全景、子扩展与快速索引
@@ -404,13 +404,13 @@ $$
 
 |子扩展|指令数|代表指令|输入|输出 / 累加|特殊资源|
 |---|---|---|---|---|---|
-|`Xsmti*i32mm`：整数矩阵乘法指令|8|`vmadot*`|Int4 / Int8|Int32|无|
-|`Xsmti*i32mm_slide`：面向卷积场景的整数滑窗矩阵乘法|12|`vmadot1*`, `vmadot2*`, `vmadot3*`|Int8|Int32|`Vs1` 偶数|
-|`Xsmti*i32mm_42sp`：4:2 结构化稀疏整数矩阵乘法|8|`vmadot.sp*`|Int4 / Int8|Int32|`V0` / `V1`, `imm2`|
-|`Xsmti**16mm_scl16f`：面向分块量化的整数矩阵乘法指令|8|`vmadot.hp*`|Int4 / Int8 + scale|FP16 / BF16|`V0` / `V1`, `imm3`, `MCPM.BF16`|
-|`Xsmt*16fp32mm`：浮点矩阵乘法指令|1|`vfwmadot`|FP16 / BF16|FP32|`MCPM.BF16`|
-|`Xsmt*16fp32mm_slide`：面向卷积场景的浮点滑窗矩阵乘法|3|`vfwmadot1/2/3`|FP16 / BF16|FP32|`Vs1` 偶数;<br>`MCPM.BF16`|
-|数据布局变换指令|6|`vpack.vv`, `vupack.vv`, `vnpack.vv`, `vnpack4.vv`|多种|多种|`imm2`, `SEW`, `LMUL`|
+|`Xsmti*i32mm`：整数矩阵乘法指令|8|`smt.vmadot*`|Int4 / Int8|Int32|无|
+|`Xsmti*i32mm_slide`：面向卷积场景的整数滑窗矩阵乘法|12|`smt.vmadot1*`, `smt.vmadot2*`, `smt.vmadot3*`|Int8|Int32|`Vs1` 偶数|
+|`Xsmti*i32mm_42sp`：4:2 结构化稀疏整数矩阵乘法|8|`smt.vmadot.sp*`|Int4 / Int8|Int32|`V0` / `V1`, `imm2`|
+|`Xsmti**16mm_scl16f`：面向分块量化的整数矩阵乘法指令|8|`smt.vmadot.hp*`|Int4 / Int8 + scale|FP16 / BF16|`V0` / `V1`, `imm3`, `MCPM.BF16`|
+|`Xsmt*16fp32mm`：浮点矩阵乘法指令|1|`smt.vfwmadot`|FP16 / BF16|FP32|`MCPM.BF16`|
+|`Xsmt*16fp32mm_slide`：面向卷积场景的浮点滑窗矩阵乘法|3|`smt.vfwmadot1/2/3`|FP16 / BF16|FP32|`Vs1` 偶数;<br>`MCPM.BF16`|
+|数据布局变换指令|6|`smt.vpack.vv`, `smt.vupack.vv`, `smt.vnpack.vv`, `smt.vnpack4.vv`|多种|多种|`imm2`, `SEW`, `LMUL`|
 
 ## 4.2 符号解释（`signedness`）变体约定
 
@@ -426,54 +426,54 @@ $$
 ## 4.3 原生助记符索引
 
 ### 整数矩阵乘法指令（基础路径）
-- `vmadot`
-- `vmadotu`
-- `vmadotus`
-- `vmadotsu`
+- `smt.vmadot`
+- `smt.vmadotu`
+- `smt.vmadotus`
+- `smt.vmadotsu`
 
 ### 面向卷积场景的整数滑窗矩阵乘法
-- `vmadot1`
-- `vmadot1u`
-- `vmadot1us`
-- `vmadot1su`
-- `vmadot2`
-- `vmadot2u`
-- `vmadot2us`
-- `vmadot2su`
-- `vmadot3`
-- `vmadot3u`
-- `vmadot3us`
-- `vmadot3su`
+- `smt.vmadot1`
+- `smt.vmadot1u`
+- `smt.vmadot1us`
+- `smt.vmadot1su`
+- `smt.vmadot2`
+- `smt.vmadot2u`
+- `smt.vmadot2us`
+- `smt.vmadot2su`
+- `smt.vmadot3`
+- `smt.vmadot3u`
+- `smt.vmadot3us`
+- `smt.vmadot3su`
 
 ### 4:2 结构化稀疏整数矩阵乘法
-- `vmadot.sp`
-- `vmadotu.sp`
-- `vmadotus.sp`
-- `vmadotsu.sp`
+- `smt.vmadot.sp`
+- `smt.vmadotu.sp`
+- `smt.vmadotus.sp`
+- `smt.vmadotsu.sp`
 
 ### 面向分块量化的整数矩阵乘法
-- `vmadot.hp`
-- `vmadotu.hp`
-- `vmadotus.hp`
-- `vmadotsu.hp`
+- `smt.vmadot.hp`
+- `smt.vmadotu.hp`
+- `smt.vmadotus.hp`
+- `smt.vmadotsu.hp`
 
 ### 浮点矩阵乘法指令
-- `vfwmadot`
-- `vfwmadot1`
-- `vfwmadot2`
-- `vfwmadot3`
+- `smt.vfwmadot`
+- `smt.vfwmadot1`
+- `smt.vfwmadot2`
+- `smt.vfwmadot3`
 
 ### 数据布局变换指令
-- `vpack.vv`
-- `vupack.vv`
-- `vnpack.vv`
-- `vnspack.vv`
-- `vnpack4.vv`
-- `vnspack4.vv`
+- `smt.vpack.vv`
+- `smt.vupack.vv`
+- `smt.vnpack.vv`
+- `smt.vnspack.vv`
+- `smt.vnpack4.vv`
+- `smt.vnspack4.vv`
 
 # 第 5 章 整数矩阵乘法指令
 
-## 5.1 整数矩阵乘法指令（基础路径）：`vmadot*`
+## 5.1 整数矩阵乘法指令（基础路径）：`smt.vmadot*`
 
 ### 5.1.1 功能概述
 
@@ -485,16 +485,16 @@ $$
 
 矩阵乘法的几何关系如图 4 所示，其中左侧为 `A` 矩阵，右侧为 `B` 矩阵。
 
-![图4：`vmadot` 基础路径的矩阵计算示意图。](images/ime_extension_png/fig3vmadot.png)
-*图 4. 在 VLEN=1024、λ=4、W=4、LMUL=1 条件下的 `vmadot` 矩阵计算示意。左侧为 `A` tile，右侧为 `B` tile。*
+![图4：`smt.vmadot` 基础路径的矩阵计算示意图。](images/ime_extension_png/fig3vmadot.png)
+*图 4. 在 VLEN=1024、λ=4、W=4、LMUL=1 条件下的 `smt.vmadot` 矩阵计算示意。左侧为 `A` tile，右侧为 `B` tile。*
 
 ### 5.1.2 指令成员
 |指令|汇编格式|数据类型路径|tile：M × N × K|
 |---|---|---|---|
-|`vmadot`|`vmadot vd, vs1, vs2, i4`<br>`vmadot vd, vs1, vs2, i8`|`Int4 × Int4 → Int32`<br>`Int8 × Int8 → Int32`|**A60**：<br>Int8：`4 × 8 × 4`;<br>**A100**：<br>Int4：`8 × 32 × 8`;<br>Int8：`8 × 16 × 8`|
-|`vmadotu`|`vmadotu vd, vs1, vs2, i4`<br>`vmadotu vd, vs1, vs2, i8`|`UInt4 × UInt4 → Int32`<br>`UInt8 × UInt8 → Int32`|同上|
-|`vmadotus`|`vmadotus vd, vs1, vs2, i4`<br>`vmadotus vd, vs1, vs2, i8`|`UInt4 × Int4 → Int32`<br>`UInt8 × Int8 → Int32`|同上|
-|`vmadotsu`|`vmadotsu vd, vs1, vs2, i4`<br>`vmadotsu vd, vs1, vs2, i8`|`Int4 × UInt4 → Int32`<br>`Int8 × UInt8 → Int32`|同上|
+|`smt.vmadot`|`smt.vmadot vd, vs1, vs2, i4`<br>`smt.vmadot vd, vs1, vs2, i8`|`Int4 × Int4 → Int32`<br>`Int8 × Int8 → Int32`|**A60**：<br>Int8：`4 × 8 × 4`;<br>**A100**：<br>Int4：`8 × 32 × 8`;<br>Int8：`8 × 16 × 8`|
+|`smt.vmadotu`|`smt.vmadotu vd, vs1, vs2, i4`<br>`smt.vmadotu vd, vs1, vs2, i8`|`UInt4 × UInt4 → Int32`<br>`UInt8 × UInt8 → Int32`|同上|
+|`smt.vmadotus`|`smt.vmadotus vd, vs1, vs2, i4`<br>`smt.vmadotus vd, vs1, vs2, i8`|`UInt4 × Int4 → Int32`<br>`UInt8 × Int8 → Int32`|同上|
+|`smt.vmadotsu`|`smt.vmadotsu vd, vs1, vs2, i4`<br>`smt.vmadotsu vd, vs1, vs2, i8`|`Int4 × UInt4 → Int32`<br>`Int8 × UInt8 → Int32`|同上|
 
 ### 5.1.3 程序可见语义
 
@@ -577,7 +577,7 @@ void matmul(const int8_t *A, const int8_t *B, int32_t *C) {
         "vsetvli        t0, zero, e8, m1          \n\t"
         "vle8.v         v0, (%[A])                \n\t"
         "vle8.v         v1, (%[B])                \n\t"
-        "vmadot         v16, v0, v1               \n\t"
+        "smt.vmadot         v16, v0, v1               \n\t"
         "vsetvli        t0, zero, e32, m2         \n\t"
         "vse32.v        v16, (%[C])               \n\t"
         : [ A ] "+r"(A), [ B ] "+r"(B), [ C ] "+r"(C)
@@ -617,7 +617,7 @@ int main()
 }
 ```
 
-## 5.2 面向卷积场景的整数滑窗矩阵乘法：`vmadot1*` / `vmadot2*` / `vmadot3*`
+## 5.2 面向卷积场景的整数滑窗矩阵乘法：`smt.vmadot1*` / `smt.vmadot2*` / `smt.vmadot3*`
 
 ### 5.2.1 功能概述
 
@@ -626,14 +626,14 @@ int main()
 图 5 展示了 `slide = 1 / 2 / 3` 时的窗口移动方式，以及窗口跨越 `Vs1` 与 `Vs1+1` 时的拼接取数方法。
 
 ![图5：整数滑窗矩阵乘法（`slide=1`）示意图。](images/ime_extension_png/fig4vmadotslide.png)
-*图 5. 在 VLEN=1024、λ=4、W=4、LMUL=1 条件下，`vmadot1`（即 `slide=1`）的滑窗取数与计算示意。*
+*图 5. 在 VLEN=1024、λ=4、W=4、LMUL=1 条件下，`smt.vmadot1`（即 `slide=1`）的滑窗取数与计算示意。*
 
 ### 5.2.2 指令成员
 |指令类型|变体|汇编格式|slide|数据类型路径|tile|
 |---|---|---|---|---|---|
-|`vmadot1*`|`vmadot1`,<br> `vmadot1u`,<br> `vmadot1us`,<br> `vmadot1su`|`vmadot1 vd, vs1, vs2, i8`<br>`vmadot1u vd, vs1, vs2, i8`<br>`vmadot1us vd, vs1, vs2, i8`<br>`vmadot1su vd, vs1, vs2, i8`|1|`[U]Int8 × [U]Int8 → Int32`|**A60**：`4 × 8 × 4`<br>**A100**：`8 × 16 × 8`|
-|`vmadot2*`|`vmadot2`,<br> `vmadot2u`,<br> `vmadot2us`,<br> `vmadot2su`|`vmadot2 vd, vs1, vs2, i8`<br>`vmadot2u vd, vs1, vs2, i8`<br>`vmadot2us vd, vs1, vs2, i8`<br>`vmadot2su vd, vs1, vs2, i8`|2|同上|同上|
-|`vmadot3*`|`vmadot3`,<br> `vmadot3u`,<br> `vmadot3us`,<br> `vmadot3su`|`vmadot3 vd, vs1, vs2, i8`<br>`vmadot3u vd, vs1, vs2, i8`<br>`vmadot3us vd, vs1, vs2, i8`<br>`vmadot3su vd, vs1, vs2, i8`|3|同上|同上|
+|`smt.vmadot1*`|`smt.vmadot1`,<br> `smt.vmadot1u`,<br> `smt.vmadot1us`,<br> `smt.vmadot1su`|`smt.vmadot1 vd, vs1, vs2, i8`<br>`smt.vmadot1u vd, vs1, vs2, i8`<br>`smt.vmadot1us vd, vs1, vs2, i8`<br>`smt.vmadot1su vd, vs1, vs2, i8`|1|`[U]Int8 × [U]Int8 → Int32`|**A60**：`4 × 8 × 4`<br>**A100**：`8 × 16 × 8`|
+|`smt.vmadot2*`|`smt.vmadot2`,<br> `smt.vmadot2u`,<br> `smt.vmadot2us`,<br> `smt.vmadot2su`|`smt.vmadot2 vd, vs1, vs2, i8`<br>`smt.vmadot2u vd, vs1, vs2, i8`<br>`smt.vmadot2us vd, vs1, vs2, i8`<br>`smt.vmadot2su vd, vs1, vs2, i8`|2|同上|同上|
+|`smt.vmadot3*`|`smt.vmadot3`,<br> `smt.vmadot3u`,<br> `smt.vmadot3us`,<br> `smt.vmadot3su`|`smt.vmadot3 vd, vs1, vs2, i8`<br>`smt.vmadot3u vd, vs1, vs2, i8`<br>`smt.vmadot3us vd, vs1, vs2, i8`<br>`smt.vmadot3su vd, vs1, vs2, i8`|3|同上|同上|
 
 ### 5.2.3 程序可见语义
 
@@ -681,7 +681,7 @@ for (p = 0; p < (2 * VLEN * LMUL / 32); p++) {
 *     [5 6 7 8  9 10 11 12] 
 *     [6 7 8 9 10 11 12 13]
 *
-*  "vmadot     v16, v0, v8             \n\t"
+*  "smt.vmadot     v16, v0, v8             \n\t"
 *  MatrixA[4, 8]：         x  MatrixB[8, 4]    =   MatrixC[4, 4]
 *     [0 1 2 3 4 5  6  7]       [0 1 2 11]           [140 168 196 224] 
 *     [1 2 3 4 5 6  7  8]       [1 2 3  4]           [168 204 240 284] 
@@ -692,7 +692,7 @@ for (p = 0; p < (2 * VLEN * LMUL / 32); p++) {
 *                               [6 7 8  9]
 *                               [7 8 9 10]
 *
-*  "vmadot1    v16, v0, v8             \n\t"
+*  "smt.vmadot1    v16, v0, v8             \n\t"
 *  MatrixA[4, 8]：         x  MatrixB[8, 4]  + MatrixC[4, 4]  =  MatrixC[4, 4]
 *     [1 2 3 4 5  6  7  8]      [0 1 2 11]           [308 372 436 224] 
 *     [2 3 4 5 6  7  8  9]      [1 2 3  4]           [364 444 524 628] 
@@ -703,7 +703,7 @@ for (p = 0; p < (2 * VLEN * LMUL / 32); p++) {
 *                               [6 7 8  9]
 *                               [7 8 9 10]
 *
-*  "vmadot2     v16, v0, v8            \n\t"
+*  "smt.vmadot2     v16, v0, v8            \n\t"
 * MatrixA[4, 8]：         x  MatrixB[8, 4]  + MatrixC[4, 4]   =   MatrixC[4, 4]
 *     [2 3 4 5 6  7  8   9]     [0 1 2 11]           [504  612  720  852] 
 *     [4 5 6 7 8  9  10 11]     [1 2 3  4]           [616  756  896 1092] 
@@ -726,9 +726,9 @@ void conv1d(const int8_t *feature, const int8_t *weight, int32_t *output) {
         "addi       %[A], %[A], 4*8         \n\t"
         "vle8.v     v8, (%[B])              \n\t"
         "addi       %[B], %[B], 4*8         \n\t"
-        "vmadot     v16, v0, v8             \n\t"
-        "vmadot1    v16, v0, v8             \n\t"
-        "vmadot2    v16, v0, v8             \n\t"
+        "smt.vmadot     v16, v0, v8             \n\t"
+        "smt.vmadot1    v16, v0, v8             \n\t"
+        "smt.vmadot2    v16, v0, v8             \n\t"
         "vsetvli    t0, zero, e32, m2       \n\t"
         "vse32.v    v16, (%[C])             \n\t"
         
@@ -773,7 +773,7 @@ int main()
 }
 ```
 
-## 5.3 4:2 结构化稀疏整数矩阵乘法：`vmadot.sp*`
+## 5.3 4:2 结构化稀疏整数矩阵乘法：`smt.vmadot.sp*`
 
 
 ### 5.3.1 功能概述
@@ -781,17 +781,17 @@ int main()
 本指令集定义 4:2 结构化稀疏整数矩阵乘法。该路径从 `A` 的每 4 个源元素中，根据 4-bit 掩码恢复 2 个有效值，再与 `B` 执行点积并累加到 Int32 目标。
 图 6 展示了 4:2 结构化稀疏恢复过程，同时说明了掩码如何从每 4 个候选元素中恢复出 2 个有效元素。
 
-![图6：4:2 结构化稀疏恢复与 `vmadot.sp` 计算示意图。](images/ime_extension_png/fig5vmadotsp.png)
-*图 6. 在 VLEN=1024、λ=4、W=4、LMUL=1 条件下，`vmadot.sp v16, v2, v8, v0, i8` 的稀疏恢复与乘加流程示意。*
+![图6：4:2 结构化稀疏恢复与 `smt.vmadot.sp` 计算示意图。](images/ime_extension_png/fig5vmadotsp.png)
+*图 6. 在 VLEN=1024、λ=4、W=4、LMUL=1 条件下，`smt.vmadot.sp v16, v2, v8, v0, i8` 的稀疏恢复与乘加流程示意。*
 
 ### 5.3.2 指令成员
 
 |指令|汇编格式|数据类型路径|掩码寄存器|选择字段|tile|
 |---|---|---|---|---|---|
-|`vmadot.sp`|`vmadot.sp vd, vs1, vs2, v0/v1, imm2, i4`<br>`vmadot.sp vd, vs1, vs2, v0/v1, imm2, i8`|`Int4 × Int4 → Int32`<br>`Int8 × Int8 → Int32`|`V0` / `V1`|`imm2`|Int4：`8 × 64 × 8`；<br>Int8：`8 × 32 × 8`|
-|`vmadotu.sp`|`vmadotu.sp vd, vs1, vs2, v0/v1, imm2, i4`<br>`vmadotu.sp vd, vs1, vs2, v0/v1, imm2, i8`|`UInt4 × UInt4 → Int32`<br>`UInt8 × UInt8 → Int32`|同上|同上|同上|
-|`vmadotus.sp`|`vmadotus.sp vd, vs1, vs2, v0/v1, imm2, i4`<br>`vmadotus.sp vd, vs1, vs2, v0/v1, imm2, i8`|`UInt4 × Int4 → Int32`<br>`UInt8 × Int8 → Int32`|同上|同上|同上|
-|`vmadotsu.sp`|`vmadotsu.sp vd, vs1, vs2, v0/v1, imm2, i4`<br>`vmadotsu.sp vd, vs1, vs2, v0/v1, imm2, i8`|`Int4 × UInt4 → Int32`<br>`Int8 × UInt8 → Int32`|同上|同上|同上|
+|`smt.vmadot.sp`|`smt.vmadot.sp vd, vs1, vs2, v0/v1, imm2, i4`<br>`smt.vmadot.sp vd, vs1, vs2, v0/v1, imm2, i8`|`Int4 × Int4 → Int32`<br>`Int8 × Int8 → Int32`|`V0` / `V1`|`imm2`|Int4：`8 × 64 × 8`；<br>Int8：`8 × 32 × 8`|
+|`smt.vmadotu.sp`|`smt.vmadotu.sp vd, vs1, vs2, v0/v1, imm2, i4`<br>`smt.vmadotu.sp vd, vs1, vs2, v0/v1, imm2, i8`|`UInt4 × UInt4 → Int32`<br>`UInt8 × UInt8 → Int32`|同上|同上|同上|
+|`smt.vmadotus.sp`|`smt.vmadotus.sp vd, vs1, vs2, v0/v1, imm2, i4`<br>`smt.vmadotus.sp vd, vs1, vs2, v0/v1, imm2, i8`|`UInt4 × Int4 → Int32`<br>`UInt8 × Int8 → Int32`|同上|同上|同上|
+|`smt.vmadotsu.sp`|`smt.vmadotsu.sp vd, vs1, vs2, v0/v1, imm2, i4`<br>`smt.vmadotsu.sp vd, vs1, vs2, v0/v1, imm2, i8`|`Int4 × UInt4 → Int32`<br>`Int8 × UInt8 → Int32`|同上|同上|同上|
 
 ### 5.3.3 有效掩码值
 
@@ -804,7 +804,7 @@ int main()
 - `0b'0110`
 - `0b'0011`
 
-对除上述 6 种合法掩码值之外的所有取值，`vmadot.sp*` **shall** 不进行元素选取，并将该组恢复结果按零处理（即等效于 `vs1_tmp1 = 0` 且 `vs1_tmp2 = 0`）。
+对除上述 6 种合法掩码值之外的所有取值，`smt.vmadot.sp*` **shall** 不进行元素选取，并将该组恢复结果按零处理（即等效于 `vs1_tmp1 = 0` 且 `vs1_tmp2 = 0`）。
 
 ### 5.3.4 程序可见语义
 
@@ -938,7 +938,7 @@ for (p = 0; p < (2 * LMUL * VLEN / 32); p++) {
 *          [...                                                                            ]
 *          [...                                                                            ]
 *
-*  "vmadot.sp     v16, v2, v8, v0, 0, i8            \n\t"
+*  "smt.vmadot.sp     v16, v2, v8, v0, 0, i8            \n\t"
 *  MatrixA[8, 32]：    ×  Recover(压缩后的 MatrixBt[8, 16], v0[0 : 511])   =   MatrixC[8, 8]
 *     [0 1 ... 30 31]        [0 0 0 1 ... 14  0  0 15]           [2544, 2856, 3184, 3200, 3528, 3576, 4032, 4322,]
 *     [1 2 ... 31 32]        [1 0 2 0 ... 15  0 16  0]           [2664, 2992, 3336, 3368, 3712, 3776, 4248, 4544,]
@@ -962,7 +962,7 @@ void spgemm(const int8_t *feature, const int8_t *weight, const int8_t *sparse, i
         "vle8.v     v8, (%[B])              \n\t"
         "addi       %[B], %[B], 8*16        \n\t"
         "vle8.v     v0, (%[B_sp])           \n\t"
-        "vmadot.sp  v16, v2, v8, v0, 0, i8  \n\t"
+        "smt.vmadot.sp  v16, v2, v8, v0, 0, i8  \n\t"
         "vsetvli    t0, zero, e32, m2       \n\t"
         "vse32.v    v16, (%[C])             \n\t"
 
@@ -1027,7 +1027,7 @@ int main()
 }
 ```
 
-## 5.4 面向分块量化的整数矩阵乘法：`vmadot.hp*`
+## 5.4 面向分块量化的整数矩阵乘法：`smt.vmadot.hp*`
 
 ### 5.4.1 功能概述
 
@@ -1041,18 +1041,18 @@ $$
 
 图 7 给出了该路径的计算流程。
 
-![图7：分块量化整数矩阵乘法（`vmadot.hp`）示意图。](images/ime_extension_png/fig6vmadothp.png)
-*图 7. 在 VLEN=1024、λ=8、W=2、LMUL=1 条件下，`vmadot.hp v16, v2, v8, v0, i8` 的计算流程示意。*
+![图7：分块量化整数矩阵乘法（`smt.vmadot.hp`）示意图。](images/ime_extension_png/fig6vmadothp.png)
+*图 7. 在 VLEN=1024、λ=8、W=2、LMUL=1 条件下，`smt.vmadot.hp v16, v2, v8, v0, i8` 的计算流程示意。*
 
 ### 5.4.2 指令成员
 
 
 |指令|汇编格式|数据类型路径|scale 来源|选择字段|tile|
 |---|---|---|---|---|---|
-|`vmadot.hp`|`vmadot.hp vd, vs1, vs2, v0/v1, imm3, i4`<br>`vmadot.hp vd, vs1, vs2, v0/v1, imm3, i8`|`(Int4 × Int4) * FP16 → FP16`<br>`(Int4 × Int4) * BF16 → BF16`<br>`(Int8 × Int8) * FP16 → FP16`<br>`(Int8 × Int8) * BF16 → BF16`|`V0` / `V1`|`imm3`|Int4：`8 × 32 × 8`;<br>Int8：`8 × 16 × 8`|
-|`vmadotu.hp`|`vmadotu.hp vd, vs1, vs2, v0/v1, imm3, i4`<br>`vmadotu.hp vd, vs1, vs2, v0/v1, imm3, i8`|`(UInt4 × UInt4) * FP16 → FP16`<br>`(UInt4 × UInt4) * BF16 → BF16`<br>`(UInt8 × UInt8) * FP16 → FP16`<br>`(UInt8 × UInt8) * BF16 → BF16`|同上|同上|同上|
-|`vmadotus.hp`|`vmadotus.hp vd, vs1, vs2, v0/v1, imm3, i4`<br>`vmadotus.hp vd, vs1, vs2, v0/v1, imm3, i8`|`(UInt4 × Int4) * FP16 → FP16`<br>`(UInt4 × Int4) * BF16 → BF16`<br>`(UInt8 × Int8) * FP16 → FP16`<br>`(UInt8 × Int8) * BF16 → BF16`|同上|同上|同上|
-|`vmadotsu.hp`|`vmadotsu.hp vd, vs1, vs2, v0/v1, imm3, i4`<br>`vmadotsu.hp vd, vs1, vs2, v0/v1, imm3, i8`|`(Int4 × UInt4) * FP16 → FP16`<br>`(Int4 × UInt4) * BF16 → BF16`<br>`(Int8 × UInt8) * FP16 → FP16`<br>`(Int8 × UInt8) * BF16 → BF16`|同上|同上|同上|
+|`smt.vmadot.hp`|`smt.vmadot.hp vd, vs1, vs2, v0/v1, imm3, i4`<br>`smt.vmadot.hp vd, vs1, vs2, v0/v1, imm3, i8`|`(Int4 × Int4) * FP16 → FP16`<br>`(Int4 × Int4) * BF16 → BF16`<br>`(Int8 × Int8) * FP16 → FP16`<br>`(Int8 × Int8) * BF16 → BF16`|`V0` / `V1`|`imm3`|Int4：`8 × 32 × 8`;<br>Int8：`8 × 16 × 8`|
+|`smt.vmadotu.hp`|`smt.vmadotu.hp vd, vs1, vs2, v0/v1, imm3, i4`<br>`smt.vmadotu.hp vd, vs1, vs2, v0/v1, imm3, i8`|`(UInt4 × UInt4) * FP16 → FP16`<br>`(UInt4 × UInt4) * BF16 → BF16`<br>`(UInt8 × UInt8) * FP16 → FP16`<br>`(UInt8 × UInt8) * BF16 → BF16`|同上|同上|同上|
+|`smt.vmadotus.hp`|`smt.vmadotus.hp vd, vs1, vs2, v0/v1, imm3, i4`<br>`smt.vmadotus.hp vd, vs1, vs2, v0/v1, imm3, i8`|`(UInt4 × Int4) * FP16 → FP16`<br>`(UInt4 × Int4) * BF16 → BF16`<br>`(UInt8 × Int8) * FP16 → FP16`<br>`(UInt8 × Int8) * BF16 → BF16`|同上|同上|同上|
+|`smt.vmadotsu.hp`|`smt.vmadotsu.hp vd, vs1, vs2, v0/v1, imm3, i4`<br>`smt.vmadotsu.hp vd, vs1, vs2, v0/v1, imm3, i8`|`(Int4 × UInt4) * FP16 → FP16`<br>`(Int4 × UInt4) * BF16 → BF16`<br>`(Int8 × UInt8) * FP16 → FP16`<br>`(Int8 × UInt8) * BF16 → BF16`|同上|同上|同上|
 
 ### 5.4.3 程序可见语义
 
@@ -1162,7 +1162,7 @@ for (p = 0; p < (VLEN / 16); p++) {
 *          [...                                   ]
 *          [...                                   ]
 *
-*  "vmadot.hp     v16, v2, v8, v0, 0, i8            \n\t"
+*  "smt.vmadot.hp     v16, v2, v8, v0, 0, i8            \n\t"
 *  （MatrixA[8, 16] × MatrixBt[8, 16]）* v0[0 : 128]   =   MatrixC[8, 8]
 *     [0 1 ... 30 31]      [0 1 ... 30 31]   [1.0 ... 8.0]      [1240.0 2720.0 4440.0  6400.0  8600.0 11040.0 13720.0 16640.0]
 *     [1 2 ... 31 32]      [1 2 ... 31 32]                      [1360.0 2992.0 4896.0  7072.0  9520.0 12240.0 15232.0 18496.0]
@@ -1184,7 +1184,7 @@ void gemm(const int8_t *feature, const int8_t *weight, const _Float16 *scale, _F
         "vle8.v     v8, (%[B])              \n\t"
         "vsetvli    t0, zero, e16, m1       \n\t"
         "vle16.v    v0, (%[BSCL])           \n\t"
-        "vmadot.hp  v16, v2, v8, v0, 0, i8  \n\t"
+        "smt.vmadot.hp  v16, v2, v8, v0, 0, i8  \n\t"
         "vse16.v    v16, (%[C])             \n\t"
 
         :
@@ -1239,24 +1239,24 @@ int main()
 
 # 第 6 章 浮点矩阵乘法指令
 
-## 6.1 浮点矩阵乘法指令（基础路径）：`vfwmadot`
+## 6.1 浮点矩阵乘法指令（基础路径）：`smt.vfwmadot`
 
 ### 6.1.1 功能概述
 
-`vfwmadot` 执行 FP16 / BF16 输入、FP32 累加的浮点矩阵乘法：
+`smt.vfwmadot` 执行 FP16 / BF16 输入、FP32 累加的浮点矩阵乘法：
 
 $$
 C \leftarrow C + A \times B^T
 $$
 图 8 给出了该路径的计算流程。
 
-![图8：`vfwmadot` 浮点矩阵乘法示意图。](images/ime_extension_png/fig7fwmadot.png)
-*图 8. 在 VLEN=1024、λ=8、W=2、LMUL=1 条件下，`vfwmadot v16, v2, v8` 的计算流程示意。*
+![图8：`smt.vfwmadot` 浮点矩阵乘法示意图。](images/ime_extension_png/fig7fwmadot.png)
+*图 8. 在 VLEN=1024、λ=8、W=2、LMUL=1 条件下，`smt.vfwmadot v16, v2, v8` 的计算流程示意。*
 ### 6.1.2 指令成员
 
 |指令|汇编格式|数据类型路径|tile|控制|
 |---|---|---|---|---|
-|`vfwmadot`|`vfwmadot vd, vs1, vs2`|`FP16 × FP16 → FP32`<br>`BF16 × BF16 → FP32`|`8 × 8 × 8`|`MCPM.BF16`|
+|`smt.vfwmadot`|`smt.vfwmadot vd, vs1, vs2`|`FP16 × FP16 → FP32`<br>`BF16 × BF16 → FP32`|`8 × 8 × 8`|`MCPM.BF16`|
 
 ### 6.1.3 输入格式解释
 
@@ -1321,7 +1321,7 @@ for (p = 0; p < (2 * VLEN / 32); p++) {
 *          [6.0  7.0  8.0  9.0 10.0 11.0 12.0 13.0]
 *          [7.0  8.0  9.0 10.0 11.0 12.0 13.0 14.0]
 *
-*  "vfwmadot     v16, v2, v8           \n\t"
+*  "smt.vfwmadot     v16, v2, v8           \n\t"
 *   MatrixA[8, 8]   ×  MatrixBt[8, 8]   =   MatrixC[8, 8]
 *     [0.0 ...  7.0]      [0.0 ...  7.0]   =   [140.0 168.0 196.0 224.0 252.0 280.0 308.0 336.0]
 *     [1.0 ...  8.0]      [1.0 ...  8.0]       [168.0 204.0 240.0 276.0 312.0 348.0 384.0 420.0]
@@ -1341,7 +1341,7 @@ void gemm(const _Float16 *feature, const _Float16 *weight, float *output) {
         "vmv.v.i    v16, 0                   \n\t"
         "vle16.v    v2, (%[A])               \n\t"
         "vle16.v    v8, (%[B])               \n\t"
-        "vfwmadot   v16, v2, v8              \n\t"
+        "smt.vfwmadot   v16, v2, v8              \n\t"
         "vsetvli    t0, zero, e32, m2        \n\t"
         "vse32.v    v16, (%[C])              \n\t"
 
@@ -1395,22 +1395,22 @@ int main()
 
 ```
 
-## 6.2 面向卷积场景的浮点滑窗矩阵乘法：`vfwmadot1/2/3`
+## 6.2 面向卷积场景的浮点滑窗矩阵乘法：`smt.vfwmadot1/2/3`
 
 ### 6.2.1 功能概述
 
-`vfwmadot1`、`vfwmadot2`、`vfwmadot3` 与 `vfwmadot` 的计算类型相同，但在 `A` 的读取侧附加滑窗位移。
+`smt.vfwmadot1`、`smt.vfwmadot2`、`smt.vfwmadot3` 与 `smt.vfwmadot` 的计算类型相同，但在 `A` 的读取侧附加滑窗位移。
 
-![图9：浮点滑窗矩阵乘法（`vfwmadot1`）示意图。](images/ime_extension_png/fig8fwmadotslide.png)
-*图 9. 在 VLEN=1024、λ=8、W=2、LMUL=1 条件下，`vfwmadot1 v16, v2, v8` 的滑窗计算示意。*
+![图9：浮点滑窗矩阵乘法（`smt.vfwmadot1`）示意图。](images/ime_extension_png/fig8fwmadotslide.png)
+*图 9. 在 VLEN=1024、λ=8、W=2、LMUL=1 条件下，`smt.vfwmadot1 v16, v2, v8` 的滑窗计算示意。*
 
 ### 6.2.2 指令成员
 
 |指令|汇编格式|slide|数据类型路径|tile|控制|
 |---|---|---|---|---|---|
-|`vfwmadot1`|`vfwmadot1 vd, vs1, vs2`|1|`FP16 × FP16 → FP32`<br>`BF16 × BF16 → FP32`|`8 × 8 × 8`|`MCPM.BF16`|
-|`vfwmadot2`|`vfwmadot2 vd, vs1, vs2`|2|`FP16 × FP16 → FP32`<br>`BF16 × BF16 → FP32`|`8 × 8 × 8`|`MCPM.BF16`|
-|`vfwmadot3`|`vfwmadot3 vd, vs1, vs2`|3|`FP16 × FP16 → FP32`<br>`BF16 × BF16 → FP32`|`8 × 8 × 8`|`MCPM.BF16`|
+|`smt.vfwmadot1`|`smt.vfwmadot1 vd, vs1, vs2`|1|`FP16 × FP16 → FP32`<br>`BF16 × BF16 → FP32`|`8 × 8 × 8`|`MCPM.BF16`|
+|`smt.vfwmadot2`|`smt.vfwmadot2 vd, vs1, vs2`|2|`FP16 × FP16 → FP32`<br>`BF16 × BF16 → FP32`|`8 × 8 × 8`|`MCPM.BF16`|
+|`smt.vfwmadot3`|`smt.vfwmadot3 vd, vs1, vs2`|3|`FP16 × FP16 → FP32`<br>`BF16 × BF16 → FP32`|`8 × 8 × 8`|`MCPM.BF16`|
 
 ### 6.2.3 程序可见语义
 
@@ -1443,7 +1443,7 @@ for (p = 0; p < (2 * VLEN * LMUL / 32); p++) {
 - 目标累加数据类型为 FP32；
 - 根据指令名中的数字 `N`，确定参与运算的 `A` 矩阵滑动 `N` 行。
 
-### 6.2.6 与 `vfwmadot` 的区别
+### 6.2.6 与 `smt.vfwmadot` 的区别
 
 - 计算类型相同；
 - tile 形状相同；
@@ -1480,7 +1480,7 @@ for (p = 0; p < (2 * VLEN * LMUL / 32); p++) {
 *          [6.0  7.0  8.0  9.0 10.0 11.0 12.0 13.0]
 *          [7.0  8.0  9.0 10.0 11.0 12.0 13.0 14.0]
 *
-*  "vfwmadot     v16, v2, v8           \n\t"
+*  "smt.vfwmadot     v16, v2, v8           \n\t"
 *   MatrixA[8, 8]   *  MatrixBt[8, 8]   =   MatrixC[8, 8]
 *     [0.0 ...  7.0]      [0.0 ...  7.0]   =   [140.0 168.0 196.0 224.0 252.0 280.0 308.0 336.0]
 *     [1.0 ...  8.0]      [1.0 ...  8.0]       [168.0 204.0 240.0 276.0 312.0 348.0 384.0 420.0]
@@ -1491,7 +1491,7 @@ for (p = 0; p < (2 * VLEN * LMUL / 32); p++) {
 *     [6.0 ... 13.0]      [6.0 ... 13.0]       [308.0 384.0 460.0 536.0 612.0 688.0 764.0 840.0]
 *     [7.0 ... 14.0]      [7.0 ... 14.0]       [336.0 420.0 504.0 588.0 672.0 756.0 840.0 924.0]
 *
-*  "vfwmadot1    v16, v0, v8             \n\t"
+*  "smt.vfwmadot1    v16, v0, v8             \n\t"
 *  MatrixA[8, 8]   *  MatrixB[8, 8]  + MatrixC[8, 8]  =  MatrixC[8, 8]
 *     [1.0 ...  8.0]      [0.0 ...  7.0]   =   [308.0 372.0  436.0  500.0  564.0  628.0  692.0  756.0]
 *     [2.0 ...  9.0]      [1.0 ...  8.0]       [364.0 444.0  524.0  604.0  684.0  764.0  844.0  924.0]
@@ -1502,7 +1502,7 @@ for (p = 0; p < (2 * VLEN * LMUL / 32); p++) {
 *     [7.0 ... 14.0]      [6.0 ... 13.0]       [644.0 804.0  964.0 1124.0 1284.0 1444.0 1604.0 1764.0]
 *     [8.0 ... 15.0]      [7.0 ... 14.0]       [700.0 876.0 1052.0 1228.0 1404.0 1580.0 1756.0 1932.0]
 *
-*  "vfwmadot2     v16, v0, v8            \n\t"
+*  "smt.vfwmadot2     v16, v0, v8            \n\t"
 * MatrixA[8, 8]    *  MatrixB[8, 8]  + MatrixC[8, 8]   =   MatrixC[8, 8]
 *     [2.0 ...  9.0]      [0.0 ...  7.0]   =   [ 504.0      612.0      720.0      828.0    936.0  1044.0  1152.0  1260.0]
 *     [3.0 ... 10.0]      [1.0 ...  8.0]       [ 588.0      720.0      852.0      984.0   1116.0  1248.0  1380.0  1512.0]
@@ -1524,9 +1524,9 @@ void conv1d(const _Float16 *feature, const _Float16 *weight, float *output) {
         "vle16.v     v1, (%[A])              \n\t"
         "addi       %[A], %[A], 8*16         \n\t"
         "vle16.v     v8, (%[B])              \n\t"
-        "vfwmadot     v16, v0, v8            \n\t"
-        "vfwmadot1    v16, v0, v8            \n\t"
-        "vfwmadot2    v16, v0, v8            \n\t"
+        "smt.vfwmadot     v16, v0, v8            \n\t"
+        "smt.vfwmadot1    v16, v0, v8            \n\t"
+        "smt.vfwmadot2    v16, v0, v8            \n\t"
         "vsetvli    t0, zero, e32, m2        \n\t"
         "vse32.v    v16, (%[C])              \n\t"
         
@@ -1607,18 +1607,18 @@ int main()
 
 |指令|汇编格式|功能概述|
 |---|---|---|
-|`vpack.vv`|`vpack.vv vd, vs1, vs2, imm2`|交织两个源流|
-|`vupack.vv`|`vupack.vv vd, vs1, vs2, imm2`|对交织流做解交织|
-|`vnpack.vv`|`vnpack.vv vd, vs1, vs2, imm2`|缩位后交织|
-|`vnspack.vv`|`vnspack.vv vd, vs1, vs2, imm2`|饱和缩位后交织|
-|`vnpack4.vv`|`vnpack4.vv vd, vs1, vs2, imm2`|4-bit 缩位打包|
-|`vnspack4.vv`|`vnspack4.vv vd, vs1, vs2, imm2`|4-bit 饱和缩位打包|
+|`smt.vpack.vv`|`smt.vpack.vv vd, vs1, vs2, imm2`|交织两个源流|
+|`smt.vupack.vv`|`smt.vupack.vv vd, vs1, vs2, imm2`|对交织流做解交织|
+|`smt.vnpack.vv`|`smt.vnpack.vv vd, vs1, vs2, imm2`|缩位后交织|
+|`smt.vnspack.vv`|`smt.vnspack.vv vd, vs1, vs2, imm2`|饱和缩位后交织|
+|`smt.vnpack4.vv`|`smt.vnpack4.vv vd, vs1, vs2, imm2`|4-bit 缩位打包|
+|`smt.vnspack4.vv`|`smt.vnspack4.vv vd, vs1, vs2, imm2`|4-bit 饱和缩位打包|
 
 ## 7.2.1 `imm2` 与 `pack_len` 对照
 
 数据布局变换类指令中的 `imm2` 用于选择交织或打包粒度，但不同指令族对 `imm2` 的解释不同。
 
-### `vpack.vv` / `vupack.vv`
+### `smt.vpack.vv` / `smt.vupack.vv`
 
 |`imm2`|`pack_len`|说明|
 |---|---|---|
@@ -1627,7 +1627,7 @@ int main()
 |`10`|256 bit|按 256-bit 块交织 / 解交织|
 |`11`|512 bit|按 512-bit 块交织 / 解交织|
 
-### `vnpack.vv` / `vnspack.vv` / `vnpack4.vv` / `vnspack4.vv`
+### `smt.vnpack.vv` / `smt.vnspack.vv` / `smt.vnpack4.vv` / `smt.vnspack4.vv`
 
 |`imm2`|`pack_len`|说明|
 |---|---|---|
@@ -1654,8 +1654,8 @@ CLIP_EEW(x) = x & ((1 << EEW) - 1)
 
 例如：
 
-- 对 `vnpack.vv` / `vnspack.vv`，目标位宽为原始输入位宽的一半；
-- 对 `vnpack4.vv` / `vnspack4.vv`，目标位宽固定为 4 bit。
+- 对 `smt.vnpack.vv` / `smt.vnspack.vv`，目标位宽为原始输入位宽的一半；
+- 对 `smt.vnpack4.vv` / `smt.vnspack4.vv`，目标位宽固定为 4 bit。
 
 ### `SCLIP(x)`
 
@@ -1672,9 +1672,9 @@ SCLIP_EEW(x) =
 
 若对应实现将源元素按无符号解释，则应采用无符号饱和截断规则；本文正文中的 `SCLIP()` 仅用于表达“先饱和、后缩位”的语义。
 
-## 7.3 `vpack.vv`
+## 7.3 `smt.vpack.vv`
 
-`vpack.vv` 将 `vs1` 与 `vs2` 按指定 `pack_len` 交织写入目标：
+`smt.vpack.vv` 将 `vs1` 与 `vs2` 按指定 `pack_len` 交织写入目标：
 
 ```c
 if (pack_len > VLEN * LMUL) {
@@ -1717,15 +1717,15 @@ add     a0, a0, matrix_row_stride
 vle8.v  v3, (a0)
 add     a0, a0, matrix_row_stride
 vsetvli  t0, x0, e64, m1, tu, mu
-vpack.vv v8, v0, v1, 0             // abab
-vpack.vv v10, v2, v3, 0            // cdcd
-vpack.vv v4, v8, v10, 0            // abcd
-vpack.vv v6, v9, v11, 0            // abcd
+smt.vpack.vv v8, v0, v1, 0             // abab
+smt.vpack.vv v10, v2, v3, 0            // cdcd
+smt.vpack.vv v4, v8, v10, 0            // abcd
+smt.vpack.vv v6, v9, v11, 0            // abcd
 ```
 
-## 7.4 `vupack.vv`
+## 7.4 `smt.vupack.vv`
 
-`vupack.vv` 对交织布局进行逆变换，将流拆分回扩展后的目标布局：
+`smt.vupack.vv` 对交织布局进行逆变换，将流拆分回扩展后的目标布局：
 
 ```c
 if (pack_len > VLEN * LMUL) {
@@ -1751,13 +1751,13 @@ for (p = 0; p < (VLEN * LMUL / (pack_len * 2)); p++) {
 }
 ```
 
-## 7.5 `vnpack.vv` 与 `vnspack.vv`
+## 7.5 `smt.vnpack.vv` 与 `smt.vnspack.vv`
 
 这两条指令均将输入元素缩位到原位宽的一半，然后按 `pack_len` 交织写入目标。
 
-### 7.5.1 `vnpack.vv`
+### 7.5.1 `smt.vnpack.vv`
 
-`vnpack.vv` 先截取输入低半位宽，再执行交织：
+`smt.vnpack.vv` 先截取输入低半位宽，再执行交织：
 
 ```c
 if (pack_len > VLEN * LMUL) {
@@ -1784,9 +1784,9 @@ for (p = 0; p < (VLEN * LMUL / pack_len); p++) {
 }
 ```
 
-### 7.5.2 `vnspack.vv`
+### 7.5.2 `smt.vnspack.vv`
 
-`vnspack.vv` 在交织前先做饱和缩位：
+`smt.vnspack.vv` 在交织前先做饱和缩位：
 
 ```c
 if (pack_len > VLEN * LMUL) {
@@ -1813,16 +1813,16 @@ for (p = 0; p < (VLEN * LMUL / pack_len); p++) {
 }
 ```
 
-## 7.6 `vnpack4.vv` 与 `vnspack4.vv`
+## 7.6 `smt.vnpack4.vv` 与 `smt.vnspack4.vv`
 
-- `vnpack4.vv`：面向 4-bit 输出的 nibble 缩位打包；
-- `vnspack4.vv`：面向 4-bit 输出的 nibble 饱和缩位打包。
+- `smt.vnpack4.vv`：面向 4-bit 输出的 nibble 缩位打包；
+- `smt.vnspack4.vv`：面向 4-bit 输出的 nibble 饱和缩位打包。
 
-它们可理解为 `vnpack.vv` / `vnspack.vv` 的半字节对应形式，用于 Int4 等低位宽数据准备。
+它们可理解为 `smt.vnpack.vv` / `smt.vnspack.vv` 的半字节对应形式，用于 Int4 等低位宽数据准备。
 
-### 7.6.1 `vnpack4.vv`
+### 7.6.1 `smt.vnpack4.vv`
 
-`vnpack4.vv` 先将输入元素截断到 4 bit，再按 `pack_len` 为粒度交织，并以每两个 4-bit 元素合成一个字节的方式写入目标。
+`smt.vnpack4.vv` 先将输入元素截断到 4 bit，再按 `pack_len` 为粒度交织，并以每两个 4-bit 元素合成一个字节的方式写入目标。
 
 ```c
 if (pack_len > VLEN * LMUL) {
@@ -1854,9 +1854,9 @@ for (p = 0; p < (VLEN * LMUL / pack_len); p++) {
 }
 ```
 
-### 7.6.2 `vnspack4.vv`
+### 7.6.2 `smt.vnspack4.vv`
 
-`vnspack4.vv` 与 `vnpack4.vv` 的流程相同，但在写入前对每个源元素先执行 4-bit 饱和缩位：
+`smt.vnspack4.vv` 与 `smt.vnpack4.vv` 的流程相同，但在写入前对每个源元素先执行 4-bit 饱和缩位：
 
 ```c
 if (pack_len > VLEN * LMUL) {
@@ -1891,7 +1891,7 @@ for (p = 0; p < (VLEN * LMUL / pack_len); p++) {
 ### 7.6.3 补充说明
 
 - 上述 `CLIP_4()` 与 `SCLIP_4()` 分别表示针对 4-bit 目标位宽的直接截断与饱和截断；
-- `vnpack4.vv` / `vnspack4.vv` 的 nibble 顺序与字节内高低半字节定义，系依据现有实现资料整理；若具体实现另有固定约定，应以实现定义为准；
+- `smt.vnpack4.vv` / `smt.vnspack4.vv` 的 nibble 顺序与字节内高低半字节定义，系依据现有实现资料整理；若具体实现另有固定约定，应以实现定义为准；
 - 若实现对字节内 nibble 排布另有固定约定，应以实现原始定义为准。
 
 ## 7.7 数据布局变换指令的使用定位
@@ -1906,7 +1906,7 @@ for (p = 0; p < (VLEN * LMUL / pack_len); p++) {
 
 本章对 SpacemiT 实现资料中的编码信息进行了重组，以便查阅；若位级细节与原始定义存在冲突，应以对应实现的原始定义为准。
 
-## 8.1 整数矩阵乘法指令（基础路径）：`vmadot*`
+## 8.1 整数矩阵乘法指令（基础路径）：`smt.vmadot*`
 
 寄存器约束：
 
@@ -1914,10 +1914,10 @@ for (p = 0; p < (VLEN * LMUL / pack_len); p++) {
 - `Vd`：任意编号 `0`～`30` 且为偶数编号的向量寄存器。
 
 - `funct3[14:12]` 选择 `signedness`：
-  - `000`：`vmadotu`
-  - `001`：`vmadotus`
-  - `010`：`vmadotsu`
-  - `011`：`vmadot`
+  - `000`：`smt.vmadotu`
+  - `001`：`smt.vmadotus`
+  - `010`：`smt.vmadotsu`
+  - `011`：`smt.vmadot`
 - `DT[30:29]` 选择数据类型：
   - `10`：Int4
   - `11`：Int8
@@ -1928,17 +1928,17 @@ for (p = 0; p < (VLEN * LMUL / pack_len); p++) {
 
 |助记符|`[31]`|`[30:29]`|`[28:26]`|`[25]`|`[24:20]`|`[19:15]`|`[14:12]`|`[11:7]`|`[6:0]`|
 |---|---|---|---|---|---|---|---|---|---|
-|`vmadotu`|`1`|`DT`|`000`|`1`|`vs2`|`vs1`|`000`|`{vd[4:1],0}`|`0101011`|
-|`vmadotus`|`1`|`DT`|`000`|`1`|`vs2`|`vs1`|`001`|`{vd[4:1],0}`|`0101011`|
-|`vmadotsu`|`1`|`DT`|`000`|`1`|`vs2`|`vs1`|`010`|`{vd[4:1],0}`|`0101011`|
-|`vmadot`|`1`|`DT`|`000`|`1`|`vs2`|`vs1`|`011`|`{vd[4:1],0}`|`0101011`|
+|`smt.vmadotu`|`1`|`DT`|`000`|`1`|`vs2`|`vs1`|`000`|`{vd[4:1],0}`|`0101011`|
+|`smt.vmadotus`|`1`|`DT`|`000`|`1`|`vs2`|`vs1`|`001`|`{vd[4:1],0}`|`0101011`|
+|`smt.vmadotsu`|`1`|`DT`|`000`|`1`|`vs2`|`vs1`|`010`|`{vd[4:1],0}`|`0101011`|
+|`smt.vmadot`|`1`|`DT`|`000`|`1`|`vs2`|`vs1`|`011`|`{vd[4:1],0}`|`0101011`|
 
 其中：
 
 - `DT[30:29] = 10/11` 分别表示 Int4 / Int8；
 - `Vd` 仅限使用 0–30 范围内的偶数向量寄存器，因此其最低有效位恒为 0，在编码中表示为 `{vd[4:1],0}`。
 
-## 8.2 面向卷积场景的整数滑窗矩阵乘法：`vmadot1/2/3*`
+## 8.2 面向卷积场景的整数滑窗矩阵乘法：`smt.vmadot1/2/3*`
 
 寄存器约束：
 
@@ -1965,26 +1965,26 @@ for (p = 0; p < (VLEN * LMUL / pack_len); p++) {
 
 |助记符|`[31]`|`[30:29]`|`[28:26]`|`[25]`|`[24:20]`|`[19:15]`|`[14:12]`|`[11:7]`|`[6:0]`|
 |---|---|---|---|---|---|---|---|---|---|
-|`vmadot1u`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`000`|`{vd[4:1],0}`|`0101011`|
-|`vmadot1us`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`001`|`{vd[4:1],0}`|`0101011`|
-|`vmadot1su`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`010`|`{vd[4:1],0}`|`0101011`|
-|`vmadot1`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`011`|`{vd[4:1],0}`|`0101011`|
-|`vmadot2u`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`100`|`{vd[4:1],0}`|`0101011`|
-|`vmadot2us`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`101`|`{vd[4:1],0}`|`0101011`|
-|`vmadot2su`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`110`|`{vd[4:1],0}`|`0101011`|
-|`vmadot2`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`111`|`{vd[4:1],0}`|`0101011`|
-|`vmadot3u`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],1}`|`000`|`{vd[4:1],0}`|`0101011`|
-|`vmadot3us`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],1}`|`001`|`{vd[4:1],0}`|`0101011`|
-|`vmadot3su`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],1}`|`010`|`{vd[4:1],0}`|`0101011`|
-|`vmadot3`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],1}`|`011`|`{vd[4:1],0}`|`0101011`|
+|`smt.vmadot1u`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`000`|`{vd[4:1],0}`|`0101011`|
+|`smt.vmadot1us`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`001`|`{vd[4:1],0}`|`0101011`|
+|`smt.vmadot1su`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`010`|`{vd[4:1],0}`|`0101011`|
+|`smt.vmadot1`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`011`|`{vd[4:1],0}`|`0101011`|
+|`smt.vmadot2u`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`100`|`{vd[4:1],0}`|`0101011`|
+|`smt.vmadot2us`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`101`|`{vd[4:1],0}`|`0101011`|
+|`smt.vmadot2su`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`110`|`{vd[4:1],0}`|`0101011`|
+|`smt.vmadot2`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],0}`|`111`|`{vd[4:1],0}`|`0101011`|
+|`smt.vmadot3u`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],1}`|`000`|`{vd[4:1],0}`|`0101011`|
+|`smt.vmadot3us`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],1}`|`001`|`{vd[4:1],0}`|`0101011`|
+|`smt.vmadot3su`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],1}`|`010`|`{vd[4:1],0}`|`0101011`|
+|`smt.vmadot3`|`1`|`DT`|`001`|`1`|`vs2`|`{vs1[4:1],1}`|`011`|`{vd[4:1],0}`|`0101011`|
 
 其中：
 
 - `DT[30:29]` 当前仅定义 `11`，即 Int8；
 - `slide[15:14]` 由位 `[15]` 与 `[14:12]` 中的高位共同编码，其中 `[15]` 复用了 `Vs1` 因偶数寄存器约束而省出的最低位编码空间；
-- 由于 `Vs1` 和 `Vd` 均被约束为偶数编号寄存器，其最低有效位恒为 0，因此在上表中分别表示为 {vs1[4:1],0} 和 {vd[4:1],0}。特别地，`vmadot3u` 指令是一个例外：该指令中 `Vs1` 的最低有效位编码为 1。
+- 由于 `Vs1` 和 `Vd` 均被约束为偶数编号寄存器，其最低有效位恒为 0，因此在上表中分别表示为 {vs1[4:1],0} 和 {vd[4:1],0}。特别地，`smt.vmadot3u` 指令是一个例外：该指令中 `Vs1` 的最低有效位编码为 1。
 
-## 8.3 4:2 结构化稀疏整数矩阵乘法：`vmadot.sp*`
+## 8.3 4:2 结构化稀疏整数矩阵乘法：`smt.vmadot.sp*`
 
 寄存器约束：
 
@@ -2014,10 +2014,10 @@ for (p = 0; p < (VLEN * LMUL / pack_len); p++) {
 
 |助记符|`[31]`|`[30:29]`|`[28:26]`|`[25]`|`[24:20]`|`[19:16]`|`[15]`|`[14:12]`|`[11:8]`|`[7]`|`[6:0]`|
 |---|---|---|---|---|---|---|---|---|---|---|---|
-|`vmadotu.sp`|`1`|`DT`|`010`|`v`|`vs2`|`vs1[4:1]`|`imm2[1]`|`000`|`vd[4:1]`|`imm2[0]`|`0101011`|
-|`vmadotus.sp`|`1`|`DT`|`010`|`v`|`vs2`|`vs1[4:1]`|`imm2[1]`|`001`|`vd[4:1]`|`imm2[0]`|`0101011`|
-|`vmadotsu.sp`|`1`|`DT`|`010`|`v`|`vs2`|`vs1[4:1]`|`imm2[1]`|`010`|`vd[4:1]`|`imm2[0]`|`0101011`|
-|`vmadot.sp`|`1`|`DT`|`010`|`v`|`vs2`|`vs1[4:1]`|`imm2[1]`|`011`|`vd[4:1]`|`imm2[0]`|`0101011`|
+|`smt.vmadotu.sp`|`1`|`DT`|`010`|`v`|`vs2`|`vs1[4:1]`|`imm2[1]`|`000`|`vd[4:1]`|`imm2[0]`|`0101011`|
+|`smt.vmadotus.sp`|`1`|`DT`|`010`|`v`|`vs2`|`vs1[4:1]`|`imm2[1]`|`001`|`vd[4:1]`|`imm2[0]`|`0101011`|
+|`smt.vmadotsu.sp`|`1`|`DT`|`010`|`v`|`vs2`|`vs1[4:1]`|`imm2[1]`|`010`|`vd[4:1]`|`imm2[0]`|`0101011`|
+|`smt.vmadot.sp`|`1`|`DT`|`010`|`v`|`vs2`|`vs1[4:1]`|`imm2[1]`|`011`|`vd[4:1]`|`imm2[0]`|`0101011`|
 
 其中：
 
@@ -2026,7 +2026,7 @@ for (p = 0; p < (VLEN * LMUL / pack_len); p++) {
 - `imm2` 由离散位 `[15]` 与 `[7]` 共同组成，这两位分别复用了 `Vs1` 与 `Vd` 因偶数寄存器约束而省出的最低位编码空间；
 - 由于 `Vs1` 和 `Vd` 受偶数寄存器约束，其 `bit 0` 一定为 0，故表中将 `Vs1` 与 `Vd` 字段分别写为 `{vs1[4:1],0}` 和 `{vd[4:1],0}`。
 
-## 8.4 面向分块量化的整数矩阵乘法：`vmadot.hp*`
+## 8.4 面向分块量化的整数矩阵乘法：`smt.vmadot.hp*`
 
 寄存器约束：
 
@@ -2050,20 +2050,20 @@ for (p = 0; p < (VLEN * LMUL / pack_len); p++) {
 
 对应 `funct3[28:26]`：
 
-- `011`：`vmadotu.hp`
-- `110`：`vmadotus.hp`
-- `101`：`vmadotsu.hp`
-- `100`：`vmadot.hp`
+- `011`：`smt.vmadotu.hp`
+- `110`：`smt.vmadotus.hp`
+- `101`：`smt.vmadotsu.hp`
+- `100`：`smt.vmadot.hp`
 - 其他：保留
 
 正式编码如下：
 
 |助记符|`[31]`|`[30:29]`|`[28:26]`|`[25]`|`[24:20]`|`[19:15]`|`[14:12]`|`[11:7]`|`[6:0]`|
 |---|---|---|---|---|---|---|---|---|---|
-|`vmadotu.hp`|`1`|`DT`|`011`|`vscale`|`vs2`|`vs1`|`imm3`|`vd`|`0101011`|
-|`vmadotus.hp`|`1`|`DT`|`110`|`vscale`|`vs2`|`vs1`|`imm3`|`vd`|`0101011`|
-|`vmadotsu.hp`|`1`|`DT`|`101`|`vscale`|`vs2`|`vs1`|`imm3`|`vd`|`0101011`|
-|`vmadot.hp`|`1`|`DT`|`100`|`vscale`|`vs2`|`vs1`|`imm3`|`vd`|`0101011`|
+|`smt.vmadotu.hp`|`1`|`DT`|`011`|`vscale`|`vs2`|`vs1`|`imm3`|`vd`|`0101011`|
+|`smt.vmadotus.hp`|`1`|`DT`|`110`|`vscale`|`vs2`|`vs1`|`imm3`|`vd`|`0101011`|
+|`smt.vmadotsu.hp`|`1`|`DT`|`101`|`vscale`|`vs2`|`vs1`|`imm3`|`vd`|`0101011`|
+|`smt.vmadot.hp`|`1`|`DT`|`100`|`vscale`|`vs2`|`vs1`|`imm3`|`vd`|`0101011`|
 
 其中：
 
@@ -2073,30 +2073,30 @@ for (p = 0; p < (VLEN * LMUL / pack_len); p++) {
 
 ## 8.5 浮点类
 
-- `vfwmadot`：`Vs1`、`Vs2` 可为任意编号 `0`～`31` 的向量寄存器，`Vd` 为任意编号 `0`～`30` 且为偶数编号的向量寄存器；
-- `vfwmadot1/2/3`：`Vs2` 可为任意编号 `0`～`31` 的向量寄存器，`Vs1`和`Vd` 为任意编号 `0`～`30` 且为偶数编号的向量寄存器；
-- `vfwmadot1/2/3` 通过 `funct3[14:12]` 直接区分：`101`→`vfwmadot1`，`110`→`vfwmadot2`，`111`→`vfwmadot3`；
-- `vfwmadot` 与 `vfwmadot1/2/3` 的 FP16 / BF16 格式由 `MCPM.BF16` 控制；
+- `smt.vfwmadot`：`Vs1`、`Vs2` 可为任意编号 `0`～`31` 的向量寄存器，`Vd` 为任意编号 `0`～`30` 且为偶数编号的向量寄存器；
+- `smt.vfwmadot1/2/3`：`Vs2` 可为任意编号 `0`～`31` 的向量寄存器，`Vs1`和`Vd` 为任意编号 `0`～`30` 且为偶数编号的向量寄存器；
+- `smt.vfwmadot1/2/3` 通过 `funct3[14:12]` 直接区分：`101`→`smt.vfwmadot1`，`110`→`smt.vfwmadot2`，`111`→`smt.vfwmadot3`；
+- `smt.vfwmadot` 与 `smt.vfwmadot1/2/3` 的 FP16 / BF16 格式由 `MCPM.BF16` 控制；
 - 本指令集不定义同一条浮点矩阵指令中的混合 FP16 / BF16 输入编码。
 
-### 8.5.1 `vfwmadot`
+### 8.5.1 `smt.vfwmadot`
 
 |助记符|`[31:25]`|`[24:20]`|`[19:15]`|`[14:12]`|`[11:7]`|`[6:0]`|
 |---|---|---|---|---|---|---|
-|`vfwmadot`|`1001111`|`vs2`|`vs1`|`100`|`{vd[4:1],0}`|`0101011`|
+|`smt.vfwmadot`|`1001111`|`vs2`|`vs1`|`100`|`{vd[4:1],0}`|`0101011`|
 
 其中：
 
-- `[14:12] = 100` 对应 `vfwmadot`；
+- `[14:12] = 100` 对应 `smt.vfwmadot`；
 - `Vd` 受偶数寄存器约束，其 `bit 0` 一定为 0，故表中将 `Vd` 字段写为 `{vd[4:1],0}`。
 
-### 8.5.2 `vfwmadot1/2/3`
+### 8.5.2 `smt.vfwmadot1/2/3`
 
 |助记符|`[31:25]`|`[24:20]`|`[19:15]`|`[14:12]`|`[11:7]`|`[6:0]`|
 |---|---|---|---|---|---|---|
-|`vfwmadot1`|`1001111`|`vs2`|`{vs1[4:1],0}`|`101`|`{vd[4:1],0}`|`0101011`|
-|`vfwmadot2`|`1001111`|`vs2`|`{vs1[4:1],0}`|`110`|`{vd[4:1],0}`|`0101011`|
-|`vfwmadot3`|`1001111`|`vs2`|`{vs1[4:1],0}`|`111`|`{vd[4:1],0}`|`0101011`|
+|`smt.vfwmadot1`|`1001111`|`vs2`|`{vs1[4:1],0}`|`101`|`{vd[4:1],0}`|`0101011`|
+|`smt.vfwmadot2`|`1001111`|`vs2`|`{vs1[4:1],0}`|`110`|`{vd[4:1],0}`|`0101011`|
+|`smt.vfwmadot3`|`1001111`|`vs2`|`{vs1[4:1],0}`|`111`|`{vd[4:1],0}`|`0101011`|
 
 其中：
 
@@ -2105,7 +2105,7 @@ for (p = 0; p < (VLEN * LMUL / pack_len); p++) {
 
 ## 8.6 数据布局变换指令编码说明
 
-### 8.6.1 `vpack.vv` / `vupack.vv`
+### 8.6.1 `smt.vpack.vv` / `smt.vupack.vv`
 
 寄存器约束：
 
@@ -2123,17 +2123,17 @@ for (p = 0; p < (VLEN * LMUL / pack_len); p++) {
 
 |助记符|`[31:26]`|`[25]`|`[24:20]`|`[19:15]`|`[14]`|`[13:12]`|`[11:7]`|`[6:0]`|
 |---|---|---|---|---|---|---|---|---|
-|`vpack.vv`|`011001`|`1`|`vs2`|`vs1`|`0`|`imm2`|`{vd[4:1],0}`|`0101011`|
-|`vupack.vv`|`011001`|`1`|`vs2`|`vs1`|`1`|`imm2`|`{vd[4:1],0}`|`0101011`|
+|`smt.vpack.vv`|`011001`|`1`|`vs2`|`vs1`|`0`|`imm2`|`{vd[4:1],0}`|`0101011`|
+|`smt.vupack.vv`|`011001`|`1`|`vs2`|`vs1`|`1`|`imm2`|`{vd[4:1],0}`|`0101011`|
 
 其中：
 
-- `[14]` 区分 `vpack.vv` 与 `vupack.vv`；
+- `[14]` 区分 `smt.vpack.vv` 与 `smt.vupack.vv`；
 - `[13:12]` 为数据交织粒度选择字段；
 - `imm2` 直接编码在字段 `[13:12]` 中，不复用因偶数寄存器约束而省出的最低位编码空间；
 - `Vd` 受偶数寄存器约束，其 `bit 0` 一定为 0，故表中将 `Vd` 字段写为 `{vd[4:1],0}`。
 
-### 8.6.2 `vnpack.vv` / `vnspack.vv` / `vnpack4.vv` / `vnspack4.vv`
+### 8.6.2 `smt.vnpack.vv` / `smt.vnspack.vv` / `smt.vnpack4.vv` / `smt.vnspack4.vv`
 
 寄存器约束：
 
@@ -2150,10 +2150,10 @@ for (p = 0; p < (VLEN * LMUL / pack_len); p++) {
 
 |助记符|`[31:26]`|`[25]`|`[24:20]`|`[19:15]`|`[14]`|`[13:12]`|`[11:7]`|`[6:0]`|
 |---|---|---|---|---|---|---|---|---|
-|`vnpack.vv`|`011000`|`1`|`vs2`|`vs1`|`0`|`imm2`|`vd`|`0101011`|
-|`vnspack.vv`|`011000`|`1`|`vs2`|`vs1`|`1`|`imm2`|`vd`|`0101011`|
-|`vnpack4.vv`|`010000`|`1`|`vs2`|`vs1`|`0`|`imm2`|`vd`|`0101011`|
-|`vnspack4.vv`|`010000`|`1`|`vs2`|`vs1`|`1`|`imm2`|`vd`|`0101011`|
+|`smt.vnpack.vv`|`011000`|`1`|`vs2`|`vs1`|`0`|`imm2`|`vd`|`0101011`|
+|`smt.vnspack.vv`|`011000`|`1`|`vs2`|`vs1`|`1`|`imm2`|`vd`|`0101011`|
+|`smt.vnpack4.vv`|`010000`|`1`|`vs2`|`vs1`|`0`|`imm2`|`vd`|`0101011`|
+|`smt.vnspack4.vv`|`010000`|`1`|`vs2`|`vs1`|`1`|`imm2`|`vd`|`0101011`|
 
 其中：
 

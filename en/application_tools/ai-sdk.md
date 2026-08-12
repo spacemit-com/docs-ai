@@ -10,9 +10,10 @@ SpacemiT AI SDK is an AI application development kit designed for SpacemiT K-ser
 
 - **Computer Vision (`vision`)**: detection, classification, segmentation, tracking, face recognition, pose estimation, and related capabilities. Included examples cover `resnet`, `yolov8`, `yolov11`, `yolov8_seg`, `yolov8_pose`, `bytetrack`, `ocsort`, `yolov5-face`, `arcface`, and `emotion`.
 - **Speech**: `VAD` (voice activity detection), `ASR` (automatic speech recognition), `TTS` (text-to-speech), and `Voiceprint` (speaker recognition), with runnable demos for single-module validation and integration testing.
-- **Natural Language (`LLM`)**: OpenAI-compatible interface integration such as `llama-server`, with examples including `llm_chat` for rapid evaluation and integration.
+- **Natural Language (`LLM`)**: OpenAI-compatible interface integration such as `llama-server`, with examples such as `llm_chat` for rapid evaluation and integration.
+- **Vision Language Model (`VLM`)**: designed for SpacemiT K-series RISC-V platforms, supporting image captioning, visual question answering, and multi-turn image-text dialogue. It uses the `llama-server` HTTP API with TCM hardware acceleration and provides C++, Python, and HTTP integration paths, covering models such as FastVLM-MM and Qwen3.5.
 - **Reinforcement Learning (`RL`)**: robotic policy inference capabilities including YAML configuration parsing, observation assembly, ONNX inference, and action mapping.
-- **Unified Service Access (`gateway`)**: a unified HTTP/WS API layer built on capabilities such as ASR, TTS, VAD, Vision, and LLM, with model management and a web console.
+- **Unified Service Access (`gateway`)**: a unified HTTP/WS API layer built on top of ASR, TTS, VAD, Vision, LLM, and VLM capabilities, with model management and a web console.
 
 ![SpacemiT AI SDK architecture](../static/ai-sdk-arch.png)
 
@@ -81,6 +82,7 @@ cd vision && mm
 cd tts && mm
 cd vad && mm
 cd llm && mm
+cd vlm && mm
 cd voiceprint && mm
 cd rl && mm
 ```
@@ -100,10 +102,10 @@ gateway is the unified service access layer. It includes the Python service, HTT
 bash vision/scripts/download_all_models.sh
 ```
 
-**Step 2：Download source files (image and video)**
+**Step 2: Download assets (images and videos)**
 
 ```bash
-# Download image and video assets used by the examples (under `~/.cache/models/vision/`)
+# Download image and video assets used by the examples (under `~/.cache/assets/`)
 bash vision/scripts/download_assets.sh
 ```
 
@@ -156,16 +158,133 @@ For optional parameters such as `--image`, `--video`, `--use-camera`, `--output`
 mkdir -p ~/.cache/models/assets/audio
 cd ~/.cache/models/assets/audio
 wget https://archive.spacemit.com/spacemit-ai/model_zoo/assets/audio/001_zh_daily_weather.wav
+wget https://archive.spacemit.com/spacemit-ai/model_zoo/assets/audio/024_ja_funasr_sample.mp3
 ```
 
 Additional audio assets are available in the [audio asset directory](https://archive.spacemit.com/spacemit-ai/model_zoo/assets/audio).
 
-**Step 2: Run the example**
+**Step 2: Run the default SenseVoice example**
 
 ```bash
 # Recognize a WAV file (example)
 asr_file_demo ~/.cache/models/assets/audio/001_zh_daily_weather.wav
 ```
+
+**Qwen3-ASR 1.7B**
+
+Install `llama-server` and download the model:
+
+```bash
+sudo apt install llama.cpp-tools-spacemit
+
+mkdir -p ~/.cache/models/asr
+cd ~/.cache/models/asr
+wget https://archive.spacemit.com/spacemit-ai/model_zoo/asr/qwen3-asr-1.7B-dynq-q40.tar.gz
+tar -xzf qwen3-asr-1.7B-dynq-q40.tar.gz
+```
+
+Start the service:
+
+```bash
+MODEL_DIR=~/.cache/models/asr/qwen3-asr-1.7B-dynq-q40
+
+SPACEMIT_EP_INTRA_THREAD_NUM=4 llama-server \
+    -m "$MODEL_DIR/Qwen3-ASR-1.7B-text-q40.gguf" \
+    --media-backend smt \
+    --smt-config-dir "$MODEL_DIR" \
+    --alias qwen3-asr \
+    --host 127.0.0.1 --port 8063 \
+    -t 8 -tb 8 -c 4096
+```
+
+Run the client in another terminal:
+
+```bash
+asr_file_demo ~/.cache/models/assets/audio/001_zh_daily_weather.wav \
+    --engine qwen3-asr \
+    --endpoint http://127.0.0.1:8063/v1/chat/completions
+```
+
+**Fun-ASR Nano**
+
+Only one model service can use the port at a time. Stop the Qwen3-ASR service,
+then download and start Fun-ASR:
+
+```bash
+cd ~/.cache/models/asr
+wget https://archive.spacemit.com/spacemit-ai/model_zoo/asr/fun-asr-nano-2512-qq-q4km.tar.gz
+tar -xzf fun-asr-nano-2512-qq-q4km.tar.gz
+
+MODEL_DIR=~/.cache/models/asr/fun-asr-nano-2512-qq-q4km
+
+SPACEMIT_EP_INTRA_THREAD_NUM=4 llama-server \
+    -m "$MODEL_DIR/qwen3-0.6b-q4km.gguf" \
+    --media-backend smt \
+    --smt-config-dir "$MODEL_DIR" \
+    --alias funasr \
+    --host 127.0.0.1 --port 8063 \
+    -t 4 -tb 4 -c 4096 \
+    --warmup --jinja
+```
+
+Call the transcription endpoint from another terminal:
+
+```bash
+asr_file_demo ~/.cache/models/assets/audio/001_zh_daily_weather.wav \
+    --engine funasr \
+    --endpoint http://127.0.0.1:8063/v1/audio/transcriptions \
+    --model funasr
+```
+
+**Gemma4 ASR**
+
+Gemma4 ASR supports transcription in the source language and translation of
+foreign-language speech into English. It requires ASR component version 1.0.4 or
+later; Python users should install `spacemit-asr >= 1.0.4`. The server requires
+`llama.cpp-tools-spacemit >= 0.1.7`. If version 0.1.7 is not yet available from
+the system package repository, use the
+[llama.cpp 0.1.7 release package](https://github.com/spacemit-com/llama.cpp/releases/tag/v0.1.7).
+
+Stop any other model service using port 8063, then download the model and start
+the service:
+
+```bash
+cd ~/.cache/models/asr
+wget https://archive.spacemit.com/spacemit-ai/model_zoo/asr/gemma4-asr-E2B-q40.tar.gz
+tar -xzf gemma4-asr-E2B-q40.tar.gz
+
+MODEL_DIR=~/.cache/models/asr/gemma4-asr-E2B-q40
+
+llama-server \
+    -m "$MODEL_DIR/gemma-4-E2B-it-Q4_0-plproj-Q4_0-combined.gguf" \
+    --media-backend smt \
+    --smt-config-dir "$MODEL_DIR" \
+    --alias gemma4-asr \
+    --host 127.0.0.1 --port 8063 \
+    -t 8 -tb 8 -c 4096 \
+    --warmup --jinja --reasoning off \
+    --no-cache-prompt
+```
+
+`--reasoning off` makes the service return the final transcript or translation
+directly. Run either command in another terminal:
+
+```bash
+# Transcribe in the source language
+asr_file_demo ~/.cache/models/assets/audio/001_zh_daily_weather.wav \
+    --engine gemma4-asr --task transcribe
+
+# Translate foreign-language speech into English
+asr_file_demo ~/.cache/models/assets/audio/024_ja_funasr_sample.mp3 \
+    --engine gemma4-asr --task translate
+```
+
+Gemma4 ASR returns a result after receiving the complete audio input and does
+not provide model-native stateful streaming recognition. The first audio request
+after startup also initializes the dynamic ONNX encoder session, so use later
+requests for performance measurements.
+
+For the complete command-line options and application API, see the [model-zoo-asr README](https://github.com/spacemit-com/model-zoo-asr/blob/main/README.md).
 
 ### 3.3 TTS
 
@@ -241,6 +360,116 @@ For additional parameters and C++ integration details, refer to the [model_zoo_v
 The RL component is currently used primarily for reinforcement learning policy inference in robotic control pipelines. It handles YAML configuration parsing, observation assembly, ONNX inference, and action mapping. It is intended for robotic motion-control scenarios and is typically integrated with specific robot applications, policy models, and control frameworks.
 
 For usage methods, runtime steps, and robot control examples, refer to the [reinforcement learning documentation](https://www.spacemit.com/community/document/info?lang=zh&nodepath=software/SDK/ros/k3/04-AI%E4%B8%8E%E7%AE%97%E6%B3%95/4.3-%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0.md).
+
+### 3.8 VLM
+
+The VLM (Vision Language Model) component is intended for RISC-V platforms such as K3 and provides capabilities for loading, inference, and integration of vision-language models. It supports image captioning, visual question answering, and related applications. The component uses the `llama-server` HTTP API with TCM (Tensor Compute Module) hardware acceleration, providing single-turn inference, multi-turn dialogue, and streaming output, along with C++ native interfaces, Python HTTP wrappers, and an OpenAI-compatible Gateway adaptation layer.
+
+**Step 1: Install dependencies**
+
+```bash
+sudo apt-get update
+sudo apt-get install -y build-essential cmake curl libyaml-cpp-dev nlohmann-json3-dev
+sudo apt install llama.cpp-tools-spacemit
+```
+
+**Step 2: Download a model**
+
+```bash
+cd vlm
+
+# Download the FastVLM-MM 0.5B model
+bash scripts/download_model.sh fastvlm-mm-0.5b-q4_1
+
+# Download all VLM models supported by the script
+for model in fastvlm-mm-0.5b-q4_1 Qwen3.5-0.8B Qwen3.5-2B Qwen3.5-4B; do
+  bash scripts/download_model.sh "$model"
+done
+
+# Use a custom cache directory
+VLM_CACHE_DIR=/data/models bash scripts/download_model.sh Qwen3.5-2B
+```
+
+Models are downloaded to `~/.cache/models/vlm/<model_name>/`, where each model directory contains files such as `config.json`, the text GGUF file, and the visual ONNX file. For example, for FastVLM-MM 0.5B:
+
+```
+~/.cache/models/vlm/fastvlm-mm-0.5b-q4_1/
+├── config.json
+├── fastvlm-text-0.5B-Q4_1.gguf
+└── fastvlm_vision.f16.onnx
+```
+
+Supported models and sizes:
+
+| Model | Size | Description |
+| --- | --- | --- |
+| `fastvlm-mm-0.5b-q4_1` | 766M | Lightweight VLM and default backend |
+| `Qwen3.5-0.8B` | 932M | Qwen3.5 vision-language model |
+| `Qwen3.5-2B` | 2.6G | Qwen3.5 vision-language model |
+| `Qwen3.5-4B` | 3.9G | Qwen3.5 vision-language model |
+| `qwen30ba3b-mm-q4_1` | 17.6G | Large MoE vision-language model |
+
+**Step 3: Build**
+
+```bash
+cd vlm
+mkdir -p build && cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+cmake --build . -j$(nproc)
+ctest --output-on-failure
+```
+
+**Step 4: Run the examples**
+
+C++ demos (build outputs are in the `build/` directory):
+
+```bash
+cd build
+
+# Basic image description
+./fastvlm_demo \
+  --config ../examples/fastvlm/config/fastvlm.yaml \
+  --image /path/to/image.jpg \
+  --prompt "Describe this image in one sentence"
+
+# Multi-turn dialogue
+./chat_demo \
+  --config ../examples/fastvlm/config/qwen3_5_2b.yaml \
+  --image /path/to/image.jpg \
+  --prompt "What is in the image?"
+
+# Streaming output
+./stream_demo \
+  --config ../examples/fastvlm/config/fastvlm.yaml \
+  --image /path/to/image.jpg \
+  --prompt "Describe this image in detail"
+```
+
+Python demos:
+
+```bash
+cd vlm
+
+# Basic image description
+python3 examples/fastvlm/python/vlm_demo.py \
+  --config examples/fastvlm/config/fastvlm.yaml \
+  --image /path/to/image.jpg \
+  --prompt "Describe this image"
+
+# Multi-turn dialogue
+python3 examples/fastvlm/python/chat_demo.py \
+  --config examples/fastvlm/config/qwen3_5_2b.yaml \
+  --image /path/to/image.jpg
+
+# Streaming output
+python3 examples/fastvlm/python/stream_demo.py \
+  --config examples/fastvlm/config/fastvlm.yaml \
+  --image /path/to/image.jpg
+```
+
+> **Note**: The VLM vision model currently deployed uses the SpacemiT SMT ONNX format. By default, the component uses the `server` backend. The `llama-server --vision-backend smt` command loads the vision backend and enables TCM hardware acceleration. After manually interrupting a test, you can use `pkill -f llama-server` and `spacemit-tcm-smi -c` to clean up leftover processes and release TCM resources.
+
+VLM can also be exposed through the gateway as an OpenAI-compatible HTTP API. See [Section 4](#4-gateway-unified-httpws-access-layer) for details.
 
 ## 4. Gateway Unified HTTP/WS Access Layer
 
@@ -340,6 +569,75 @@ curl -s -X POST localhost:18790/v1/vision/inference \
   -F render_mode=overlay | jq .
 ```
 
+VLM visual-language model:
+
+```bash
+# List available VLM models
+curl -s localhost:18790/v1/vlm/models | jq '[.[] | {id, status}]'
+
+# Load a preset model (the first load starts a llama-server subprocess and may take a few seconds)
+curl -s -X POST localhost:18790/v1/vlm/models/load \
+  -H 'Content-Type: application/json' \
+  -d '{"model":"fastvlm-mm-0.5b-q4_1"}' | jq .
+
+# Confirm that the VLM service is ready
+curl -s localhost:18790/v1/vlm/healthz | jq .
+
+# Non-streaming text dialogue
+curl -s -X POST localhost:18790/v1/vlm/chat/completions \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "fastvlm-mm-0.5b-q4_1",
+    "messages": [{"role": "user", "content": "Introduce yourself in one sentence"}],
+    "max_tokens": 64,
+    "stream": false
+  }' | jq .choices[0].message.content
+
+# Image-text multimodal input (base64-encoded image)
+python3 - <<'PY'
+import base64, json, urllib.request
+img = base64.b64encode(open("/path/to/image.jpg", "rb").read()).decode()
+payload = {
+    "model": "fastvlm-mm-0.5b-q4_1",
+    "messages": [{"role": "user", "content": [
+        {"type": "image_url", "image_url": {"url": "data:image/jpeg;base64," + img}},
+        {"type": "text", "text": "What is in this image?"}
+    ]}],
+    "max_tokens": 128,
+    "stream": False
+}
+open("/tmp/vlm_img.json", "w").write(json.dumps(payload))
+PY
+
+curl -s -X POST localhost:18790/v1/vlm/chat/completions \
+  -H 'Content-Type: application/json' \
+  --data-binary @/tmp/vlm_img.json | jq .choices[0].message.content
+
+# Streaming output (SSE)
+curl -sS -X POST localhost:18790/v1/vlm/chat/completions \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "fastvlm-mm-0.5b-q4_1",
+    "messages": [{"role": "user", "content": "Count from one to five"}],
+    "max_tokens": 32,
+    "stream": true
+  }'
+```
+
+VLM also supports switching and unloading models:
+
+```bash
+# Switch to another downloaded model
+curl -s -X POST localhost:18790/v1/vlm/models/switch \
+  -H 'Content-Type: application/json' \
+  -d '{"model": "Qwen3.5-0.8B"}' | jq .
+
+# Unload the current model (release TCM and memory)
+curl -s -X POST localhost:18790/v1/vlm/models/unload \
+  -H 'Content-Type: application/json' \
+  -d '{"model": "Qwen3.5-0.8B"}' | jq .
+```
+
 ### 4.3 API
 
 Gateway interfaces continue to evolve with service capabilities. For current HTTP/WS routes, request parameters, and response formats, refer to:
@@ -357,14 +655,15 @@ SpacemiT AI SDK components provide **stable C++ header-based entry points** for 
 - **TTS**: `tts_service.h` (see the Application Development section of [tts/README.md](https://github.com/spacemit-com/model-zoo-tts/blob/main/README.md))
 - **VAD**: `vad_service.h` (see the Application Development section of [vad/README.md](https://github.com/spacemit-com/model-zoo-vad/blob/main/README.md))
 - **LLM**: `llm_service.h` (see the Application Development section of [llm/README.md](https://github.com/spacemit-com/model-zoo-llm/blob/main/README.md))
+- **VLM**: `vlm_service.h` (provides `Generate()`/`Chat()` synchronous interfaces and `GenerateStream()`/`ChatStream()` streaming interfaces, supports `image_path`, `image_bytes`, and `image_url` image inputs, and includes the Python HTTP wrapper `vlm.py`; see [vlm/README.md](https://github.com/spacemit-com/model-zoo-vlm/blob/main/README.md))
 - **Voiceprint**: `vp_service.h` (see the Application Development section of [voiceprint/README.md](https://github.com/spacemit-com/model_zoo_voiceprint/blob/main/README.md))
 - **RL**: `rl_service.h` (see the Detailed Usage section of [rl/README.md](https://github.com/spacemit-com/model_zoo_rl/blob/main/README.md))
 
-For conversational applications, starting with `omni_agent` is recommended: first validate `voice_chat`, then replace or refine ASR, TTS, and LLM backends as needed, or integrate MCP tools.
+For conversational applications, starting with `omni_agent` is recommended: first validate `voice_chat`, then replace or refine ASR, TTS, LLM, and VLM backends as needed, or integrate MCP tools.
 
 ### 5.2 HTTP/WS Service Integration
 
-In addition to direct integration through the C++/Python SDK, AI SDK also provides unified `HTTP/WS` interfaces through the gateway layer to expose underlying AI capabilities as services. gateway does not replace the core capability components; instead, it provides a service-oriented encapsulation layer on top of them.
+In addition to direct integration through the C++/Python SDK, AI SDK also provides unified `HTTP/WS` interfaces through the gateway layer to expose underlying AI capabilities as services. Gateway does not replace the core capability components; instead, it provides a service-oriented encapsulation layer on top of them.
 
 - **HTTP interfaces**: suitable for request-response scenarios, enabling business systems to integrate recognition, inference, and generation capabilities through standard REST/HTTP access.
 - **WebSocket interfaces**: suitable for streaming interactions, real-time push delivery, and persistent connections, such as speech streaming, incremental results, and conversational applications.
