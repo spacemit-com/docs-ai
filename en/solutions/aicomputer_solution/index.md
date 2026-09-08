@@ -69,3 +69,9 @@ sidebar_position: 2
 **Multi-Stream Video Analysis (YOLO Demo)** is a real-time video analytics application. It processes 4, 9, or 12 video streams simultaneously, using the K3 VPU, GPU, and AI inference capabilities for video decoding, image preprocessing, YOLO inference, and result display.
 
 - [Multi-Stream Video Analysis (YOLO Demo)](multi_stream_vision.md)
+
+## Multi-Stream ASR
+
+**Multi-Stream ASR** is a local real-time speech recognition application. It can process 1 to 8 audio streams simultaneously, using a streaming Zipformer for interim text and offline Qwen3-ASR for final transcription, with support for local WAV and microphone input.
+
+- [Multi-Stream ASR](multi_stream_asr.md)

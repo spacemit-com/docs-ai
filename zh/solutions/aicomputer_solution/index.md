@@ -82,3 +82,9 @@ sidebar_position: 2
 **多路视频分析（YOLO Demo）** 是一个实时视频分析应用。可同时处理 4、9 或 12 路视频，利用 K3 的 VPU、GPU 和 AI 推理能力完成视频解码、图像前处理、YOLO 推理与结果展示。
 
 - [多路视频分析(YOLO Demo)](multi_stream_vision.md)
+
+## 多路语音识别(Multi-Stream ASR)
+
+**多路语音识别（Multi-Stream ASR）** 是一个本地实时语音识别应用。可同时处理 1～8 路音频，采用在线 Zipformer + 离线 Qwen3-ASR 两级识别，支持本地 WAV 与麦克风输入。
+
+- [多路语音识别(Multi-Stream ASR)](multi_stream_asr.md)
