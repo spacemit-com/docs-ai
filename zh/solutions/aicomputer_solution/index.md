@@ -34,6 +34,12 @@ sidebar_position: 2
 
 - [与会(Yumeet)](yumeet.md)
 
+## File2MD
+
+**File2MD** 是面向 SpacemiT K3 Bianbu 平台的本地文档转 Markdown 桌面应用，支持 PDF、Office 文档、图片、文本文件和网页 URL。它在设备端完成版面分析、OCR、公式与表格识别，并提供原文对照、Markdown 预览、结果导出和历史记录。
+
+- [File2MD](file2md.md)
+
 ## 见智(Seewise)
 
 **见智(Seewise)** 是一款智能视频搜索引擎，支持上传本地视频或连接 RTSP 摄像头，自动分析视频内容，让你用自然语言快速找到想要的视频片段。
