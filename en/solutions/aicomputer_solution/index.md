@@ -22,6 +22,12 @@ sidebar_position: 2
 
 - [Yumeet](yumeet.md)
 
+## File2MD
+
+**File2MD** is a local document-to-Markdown desktop application for K3 systems running Bianbu Desktop. It converts PDFs, Office documents, images, plain text files, and web page URLs into structured Markdown, with original-document preview, conversion history, and downloadable result packages.
+
+- [File2MD](file2md.md)
+
 ## Seewise
 
 **Seewise** is an intelligent video search engine that supports local video upload and RTSP camera connectivity. It automatically analyzes video content, enabling rapid retrieval of target video segments through natural language queries.
