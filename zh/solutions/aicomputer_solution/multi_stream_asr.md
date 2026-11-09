@@ -275,6 +275,49 @@ DEB 与源码方式使用同一套 Web 界面和操作流程。DEB 已自动准�
 
 ![识别结果展示](../static/multi_stream_asr/web-result.png)
 
+### 7. 查看性能报告
+
+本次运行自然结束后（文件输入播完、所有 lane 完成、状态回到 `loaded`），页面会自动弹出**性能报告**弹窗。关闭后，可随时点击工具栏的 **Performance Report** 按钮重新打开；该按钮在还没有产生任何结果时是禁用的。手动点击「停止识别」或以 fatal 失败结束时不自动弹窗，但仍可点按钮查看。
+
+![性能报告弹窗（中文）](../static/multi_stream_asr/performance-report-zh.png)
+
+弹窗分三部分：
+
+- **主要性能参数（全通道聚合）**：所有 lane 合并后的指标，包含在线帧时延、离线 RTF、事件循环滞后，以及共享 Qwen 的排队 / 编码 / 预填充 / 解码分阶段耗时与阶段 RTF、输入音频时长、排队漂移
+- **分通道性能指标**：每个 lane 一行一列对照，包含最终状态、处理帧数、丢弃帧数、积压帧数、离线请求数，以及该路的主要时延与 RTF
+- **详细数据存盘位置**：本次运行目录的绝对路径，以及 `metrics.json`、`config.json`、`results/`、`model_outputs/`，和仅在 `--verbose` 下生成的 `metrics_detail/` 逐条明细
+
+#### 中英文切换
+
+弹窗右上角的 **English / 中文** 按钮在两种语言间切换。标题、表头、参数名与说明、通道状态、产物名称和脚注都会随之切换，数值保持不变，且切换不会重新请求数据。
+
+#### 指标口径
+
+| 指标 | 含义 |
+| --- | --- |
+| 在线帧时延 `online_frame_latency` | 每帧音频从送入在线 Zipformer 到产出在线结果的耗时，目标约 50 ms |
+| 离线 RTF `offline_rtf` | 单句「离线识别耗时 ÷ 该句音频时长」；小于 1 表示快于实时，目标 ≤ 0.4 |
+| 事件循环滞后 `event_loop_lag` | 每 100 ms 采样一次的 asyncio 事件循环偏差，反映进程是否被抢占 |
+| 排队耗时 `queue_ms` | 请求在共享 `llama-server` 内等待串行编码器的时间 |
+| 编码耗时 `encode_ms` | 串行编码器阶段耗时 |
+| 预填充耗时 `prefill_ms` | decoder 处理输入音频 token（prefill）阶段耗时 |
+| 解码耗时 `decode_ms` | decoder 逐 token 生成文本阶段耗时 |
+| 单请求总耗时 `total_ms` | 上述四个阶段之和 |
+| 阶段 RTF `queue_rtf` 等 | 该阶段秒数 ÷ 该请求输入音频秒数，可跨音频长度比较 |
+| 输入音频时长 `audio_seconds` | 每个离线请求送入的音频秒数 |
+| 排队漂移 `queue_drift` | 按请求完成顺序比较较早一半与较晚一半的排队均值；比值 > 1 或斜率为正表示排队随识别推进持续变长 |
+
+读表时注意：
+
+- 平均值与最大值是整次运行的精确值
+- P95 是在最近 1024 个样本窗口内按 nearest-rank 计算的窗口值，不是全程分位数
+- 跨 lane 合并的 P95 取各 lane 的最大值，是池化 P95 的上界近似
+- 没有任何样本的指标显示 `—`，不会显示误导性的 `0`
+
+弹窗中的数值由与 `metrics.json` 相同的聚合函数生成，因此与磁盘产物逐字段一致，可直接对照。分通道表中「丢弃帧数」大于 0 表示该路后端跟不上，需要结合丢帧数、积压帧数和 RTF 一起判断。
+
+报告由 `GET /api/performance-report` 提供，没有结果时返回 `available: false`。
+
 ## 命令行使用
 
 DEB 中的命令入口为 `/opt/multi-stream-asr/multi-stream-asr/bin/multi-stream-asr`；源码方式的入口为 `python -m multi_stream_asr.main`。两者接受相同参数，未指定 `--headless` 时默认进入 Web 模式：

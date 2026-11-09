@@ -277,6 +277,49 @@ The recognition results area displays each lane's `partial` interim text and `fi
 
 ![Multi-Stream ASR recognition results](../static/multi_stream_asr/web-result.png)
 
+### 7. View the Performance Report
+
+When a run finishes on its own — every file input has played out, all lanes are complete, and the state returns to `loaded` — the page opens the **Performance Report** dialog automatically. Once closed, you can reopen it at any time with the **Performance Report** button in the toolbar; that button is disabled until a run has produced results. Choosing **Stop Recognition** manually or ending in a `fatal` state enables the button without opening the dialog.
+
+![Multi-Stream ASR performance report dialog](../static/multi_stream_asr/performance-report-en.png)
+
+The dialog has three parts:
+
+- **Key metrics (all lanes combined)**: merged metrics across all lanes, covering online frame latency, offline RTF, event-loop lag, the shared Qwen stage timings and stage RTFs for queue / encode / prefill / decode, the input audio duration, and queue drift
+- **Per-lane metrics**: one row per lane, including the final state, frames processed, frames dropped, frames backlogged, offline requests, and that lane's main latency and RTF values
+- **Where the detailed data is stored**: the absolute path of the run directory, plus `metrics.json`, `config.json`, `results/`, `model_outputs/`, and the per-record `metrics_detail/` files that only `--verbose` writes
+
+#### Switching Between Chinese and English
+
+The **English / 中文** button in the dialog's top-right corner switches between the two languages. The title, table headers, parameter names and descriptions, lane states, artifact names, and the footnote all follow the selected language. The numbers do not change, and switching does not issue another request.
+
+#### How the Metrics Are Defined
+
+| Metric | Meaning |
+| --- | --- |
+| Online frame latency (`online_frame_latency`) | Time for one audio frame to go from the streaming Zipformer input to an online result; the target is about 50 ms |
+| Offline RTF (`offline_rtf`) | Per-utterance elapsed ÷ that utterance's audio duration; below 1 means faster than real time, and the target is ≤ 0.4 |
+| Event-loop lag (`event_loop_lag`) | Deviation of the asyncio event loop sampled every 100 ms, showing whether the process was preempted |
+| Queue time (`queue_ms`) | Time a request waits inside the shared `llama-server` for the serial encoder |
+| Encode time (`encode_ms`) | Time in the serial encoder stage |
+| Prefill time (`prefill_ms`) | Time the decoder spends on input audio tokens (prefill) |
+| Decode time (`decode_ms`) | Time the decoder spends generating tokens one at a time |
+| Total request time (`total_ms`) | Sum of the four stages above |
+| Stage RTF (`queue_rtf`, etc.) | Stage seconds ÷ that request's input audio seconds, comparable across audio lengths |
+| Input audio duration (`audio_seconds`) | Audio seconds submitted by each offline request |
+| Queue drift (`queue_drift`) | Compares the mean queue time of the earlier and later halves in request-completion order; a ratio above 1 or a positive slope means the queue keeps growing as recognition proceeds |
+
+When reading the tables:
+
+- Averages and maxima are exact over the whole run
+- P95 is a windowed value computed with nearest-rank over the most recent 1024 samples, not a percentile over the entire run
+- The cross-lane merged P95 takes each lane's P95, so it is an upper bound on the pooled percentile
+- A metric with no samples renders as `—` rather than a misleading `0`
+
+The dialog computes its numbers with the same aggregation function that writes `metrics.json`, so the dialog and the artifact agree field by field and can be compared directly. In the per-lane table, a non-zero **Frames dropped** value means that lane's backend fell behind; read it together with frames backlogged and the RTF values.
+
+The report is served by `GET /api/performance-report`, which returns `available: false` when no results exist.
+
 ## Command-Line Usage
 
 The command entry point in the DEB is `/opt/multi-stream-asr/multi-stream-asr/bin/multi-stream-asr`; the source installation entry point is `python -m multi_stream_asr.main`. Both accept the same options and enter Web mode by default when `--headless` is omitted:
