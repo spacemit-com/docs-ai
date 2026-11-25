@@ -5,7 +5,9 @@ sidebar_position: 1
 
 # BiBit User Guide
 
-[Bianbu Agentic](../index.md) | [简体中文](../../../../../zh/solutions/aicomputer_solution/agentic/user_guide/index.md) | [English](index.md)
+<a id="top"></a>
+
+[Bianbu Agentic](../index.md) | [简体中文](../../../../../zh/solutions/aicomputer_solution/agentic/user_guide/index.md) | English
 
 This guide is for Bianbu Desktop users who already have BiBit installed. If you have questions or suggestions, ask in the developer community. The documentation is updated regularly.
 
@@ -250,3 +252,28 @@ These features are provided by plugins. If a feature is unavailable or its entry
 ## 14. Shortcut Reference
 
 [Common Shortcuts](settings.md#shortcut-reference)
+
+## Related Pages
+
+- [Quick Start](quickstart.md)
+- [Chat and Conversation Management](chat.md)
+- [Quick Chat](quick-chat.md)
+- [Intent Recognition](intent.md)
+- [Files and Reference Materials](files.md)
+- [Agent Hub](agent-hub.md)
+- [Memory](memory.md)
+- [Settings and Permissions](settings.md)
+- [BiBit Local Tool List](tools.md)
+- [Runtime Management and Monitoring](runtime/index.md)
+- [Frequently Asked Questions](faq.md)
+- [Experts](runtime/experts.md)
+- [Models](runtime/providers.md)
+- [Local Models](runtime/models.md)
+- [Tools](runtime/tools.md)
+- [Skills](runtime/skills.md)
+- [MCP](runtime/mcp.md)
+- [Plugins](runtime/plugins.md)
+- [Security](runtime/security.md)
+- [Runtime Monitoring](runtime/monitoring.md)
+
+[BiBit User Guide](#top)

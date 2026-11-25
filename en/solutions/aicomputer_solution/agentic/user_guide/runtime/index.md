@@ -5,6 +5,8 @@ sidebar_position: 10
 
 # Runtime Management and Monitoring
 
+<a id="top"></a>
+
 Runtime is the part of BiBit that carries out tasks behind the scenes: it interprets your request, selects the appropriate model, tool, or skill, performs or blocks actions according to security policies, and records run status. The Runtime management and monitoring pages let you view and adjust these capabilities; they are intended for users who need to manage experts, model services, capabilities, or security policies. You can skip them if you only use chat or files.
 
 ## Open Runtime Pages
@@ -41,3 +43,18 @@ Runtime is the part of BiBit that carries out tasks behind the scenes: it interp
 - **Security pages are for users who need to adjust policy.** Keep defaults if you are unsure, or ask the developer community before making changes.
 
 [Quick Start](../quickstart.md) · [FAQ](../faq.md) · [Documentation Home](../index.md)
+
+## Related Pages
+
+- [Experts](experts.md)
+- [Models](providers.md)
+- [Local Models](models.md)
+- [Tools](tools.md)
+- [Skills](skills.md)
+- [MCP](mcp.md)
+- [Plugins](plugins.md)
+- [Security](security.md)
+- [Runtime Monitoring](monitoring.md)
+
+[Runtime Management and Monitoring](#top)
+[BiBit User Guide](../index.md)

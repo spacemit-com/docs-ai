@@ -5,7 +5,9 @@ sidebar_position: 1
 
 # BiBit 用户指南
 
-[Bianbu Agentic](../index.md) | [中文](index.md) | [English](../../../../../en/solutions/aicomputer_solution/agentic/user_guide/index.md)
+<a id="top"></a>
+
+[Bianbu Agentic](../index.md) | 中文 | [English](../../../../../en/solutions/aicomputer_solution/agentic/user_guide/index.md)
 
 本指南面向已经安装 BiBit 的 Bianbu 桌面用户。如有问题或改进建议，可到开发者社区反馈，文档会持续更新。
 
@@ -246,3 +248,28 @@ sidebar_position: 1
 ## 14. 常用快捷键速查
 
 [常用快捷键](settings.md#常用快捷键速查)
+
+## 相关文档
+
+- [快速开始](quickstart.md)
+- [对话与会话管理](chat.md)
+- [快速对话](quick-chat.md)
+- [意图识别](intent.md)
+- [文件与资料](files.md)
+- [能力中心](agent-hub.md)
+- [记忆](memory.md)
+- [设置与权限](settings.md)
+- [BiBit 本地工具列表](tools.md)
+- [Runtime 管理与监控](runtime/index.md)
+- [常见问题](faq.md)
+- [专家](runtime/experts.md)
+- [模型列表](runtime/providers.md)
+- [本地模型](runtime/models.md)
+- [工具](runtime/tools.md)
+- [技能](runtime/skills.md)
+- [MCP](runtime/mcp.md)
+- [插件](runtime/plugins.md)
+- [安全](runtime/security.md)
+- [Runtime 监控](runtime/monitoring.md)
+
+[BiBit 用户指南](#top)

@@ -5,6 +5,8 @@ sidebar_position: 10
 
 # Runtime 管理与监控
 
+<a id="top"></a>
+
 Runtime（运行时）是 BiBit 背后负责执行任务的部分：它理解你的请求，选择合适的模型、工具或技能，按安全策略执行或拦下操作，并记录运行状态。Runtime 管理与监控页面用于查看和调整这些能力，适合需要管理专家、模型服务、能力或安全策略的使用者；只使用聊天或文件功能时，可以不进入这些页面。
 
 ## 打开 Runtime 页面
@@ -41,3 +43,18 @@ Runtime（运行时）是 BiBit 背后负责执行任务的部分：它理解你
 - **安全页面面向需要调整策略的使用者。** 不确定某项设置的作用时，先保持默认值，或到开发者社区确认后再修改。
 
 [快速开始](../quickstart.md) · [常见问题](../faq.md) · [文档首页](../index.md)
+
+## 相关文档
+
+- [专家](experts.md)
+- [模型列表](providers.md)
+- [本地模型](models.md)
+- [工具](tools.md)
+- [技能](skills.md)
+- [MCP](mcp.md)
+- [插件](plugins.md)
+- [安全](security.md)
+- [Runtime 监控](monitoring.md)
+
+[Runtime 管理与监控](#top)
+[BiBit 用户指南](../index.md)
