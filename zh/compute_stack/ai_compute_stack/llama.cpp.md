@@ -153,6 +153,23 @@ curl -X POST http://127.0.0.1:8080/v1/chat/completions \
 
 ![](../images/llama-server-chrome.png)
 
+#### 2.3.4. K3 独立 A100 后端
+
+进迭时空 llama.cpp v0.2.5 还提供可选的独立加速设备 `SPACEMIT0`。上一节示例使用的 CPU 后端也可以调用 K3 的 AI 核。要试用独立后端，先确认当前运行时能列出设备：
+
+```bash
+GGML_SPACEMIT_BACKEND=1 llama-server --list-devices
+```
+
+如果列表中有 `SPACEMIT0`，将 `MODEL` 设为本地 GGUF 路径，然后启动单路服务：
+
+```bash
+GGML_SPACEMIT_BACKEND=1 llama-server -m "$MODEL" --device SPACEMIT0 -ngl 99 \
+  -t 8 -tb 8 -np 1 -c 1024 -b 128 -ub 128 -lv 4 --host 127.0.0.1 --port 8080
+```
+
+启动日志应显示 `using device SPACEMIT0`。后端和物理批次大小（`-ub`）都会影响输入处理速度。对比后端时，应使用相同的 GGUF、批次大小、上下文长度和输入 token。参见[进迭时空 v0.2.5 发布页](https://github.com/spacemit-com/llama.cpp/releases/tag/v0.2.5)。
+
 ### 2.4. 多模态模型下载使用
 
 因多模态模型的使用与标准的大语言模型有一些差异，这里单独进行说明。
